@@ -3187,6 +3187,17 @@ $ oscars                &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 5, 0, 2, 1, 0, 0, 0, 0, 1,
 </div>
 </div>
 <p>The data has 23 variables, with 33,600 observations. It has 14 categorical variables, and 9 numerical variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>na_cols <span class="ot">&lt;-</span> <span class="fu">colnames</span>(movies)[<span class="fu">colSums</span>(<span class="fu">is.na</span>(movies)) <span class="sc">&gt;</span> <span class="dv">0</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">rowSums</span>(<span class="fu">is.na</span>(movies)) <span class="sc">&gt;</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25889</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(movies))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 91479</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="target-variable-analysis" class="level2">

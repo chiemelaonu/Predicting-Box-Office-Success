@@ -60,6 +60,13 @@ glimpse(movies)
 The data has 23 variables, with 33,600 observations. It has 14 categorical variables, and 9 numerical variables.
 
 
+```{r}
+na_cols <- colnames(movies)[colSums(is.na(movies)) > 0]
+sum(rowSums(is.na(movies)) > 0)
+sum(is.na(movies))
+
+```
+
 
 
 
