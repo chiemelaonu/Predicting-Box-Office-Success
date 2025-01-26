@@ -34,8 +34,8 @@ citation-location: margin
 
 ## Data source
 
-[Dataset Link](https://www.kaggle.com/datasets/raedaddala/top-500-600-movies-of-each-year-from-1960-to-2024/code)
-Accessed January 24th 2025
+[Kaggle.com](https://www.kaggle.com/datasets/raedaddala/top-500-600-movies-of-each-year-from-1960-to-2024/code)
+Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed January 24th 2025
 
 
 ## Prediction Problem
