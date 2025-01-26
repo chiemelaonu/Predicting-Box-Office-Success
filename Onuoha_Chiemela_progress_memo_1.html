@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
 width: 0.8em;
 margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
 }
+
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+}
+pre.numberSource { margin-left: 3em; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -3123,6 +3157,37 @@ A prediction model for worldwide gross earnings can be highly valuable for stake
 I am in interested in using this data because movies are fun and a form of expression, so analyzing the data and creating a predictive model with it would be a genuinely intriguing task, making the work more enjoyable.</p>
 <section id="data-quality-check" class="level3">
 <h3 class="anchored" data-anchor-id="data-quality-check">Data Quality Check</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(movies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 33,600
+Columns: 23
+$ id                    &lt;chr&gt; &quot;tt0073195&quot;, &quot;tt0073629&quot;, &quot;tt0073486&quot;, &quot;tt007289…
+$ Title                 &lt;chr&gt; &quot;Jaws&quot;, &quot;The Rocky Horror Picture Show&quot;, &quot;One Fl…
+$ `Movie Link`          &lt;chr&gt; &quot;https://www.imdb.com/title/tt0073195&quot;, &quot;https:/…
+$ Year                  &lt;dbl&gt; 1975, 1975, 1975, 1975, 1975, 1975, 1975, 1975, …
+$ Duration              &lt;chr&gt; &quot;2h 4m&quot;, &quot;1h 40m&quot;, &quot;2h 13m&quot;, &quot;2h 5m&quot;, &quot;1h 50m&quot;, …
+$ MPA                   &lt;chr&gt; &quot;PG&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;G&quot;, &quot;PG&quot;, &quot;G&quot;, &quot;PG&quot;, …
+$ Rating                &lt;dbl&gt; 8.1, 7.4, 8.7, 8.0, 6.4, 7.0, 6.2, 6.4, 6.6, 7.4…
+$ Votes                 &lt;chr&gt; &quot;683K&quot;, &quot;173K&quot;, &quot;1.1M&quot;, &quot;279K&quot;, &quot;15K&quot;, &quot;31K&quot;, &quot;6…
+$ budget                &lt;dbl&gt; 7000000, 1200000, 3000000, 1800000, 4000000, 500…
+$ grossWorldWide        &lt;dbl&gt; 477220580, 115798478, 109115366, 50002721, 49407…
+$ gross_US_Canada       &lt;dbl&gt; 266567580, 112892319, 108981275, 50000000, 49407…
+$ opening_weekend_Gross &lt;dbl&gt; 7061513, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ directors             &lt;chr&gt; &quot;[&#39;Steven Spielberg&#39;]&quot;, &quot;[&#39;Jim Sharman&#39;]&quot;, &quot;[&#39;Mi…
+$ writers               &lt;chr&gt; &quot;[&#39;Peter Benchley&#39;, &#39;Carl Gottlieb&#39;]&quot;, &quot;[\&quot;Richa…
+$ stars                 &lt;chr&gt; &quot;[&#39;Roy Scheider&#39;, &#39;Robert Shaw&#39;, &#39;Richard Dreyfu…
+$ genres                &lt;chr&gt; &quot;[&#39;Monster Horror&#39;, &#39;Sea Adventure&#39;, &#39;Survival&#39;,…
+$ countries_origin      &lt;chr&gt; &quot;[&#39;United States&#39;]&quot;, &quot;[&#39;United Kingdom&#39;, &#39;United…
+$ filming_locations     &lt;chr&gt; &quot;[\&quot;Water Street, Edgartown, Martha&#39;s Vineyard, …
+$ production_companies  &lt;chr&gt; &quot;[&#39;Zanuck/Brown Productions&#39;, &#39;Universal Picture…
+$ Languages             &lt;chr&gt; &quot;[&#39;English&#39;]&quot;, &quot;[&#39;English&#39;]&quot;, &quot;[&#39;English&#39;]&quot;, &quot;[&#39;…
+$ wins                  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ nominations           &lt;dbl&gt; 20, 4, 15, 20, 11, 5, 0, 0, 5, 4, 0, 0, 0, 0, 0,…
+$ oscars                &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 5, 0, 2, 1, 0, 0, 0, 0, 1, 0, …</code></pre>
+</div>
+</div>
+<p>The data has 23 variables, with 33,600 observations. It has 14 categorical variables, and 9 numerical variables.</p>
 </section>
 </section>
 <section id="target-variable-analysis" class="level2">
