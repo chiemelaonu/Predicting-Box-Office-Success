@@ -1,3 +1,6 @@
+# Final Project Memo 1  ----
+# Examining Data, Initial Data Splitting
+
 ## loading in data ----
 library(tidyverse)
 library(tidymodels)
