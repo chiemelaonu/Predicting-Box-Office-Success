@@ -10,10 +10,14 @@ library(patchwork)
 tidymodels_prefer()
 movies <- read_csv("data/final_dataset.csv")
 
+
+## EDA ----
 # finding how many NAs in target variable
 sum(is.na(movies$grossWorldWide))
 
-## EDA ----
+
+
+## Target Variable Analysis ----
 
 # on original scale ----
 
