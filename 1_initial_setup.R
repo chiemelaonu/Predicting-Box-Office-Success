@@ -1,6 +1,7 @@
 ## loading in data ----
 library(tidyverse)
 library(tidymodels)
+library(patchwork)
 
 # resolve conflicts
 tidymodels_prefer()
@@ -34,7 +35,7 @@ graphic_1 <- p2 / p1 +
 
 
 ggsave(
-  filename = here::here("plots/graphic_1.png"),
+  filename = here::here("figures/graphic_1.png"),
   plot = graphic_1,
   height = 5,
   width = 5
@@ -68,7 +69,7 @@ graphic_2 <- p2 / p1 +
 
 
 ggsave(
-  filename = here::here("plots/graphic_2.png"),
+  filename = here::here("figures/graphic_2.png"),
   plot = graphic_2,
   height = 5,
   width = 5
