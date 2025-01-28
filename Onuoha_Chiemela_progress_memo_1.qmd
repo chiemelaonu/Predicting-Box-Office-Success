@@ -2,7 +2,7 @@
 title: "Progress Memo 1"
 subtitle: |
   | Final Project 
-  | Data Science 1 with R (STAT 301-2)
+  | Data Science 2 with R (STAT 301-2)
 author: "Chiemela Onuoha"
 pagetitle: "PM1 Chiemela Onuoha"
 date: "January 25, 2025"
