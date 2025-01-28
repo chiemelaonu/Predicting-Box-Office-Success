@@ -11,35 +11,69 @@ sum(is.na(movies$grossWorldWide))
 
 ## EDA ----
 
-# density plot of grossWorldWide profit
-movies |>
-  ggplot(aes(grossWorldWide)) +
-  geom_density()
+# on original scale ----
 
-
-# boxplot of grossWorldWide profit
-ggplot(movies, aes(grossWorldWide)) +
-  geom_boxplot() +
-  geom_rug(alpha = 0.2) +
-  xlab("log10 of price")
-
-
-
-
-# density plot of log10 of grossWorldWide profit
-ggplot(movies, aes(grossWorldWide)) +
+# density plot
+p1 <- ggplot(movies, aes(grossWorldWide)) +
   geom_density() +
-  geom_rug(alpha = 0.2) +
-  scale_x_log10() +
-  xlab("log10 of price")
+  geom_rug(alpha = 0.1) +
+  theme_minimal() +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank())
 
 
-# boxplot of log10 of grossWorldWide profit
-ggplot(movies, aes(grossWorldWide)) +
+# boxplot
+p2 <- ggplot(movies, aes(grossWorldWide)) +
   geom_boxplot() +
-  geom_rug(alpha = 0.2) +
+  theme_void()
+
+
+# boxplot over density
+graphic_1 <- p2 / p1 +
+  plot_layout(heights = unit(c("1", "5"), units = "cm"))
+
+
+ggsave(
+  filename = here::here("plots/graphic_1.png"),
+  plot = graphic_1,
+  height = 5,
+  width = 5
+  )
+
+
+
+## on log10 scale ----
+
+p1 <- ggplot(movies, aes(grossWorldWide)) +
+  geom_density() +
+  geom_rug(alpha = 0.1) +
   scale_x_log10() +
-  xlab("log10 of price")
+  xlab("log10 of grossWorldWide") +
+  theme_minimal() +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank())
+
+
+# boxplot
+p2 <- ggplot(movies, aes(grossWorldWide)) +
+  geom_boxplot() +
+  scale_x_log10() +
+  xlab("log10 of grossWorldWide") +
+  theme_void()
+
+
+# boxplot over density
+graphic_2 <- p2 / p1 +
+  plot_layout(heights = unit(c("1", "5"), units = "cm"))
+
+
+ggsave(
+  filename = here::here("plots/graphic_2.png"),
+  plot = graphic_2,
+  height = 5,
+  width = 5
+)
+
 
 
 # adding transformed variable ----
