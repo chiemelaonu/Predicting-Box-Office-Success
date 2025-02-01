@@ -53,7 +53,7 @@ knitr::kable(missing_summary, caption = "Columns with Missing Values")
 # on original scale ----
 
 # density plot
-p1 <- ggplot(movies, aes(grossWorldWide)) +
+p1 <- ggplot(cancer_data, aes(Survival_Time_Months)) +
   geom_density() +
   geom_rug(alpha = 0.1) +
   theme_minimal() +
@@ -62,7 +62,7 @@ p1 <- ggplot(movies, aes(grossWorldWide)) +
 
 
 # boxplot
-p2 <- ggplot(movies, aes(grossWorldWide)) +
+p2 <- ggplot(cancer_data, aes(Survival_Time_Months)) +
   geom_boxplot() +
   theme_void()
 
@@ -87,7 +87,7 @@ p1 <- ggplot(movies, aes(grossWorldWide)) +
   geom_density() +
   geom_rug(alpha = 0.1) +
   scale_x_log10() +
-  xlab("log10 of grossWorldWide") +
+  xlab("log10 of Survival_Time_Months") +
   theme_minimal() +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank())
@@ -97,7 +97,7 @@ p1 <- ggplot(movies, aes(grossWorldWide)) +
 p2 <- ggplot(movies, aes(grossWorldWide)) +
   geom_boxplot() +
   scale_x_log10() +
-  xlab("log10 of grossWorldWide") +
+  xlab("log10 of Survival_Time_Months") +
   theme_void()
 
 

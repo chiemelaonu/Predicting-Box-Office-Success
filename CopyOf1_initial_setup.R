@@ -75,11 +75,11 @@ ggsave(
 
 ## on log10 scale ----
 
-ggplot(cancer_data, aes(Survival_Time_Months)) +
+p1 <- ggplot(cancer_data, aes(Survival_Time_Months)) +
   geom_density() +
   geom_rug(alpha = 0.1) +
   scale_x_log10() +
-  xlab("log10 of grossWorldWide") +
+  xlab("log10 of Survival_Time_Months") +
   theme_minimal() +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank())
@@ -89,7 +89,7 @@ ggplot(cancer_data, aes(Survival_Time_Months)) +
 p2 <- ggplot(cancer_data, aes(Survival_Time_Months)) +
   geom_boxplot() +
   scale_x_log10() +
-  xlab("log10 of grossWorldWide") +
+  xlab("log10 of Survival_Time_Months") +
   theme_void()
 
 

@@ -27,8 +27,10 @@ citation-location: margin
 ```{r}
 #| echo: false
 #| label: load-packages-data
+
 library(tidyverse)
-movies <- read_csv("data/final_dataset.csv")
+
+cancer_data <- read_csv("data/pancreatic_cancer_prediction_sample.csv")
 
 ```
 
@@ -64,43 +66,42 @@ The data has 23 variables, with 33,600 observations. It has 14 categorical varia
 #| echo: false
 
 
-# calculate values
-missing_rows <- sum(!complete.cases(movies))
-num_rows <- nrow(movies)
-num_cols <- ncol(movies)
+# Calculate values
+missing_rows <- sum(!complete.cases(cancer_data))
+num_rows <- nrow(cancer_data)
+num_cols <- ncol(cancer_data)
 
-# create a table
+# Create a table
 summary <- data.frame(
   Metric = c("Rows with Missing Values", "Number of Observations", "Number of Variables"),
   Value = c(missing_rows, num_rows, num_cols)
 )
 
-# display as a table
-knitr::kable(summary, caption = "Dataset Summary")
+# Display as a table
+summary_table <- knitr::kable(summary, caption = "Dataset Summary")
+
+
+
 
 ```
 
 
-### Missingness 
+### Variable Types 
 
 ```{r}
-#| label: tbl-missing
-#| tbl-cap: "Dataset Missingness"
+#| label: variable-types
 #| echo: false
 
-missing_values <- colSums(is.na(movies))
+# Count variable types
+variable_types <- sapply(cancer_data, class)
 
-# Filter columns with missing values (those with more than 0 missing values)
-missing_summary <- data.frame(
-  Column = names(missing_values),
-  Missing_Values = missing_values
-)
+# Summarize counts
+num_numerical <- sum(variable_types %in% c("integer", "numeric"))
+num_categorical <- sum(variable_types %in% c("factor", "character"))
 
-# Filter rows where there are missing values
-missing_summary <- missing_summary[missing_summary$Missing_Values > 0, ]
-
-# Display the table with knitr
-knitr::kable(missing_summary, caption = "Columns with Missing Values")
+# Print results
+cat("Numerical Variables:", num_numerical, "\n")
+cat("Categorical Variables:", num_categorical, "\n")
 ```
 
 
@@ -113,7 +114,7 @@ knitr::kable(missing_summary, caption = "Columns with Missing Values")
 
 ![Gross Profit Transformed to log 10 Scale](figures/graphic_2.png){#fig-profit-log10}
 
-Inspecting target distribution `grossWorldWide` on original scale and on a log 10 transformation scale.
+Inspecting target distribution `Survival_Time_Months` on original scale and on a log 10 transformation scale.
 :::
 The target variable is heavily skewed right. Seeing this, a log transformation is helpful because it makes the distribution more symmetrical.
 Symmetrical distributions are balanced around the mean, so the model doesn't get influenced by outliers or skewed data. There are also substantial amount of missing values in the data set, so removing the rows where there are missing observations would be helpful. Since there are so many missing data points, I plan on only removing the rows that a missing observation in the feature columns I plan on using for the model.
