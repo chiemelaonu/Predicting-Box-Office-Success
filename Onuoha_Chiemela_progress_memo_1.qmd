@@ -81,6 +81,28 @@ knitr::kable(summary, caption = "Dataset Summary")
 ```
 
 
+### Missingness 
+
+```{r}
+#| label: tbl-missing
+#| tbl-cap: "Dataset Missingness"
+#| echo: false
+
+missing_values <- colSums(is.na(movies))
+
+# Filter columns with missing values (those with more than 0 missing values)
+missing_summary <- data.frame(
+  Column = names(missing_values),
+  Missing_Values = missing_values
+)
+
+# Filter rows where there are missing values
+missing_summary <- missing_summary[missing_summary$Missing_Values > 0, ]
+
+# Display the table with knitr
+knitr::kable(missing_summary, caption = "Columns with Missing Values")
+```
+
 
 
 ## Target Variable Analysis
