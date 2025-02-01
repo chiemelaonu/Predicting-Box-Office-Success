@@ -45,11 +45,11 @@ cancer_data <- read_csv("data/pancreatic_cancer_prediction_sample.csv")
 ## Data source
 
 [Kaggle.com](https://www.kaggle.com/datasets/raedaddala/top-500-600-movies-of-each-year-from-1960-to-2024/code)
-Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed January 24th 2025
+Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed January 31st 2025
 
 
 ## Prediction Problem
-The goal of this study is to predict pancreatic cancer survival based on demographic, lifestyle, and medical history variables. This is a binary classification problem, where the target variable is Survival_Status (0 = Not Survived, 1 = Survived).  
+The goal of this study is to predict pancreatic cancer survival based on demographic, lifestyle, and medical history variables. This is a binary regressions problem, where the target variable is `Survival_Time_Months`. When building my predictive model, I will be using observations where the person survived longer than 18 months.
 <br>  
 Pancreatic cancer has one of the lowest survival rates among cancers, so being able to predict survival outcomes could be really useful. A good prediction model could help doctors identify high-risk patients earlier and plan treatments accordingly. It could also provide insight into what factors influence survival the most.  
 
