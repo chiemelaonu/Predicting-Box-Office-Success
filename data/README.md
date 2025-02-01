@@ -3,6 +3,7 @@
 The Pancreatic Cancer data was sourced from [Kaggle.com](https://www.kaggle.com/datasets/ankushpanday1/pancreatic-cancer-prediction-dataset/data).
 
 - `final_dataset.csv`: the original dataset
+- `cancer_data.csv`: the transformed dataset
 - `cancer_data_split.rda`: the initial split proportions of the data
 - `cd_training.rda`: the training data used for modeling
 - `cd_testing.rda`: the testing data used for predicting
