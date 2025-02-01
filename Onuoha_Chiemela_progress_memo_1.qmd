@@ -116,4 +116,4 @@ knitr::kable(missing_summary, caption = "Columns with Missing Values")
 Inspecting target distribution `grossWorldWide` on original scale and on a log 10 transformation scale.
 :::
 The target variable is heavily skewed right. Seeing this, a log transformation is helpful because it makes the distribution more symmetrical.
-Symmetrical distributions are balanced around the mean, so the model doesn't get influenced by outliers or skewed data. There are also substantial amount of missing values in the data set, so removing those missing observations allows for a more comprehensive model on the data. 
+Symmetrical distributions are balanced around the mean, so the model doesn't get influenced by outliers or skewed data. There are also substantial amount of missing values in the data set, so removing the rows where there are missing observations would be helpful. Since there are so many missing data points, I plan on only removing the rows that a missing observation in the feature columns I plan on using for the model.
