@@ -10,6 +10,13 @@ library(patchwork)
 cancer_data <- read_csv("data/pancreatic_cancer_prediction_sample.csv")
 
 
+# missingness check ----
+cancer_data |>
+  select(Survival_Time_Months) |>
+  skimr::skim_without_charts() |>
+  knitr::kable()
+
+
 ## EDA ----
 
 # Calculate values
