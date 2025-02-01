@@ -1,4 +1,4 @@
-## Basic repo setup for final project
+## Overview
 This is a repo for my final project including the final report, executive summary, and supporting code.  
 This project utilizes `tidymodels` to build a predictive model on the survival length (in months) of those with pancreatic cancer. The target variable used for this model is `survival_time_log10` 
 
