@@ -30,20 +30,20 @@ summary <- data.frame(
   Value = c(missing_rows, num_rows, num_cols)
 )
 
-# Display as a table
+# D=display as a table
 summary_table <- knitr::kable(summary, caption = "Dataset Summary")
 
 
 
 
-# Count variable types
+# count variable types
 variable_types <- sapply(cancer_data, class)
 
-# Summarize counts
+# summarize counts
 num_numerical <- sum(variable_types %in% c("integer", "numeric"))
 num_categorical <- sum(variable_types %in% c("factor", "character"))
 
-# Print results
+# print results
 cat("Numerical Variables:", num_numerical, "\n")
 cat("Categorical Variables:", num_categorical, "\n")
 
@@ -104,10 +104,16 @@ p2 <- ggplot(cancer_data, aes(Survival_Time_Months)) +
 graphic_2 <- p2 / p1 +
   plot_layout(heights = unit(c("1", "5"), units = "cm"))
 
-
+# saving 
 ggsave(
   filename = here::here("figures/graphic_2.png"),
   plot = graphic_2,
   height = 5,
   width = 5
 )
+
+# adding transformed target variable
+cancer_data <- cancer_data |>
+  mutate(
+    survival_time_log10 = log10(Survival_Time_Months)
+  )
