@@ -12,9 +12,12 @@ movies <- read_csv("data/final_dataset.csv")
 
 
 ## EDA ----
-# finding how many NAs in target variable
-sum(is.na(movies$grossWorldWide))
+# showing how many rows have at least one missing value
+sum(!complete.cases(movies))
 
+# number of observations and variables
+nrow(movies) 
+ncol(movies)  
 
 
 ## Target Variable Analysis ----
@@ -82,6 +85,9 @@ ggsave(
   width = 5
 )
 
+
+# finding how many NAs in target variable
+sum(is.na(movies$grossWorldWide))
 
 
 # adding transformed variable ----
