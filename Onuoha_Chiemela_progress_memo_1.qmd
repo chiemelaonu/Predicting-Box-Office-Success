@@ -5,7 +5,7 @@ subtitle: |
   | Data Science 2 with R (STAT 301-2)
 author: "Chiemela Onuoha"
 pagetitle: "PM1 Chiemela Onuoha"
-date: "January 25, 2025"
+date: "today"
 
 format:
   html:
