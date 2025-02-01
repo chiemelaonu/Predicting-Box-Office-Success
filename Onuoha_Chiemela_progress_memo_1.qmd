@@ -79,12 +79,10 @@ summary <- data.frame(
 
 # Display as a table
 summary_table <- knitr::kable(summary, caption = "Dataset Summary")
-
-
-
+summary_table
 
 ```
-
+There is no missingess in the data.
 
 ### Variable Types 
 
@@ -110,9 +108,9 @@ cat("Categorical Variables:", num_categorical, "\n")
 
 ::: {#fig-price-dists layout-ncol=2}
 
-![Gross Profit on Original Scale ($)](figures/graphic_1.png){#fig-profit-orig}
+![Survival_Time_Months on Original Scale ($)](figures/graphic_1.png){#fig-profit-orig}
 
-![Gross Profit Transformed to log 10 Scale](figures/graphic_2.png){#fig-profit-log10}
+![Survival_Time_Months Transformed to log 10 Scale](figures/graphic_2.png){#fig-profit-log10}
 
 Inspecting target distribution `Survival_Time_Months` on original scale and on a log 10 transformation scale.
 :::
