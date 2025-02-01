@@ -1,23 +1,34 @@
 # Final Project Memo 1  ----
 # Examining Data, Initial Data Splitting
 
-## loading in data ----
+## loading in packages ----
 library(tidyverse)
 library(tidymodels)
 library(patchwork)
-
+library(DT)
 # resolve conflicts
 tidymodels_prefer()
+
+# load in data ----
 movies <- read_csv("data/final_dataset.csv")
 
 
 ## EDA ----
-# showing how many rows have at least one missing value
-sum(!complete.cases(movies))
 
-# number of observations and variables
-nrow(movies) 
-ncol(movies)  
+# Calculate values
+missing_rows <- sum(!complete.cases(movies))
+num_rows <- nrow(movies)
+num_cols <- ncol(movies)
+
+# Create a table
+summary <- data.frame(
+  Metric = c("Rows with Missing Values", "Number of Observations", "Number of Variables"),
+  Value = c(missing_rows, num_rows, num_cols)
+)
+
+# Display as a table
+summary_table <- knitr::kable(summary, caption = "Dataset Summary")
+
 
 
 ## Target Variable Analysis ----

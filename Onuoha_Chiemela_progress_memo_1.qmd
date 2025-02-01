@@ -52,18 +52,31 @@ The objective of this prediction model is to forecast the worldwide gross earnin
 A prediction model for worldwide gross earnings can be highly valuable for stakeholders in the film industry, such as producers, investors, and distributors. It can provide insights into expected profitability and help guide decisions on budget allocation, marketing strategies, and distribution plans.  <br>  
 I am in interested in using this data because movies are fun and a form of expression, so analyzing the data and creating a predictive model with it would be a genuinely intriguing task, making the work more enjoyable.
 
-### Data Quality Check
-```{r}
-glimpse(movies)
-```
+## Data Quality Check
+
 
 The data has 23 variables, with 33,600 observations. It has 14 categorical variables, and 9 numerical variables.
 
 
 ```{r}
-na_cols <- colnames(movies)[colSums(is.na(movies)) > 0]
-sum(rowSums(is.na(movies)) > 0)
-sum(is.na(movies))
+#| label: tbl-summary
+#| tbl-cap: "Dataset Summary"
+#| echo: false
+
+
+# calculate values
+missing_rows <- sum(!complete.cases(movies))
+num_rows <- nrow(movies)
+num_cols <- ncol(movies)
+
+# create a table
+summary <- data.frame(
+  Metric = c("Rows with Missing Values", "Number of Observations", "Number of Variables"),
+  Value = c(missing_rows, num_rows, num_cols)
+)
+
+# display as a table
+knitr::kable(summary, caption = "Dataset Summary")
 
 ```
 
