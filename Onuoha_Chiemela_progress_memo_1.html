@@ -3160,7 +3160,7 @@ Table 1: Dataset Summary
 </figure>
 </div>
 </div>
-<p>There is no missingess in the data.</p>
+<p>There is no missingness in the data and the data does appear to be tidy.</p>
 <section id="variable-types" class="level3">
 <h3 class="anchored" data-anchor-id="variable-types">Variable Types</h3>
 <div class="cell">
@@ -3210,7 +3210,57 @@ Figure 1: Inspecting target distribution <code>Survival_Time_Months</code> on o
 </figcaption>
 </figure>
 </div>
-<p>The target variable is heavily skewed right. Seeing this, a log transformation is helpful because it makes the distribution more symmetrical. Symmetrical distributions are balanced around the mean, so the model doesn’t get influenced by outliers or skewed data. There are also substantial amount of missing values in the data set, so removing the rows where there are missing observations would be helpful. Since there are so many missing data points, I plan on only removing the rows that a missing observation in the feature columns I plan on using for the model.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Target Variable Check</caption>
+<colgroup>
+<col style="width: 7%">
+<col style="width: 15%">
+<col style="width: 7%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_type</th>
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">numeric.mean</th>
+<th style="text-align: right;">numeric.sd</th>
+<th style="text-align: right;">numeric.p0</th>
+<th style="text-align: right;">numeric.p25</th>
+<th style="text-align: right;">numeric.p50</th>
+<th style="text-align: right;">numeric.p75</th>
+<th style="text-align: right;">numeric.p100</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">Survival_Time_Months</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.89804</td>
+<td style="text-align: right;">11.27215</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">59</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The target variable is originally skewed right. Seeing this, a log transformation is helpful because it makes the distribution more symmetrical. Symmetrical distributions are balanced around the mean, so the model doesn’t get influenced by outliers or skewed data.</p>
 </section>
 
 </main>

@@ -82,7 +82,7 @@ summary_table <- knitr::kable(summary, caption = "Dataset Summary")
 summary_table
 
 ```
-There is no missingess in the data.
+There is no missingness in the data and the data does appear to be tidy.
 
 ### Variable Types 
 
@@ -113,6 +113,18 @@ cat("Categorical Variables:", num_categorical, "\n")
 ![Survival_Time_Months Transformed to log 10 Scale](figures/graphic_2.png){#fig-profit-log10}
 
 Inspecting target distribution `Survival_Time_Months` on original scale and on a log 10 transformation scale.
+
 :::
-The target variable is heavily skewed right. Seeing this, a log transformation is helpful because it makes the distribution more symmetrical.
-Symmetrical distributions are balanced around the mean, so the model doesn't get influenced by outliers or skewed data. There are also substantial amount of missing values in the data set, so removing the rows where there are missing observations would be helpful. Since there are so many missing data points, I plan on only removing the rows that a missing observation in the feature columns I plan on using for the model.
+
+```{r}
+#| label: missingness-check
+#| tbl-cap: "Target Variable Check"
+#| echo: false
+
+cancer_data |>
+  select(Survival_Time_Months) |>
+  skimr::skim_without_charts() |>
+  knitr::kable()
+```
+The target variable is originally skewed right. Seeing this, a log transformation is helpful because it makes the distribution more symmetrical.
+Symmetrical distributions are balanced around the mean, so the model doesn't get influenced by outliers or skewed data. 
