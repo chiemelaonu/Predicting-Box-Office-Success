@@ -31,19 +31,19 @@ summary_table <- knitr::kable(summary, caption = "Dataset Summary")
 
 
 
-#Calculate the number of missing values per column
+# calculate the number of missing values per column
 missing_values <- colSums(is.na(movies))
 
-# Filter columns with missing values (those with more than 0 missing values)
+# filter columns with missing values (those with more than 0 missing values)
 missing_summary <- data.frame(
   Column = names(missing_values),
   Missing_Values = missing_values
 )
 
-# Filter rows where there are missing values
+# filter rows where there are missing values
 missing_summary <- missing_summary[missing_summary$Missing_Values > 0, ]
 
-# Display the table with knitr
+# display the table with knitr
 knitr::kable(missing_summary, caption = "Columns with Missing Values")
 
 
