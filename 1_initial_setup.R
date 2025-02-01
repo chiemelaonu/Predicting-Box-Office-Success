@@ -16,7 +16,6 @@ cancer_data |>
   skimr::skim_without_charts() |>
   knitr::kable()
 
-
 ## EDA ----
 
 # Calculate values
@@ -112,8 +111,30 @@ ggsave(
   width = 5
 )
 
-# adding transformed target variable
+
+# adding transformed target variable and changing columns to factor
 cancer_data <- cancer_data |>
   mutate(
-    survival_time_log10 = log10(Survival_Time_Months)
+    Survival_Time_Months = log10(Survival_Time_Months),
+    Smoking_History = factor(Smoking_History),
+    Obesity = factor(Obesity),
+    Diabetes = factor(Diabetes),
+    Chronic_Pancreatitis = factor(Chronic_Pancreatitis),
+    Family_History = factor(Family_History),
+    Hereditary_Condition = factor(Hereditary_Condition),
+    Jaundice = factor(Jaundice),
+    Abdominal_Discomfort = factor(Abdominal_Discomfort),
+    Back_Pain = factor(Back_Pain),
+    Weight_Loss = factor(Weight_Loss),
+    Development_of_Type2_Diabetes = factor(Development_of_Type2_Diabetes),
+    Stage_at_Diagnosis = factor(Stage_at_Diagnosis),
+    Treatment_Type = factor(Treatment_Type),
+    Survival_Status = factor(Survival_Status),
+    Alcohol_Consumption = factor(Alcohol_Consumption),
+    Physical_Activity_Level = factor(Physical_Activity_Level),
+    Diet_Processed_Food = factor(Diet_Processed_Food),
+    Access_to_Healthcare = factor(Access_to_Healthcare),
+    Urban_vs_Rural = factor(Urban_vs_Rural),
+    Economic_Status = factor(Economic_Status)
   )
+
