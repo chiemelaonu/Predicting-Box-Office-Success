@@ -3059,12 +3059,13 @@ vertical-align: -.125em;
   <li><a href="#variable-types" id="toc-variable-types" class="nav-link" data-scroll-target="#variable-types">Variable Types</a></li>
   </ul></li>
   <li><a href="#target-variable-analysis" id="toc-target-variable-analysis" class="nav-link" data-scroll-target="#target-variable-analysis">Target Variable Analysis</a></li>
+  <li><a href="#misc" id="toc-misc" class="nav-link" data-scroll-target="#misc">Misc</a></li>
   </ul>
 </nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -3112,10 +3113,10 @@ Github Repo Link
 <p><a href="https://github.com/stat301-2-2025-winter/final-project-2-chiemelaonu.git">Chiemela’s Github (chiemelaonu)</a></p>
 </div>
 </div>
-<section id="data-source" class="level2">
+<section id="data-source" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="data-source">Data source</h2>
-<p><a href="https://www.kaggle.com/datasets/ashpalsingh1525/imdb-movies-dataset/data">Kaggle.com</a> Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025</p>
-</section>
+<p><a href="https://www.kaggle.com/datasets/ashpalsingh1525/imdb-movies-dataset/data">Kaggle.com</a> Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup> The Kaggle data was compiled from IMDB.com</p></div></div></section>
 <section id="prediction-problem" class="level2">
 <h2 class="anchored" data-anchor-id="prediction-problem">Prediction Problem</h2>
 <p>This is a regression problem because the target variable,<code>revenue</code>, is continuous rather than categorical. The goal is to predict a movies’ revenue based on other parts of the dataset. <br><br>
@@ -3216,6 +3217,11 @@ Figure 1
 </div>
 <p>Upon inspecting the original target distribution of <code>revenue</code>, a transformation is needed. A log10 or square root transformation does not work for <code>revenue</code> because there are 73 observations that have a value of “0”. The Yeo-Johnson transformation is able to directly handle those zero values without changing the rest of the data too much. The lambda chosen for the transformation was 0.25, because when looking at different values, 0.25 was made the distribution the most symmetrical. Using this transformation allows for a better predictive model that wont be riddled with overfitting.</p>
 </section>
+<section id="misc" class="level2">
+<h2 class="anchored" data-anchor-id="misc">Misc</h2>
+<p>Going forward, the plane is to allocate time for training and analyzing the models each week, so that I can come across any issues earlier on. It will also allow me to provide meaningful insights from the data and the model.</p>
+</section>
+
 
 </main>
 <!-- /main column -->

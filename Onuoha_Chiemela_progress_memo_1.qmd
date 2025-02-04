@@ -48,7 +48,7 @@ movies <- read_csv("data/imdb_movies.csv")
 ## Data source
 
 [Kaggle.com](https://www.kaggle.com/datasets/ashpalsingh1525/imdb-movies-dataset/data)
-Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025
+Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025^[The Kaggle data was compiled from IMDB.com]
 
 
 ## Prediction Problem
@@ -120,3 +120,5 @@ cat("Categorical Variables:", num_categorical, "\n")
 
 Upon inspecting the original target distribution of `revenue`, a transformation is needed. A log10 or square root transformation does not work for `revenue` because there are 73 observations that have a value of "0". The Yeo-Johnson transformation is able to directly handle those zero values without changing the rest of the data too much. The lambda chosen for the transformation was 0.25, because when looking at different values, 0.25 was made the distribution the most symmetrical. Using this transformation allows for a better predictive model that wont be riddled with overfitting.
 
+## Misc
+Going forward, the plane is to allocate time for training and analyzing the models each week, so that I can come across any issues earlier on. It will also allow me to provide meaningful insights from the data and the model. 
