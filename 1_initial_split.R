@@ -10,14 +10,14 @@ tidymodels_prefer()
 
 
 # initial split ----
-cancer_data_split <- cancer_data |>
-  initial_split(prop = 0.8, strata = survival_time_log10)
+movies_split <- movies |>
+  initial_split(prop = 0.8, strata = yeo_revenue)
 
-cd_training <- cancer_data_split |> training()
-cd_testing <- cancer_data_split |> testing()
+movies_training <- movies_split |> training()
+movies_testing <- movies_split |> testing()
 
 
 # write out/save outputs ----
-save(cancer_data_split, file = here::here("data/cancer_data_split.rda"))
-save(cd_training, file = here::here("data/cd_training.rda"))
-save(cd_testing, file = here::here("data/cd_testing.rda"))
+save(movies_split, file = here::here("data/movies_split.rda"))
+save(movies_training, file = here::here("data/movies_training.rda"))
+save(movies_testing, file = here::here("data/movies_testing.rda"))
