@@ -1,19 +1,10 @@
 # Final Project Memo 1  ----
-# Examining Data, Initial Data Splitting
+# Examining Data
 
 ## loading in packages ----
 library(tidyverse)
 library(patchwork)
 library(car)
-
-
-
-
-
-
-movies |>
-  select(revenue) |>
-  filter(revenue == 0)
 
 
 # load in data ----
