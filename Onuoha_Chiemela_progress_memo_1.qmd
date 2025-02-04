@@ -29,8 +29,10 @@ citation-location: margin
 #| label: load-packages-data
 
 library(tidyverse)
+library(patchwork)
 
-cancer_data <- read_csv("data/pancreatic_cancer_prediction_sample.csv")
+
+movies <- read_csv("data/imdb_movies.csv")
 
 ```
 
@@ -44,7 +46,7 @@ cancer_data <- read_csv("data/pancreatic_cancer_prediction_sample.csv")
 
 ## Data source
 
-[Kaggle.com](https://www.kaggle.com/datasets/ankushpanday1/pancreatic-cancer-prediction-dataset/data)
+[Kaggle.com](https://www.kaggle.com/datasets/ashpalsingh1525/imdb-movies-dataset/data)
 Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed January 31st 2025
 
 
@@ -66,19 +68,20 @@ The data has 24 variables, with 50,000 observations. It has 9 categorical variab
 #| echo: false
 
 
-# Calculate values
-missing_rows <- sum(!complete.cases(cancer_data))
-num_rows <- nrow(cancer_data)
-num_cols <- ncol(cancer_data)
+## calculate values
+missing_rows <- sum(!complete.cases(movies))
+num_rows <- nrow(movies)
+num_cols <- ncol(movies)
 
-# Create a table
+# create a table
 summary <- data.frame(
   Metric = c("Rows with Missing Values", "Number of Observations", "Number of Variables"),
   Value = c(missing_rows, num_rows, num_cols)
 )
 
-# Display as a table
+# display as a table
 summary_table <- knitr::kable(summary, caption = "Dataset Summary")
+
 summary_table
 
 ```
@@ -90,14 +93,14 @@ There is no missingness in the data and the data does appear to be tidy.
 #| label: variable-types
 #| echo: false
 
-# Count variable types
-variable_types <- sapply(cancer_data, class)
+# count variable types
+variable_types <- sapply(movies, class)
 
-# Summarize counts
+# summarize counts
 num_numerical <- sum(variable_types %in% c("integer", "numeric"))
 num_categorical <- sum(variable_types %in% c("factor", "character"))
 
-# Print results
+# print results
 cat("Numerical Variables:", num_numerical, "\n")
 cat("Categorical Variables:", num_categorical, "\n")
 ```
@@ -121,8 +124,8 @@ Inspecting target distribution `Survival_Time_Months` on original scale and on a
 #| tbl-cap: "Target Variable Check"
 #| echo: false
 
-cancer_data |>
-  select(Survival_Time_Months) |>
+movies |>
+  select(revenue) |>
   skimr::skim_without_charts() |>
   knitr::kable()
 ```
