@@ -90,7 +90,11 @@ p1 <- ggplot(cancer_data, aes(Survival_Time_Months)) +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank())
 
-
+ggplot(cancer_data, aes(Survival_Time_Months)) +
+  geom_density() +
+  geom_smooth(
+    formula = y ~ ns(x, df = 5)
+  ) 
 # boxplot
 p2 <- ggplot(cancer_data, aes(Survival_Time_Months)) +
   geom_boxplot() +
@@ -138,3 +142,4 @@ cancer_data <- cancer_data |>
     Economic_Status = factor(Economic_Status)
   )
 
+write_csv(cancer_data, "data/cancer_data.csv")
