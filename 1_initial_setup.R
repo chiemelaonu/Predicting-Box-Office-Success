@@ -5,11 +5,11 @@
 library(tidyverse)
 library(patchwork)
 library(car)
+library(lubridate)
 
 
 # load in data ----
 movies <- read_csv("data/imdb_movies.csv")
-
 
 # missingness check ----
 movies |>
@@ -115,9 +115,13 @@ ggsave(
 )
 
 
-# adding transformed target variable 
+# adding transformed target variable and changing date_x column from character to date ----
 movies <- movies |>
-  mutate(yeo_revenue = yjPower(revenue, lambda = 0.25))
+  mutate(yeo_revenue = yjPower(revenue, lambda = 0.25),
+         date = mdy(date_x),
+         .keep = "unused")
 
+
+# Check the result
 write_csv(movies, "data/movies.csv")
   
