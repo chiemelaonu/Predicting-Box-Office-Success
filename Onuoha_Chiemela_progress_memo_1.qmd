@@ -30,6 +30,7 @@ citation-location: margin
 
 library(tidyverse)
 library(patchwork)
+library(DT)
 
 
 movies <- read_csv("data/imdb_movies.csv")
@@ -51,15 +52,14 @@ Data was sourced from Kaggle.com, a site hosting thousands of datasets for the p
 
 
 ## Prediction Problem
-The goal of this study is to predict pancreatic cancer survival based on demographic, lifestyle, and medical history variables. This is a binary regressions problem, where the target variable is `Survival_Time_Months`.
+This is a regression problem because the target variable,` revenue`, is continuous rather than categorical. The goal is to predict a movies' revenue based on other parts of the dataset.
 <br>  
-Pancreatic cancer has one of the lowest survival rates among cancers, so being able to predict survival outcomes could be really useful. A good prediction model could help doctors identify high-risk patients earlier and plan treatments accordingly. It could also provide insight into what factors influence survival the most.  
+Having an accurate prediction model for movie revenue could be highly valuable for investors and filmmakers because it would help estimate a film’s financial success before release. That would allow for better budget allocation, and even optimize marketing strategies.
+
+## Data Quality/Missingness Check
 
 
-## Data Quality Check
-
-
-The data has 24 variables, with 50,000 observations. It has 9 categorical variables, and 15 numerical variables.
+The data has 12 variables, with 10,178 observations. It has 9 categorical variables, and 15 numerical variables.
 
 
 ```{r}
@@ -85,7 +85,7 @@ summary_table <- knitr::kable(summary, caption = "Dataset Summary")
 summary_table
 
 ```
-There is no missingness in the data and the data does appear to be tidy.
+There is missingness in the data, but it is only a small portion and it does not affect the target variable for the model.
 
 ### Variable Types 
 
@@ -111,24 +111,11 @@ cat("Categorical Variables:", num_categorical, "\n")
 
 ::: {#fig-price-dists layout-ncol=2}
 
-![Survival_Time_Months on Original Scale ($)](figures/graphic_1.png){#fig-profit-orig}
+![revenue on Original Scale ($)](figures/target_eda.png){#fig-revenue-orig}
 
-![Survival_Time_Months Transformed to log 10 Scale](figures/graphic_2.png){#fig-profit-log10}
-
-Inspecting target distribution `Survival_Time_Months` on original scale and on a log 10 transformation scale.
+![revenue Transformed with Yeo-Johnson](figures/target_eda_2.png){#fig-revenue-yj}
 
 :::
 
-```{r}
-#| label: missingness-check
-#| tbl-cap: "Target Variable Check"
-#| echo: false
-
-movies |>
-  select(revenue) |>
-  skimr::skim_without_charts() |>
-  knitr::kable()
-```
-The target variable is originally skewed right. Seeing this, a log transformation is helpful because it makes the distribution more symmetrical.
-Symmetrical distributions are balanced around the mean, so the model doesn't get influenced by outliers or skewed data. 
+Upon inspecting the original target distribution of `revenue`, a transformation is needed. A log10 or square root transformation does not work for `revenue` because there are 73 observations that have a value of "0". The Yeo-Johnson transformation is able to directly handle those zero values without changing the rest of the data too much. The lambda chosen for the transformation was 0.25, because when looking at different values, 0.25 was made the distribution the most symmetrical. Using this transformation allows for a better predictive model that wont be riddled with overfitting.
 
