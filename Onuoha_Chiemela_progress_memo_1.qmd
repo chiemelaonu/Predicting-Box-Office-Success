@@ -48,7 +48,7 @@ movies <- read_csv("data/imdb_movies.csv")
 ## Data source
 
 [Kaggle.com](https://www.kaggle.com/datasets/ashpalsingh1525/imdb-movies-dataset/data)
-Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed January 31st 2025
+Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025
 
 
 ## Prediction Problem
@@ -68,21 +68,22 @@ The data has 12 variables, with 10,178 observations. It has 9 categorical variab
 #| echo: false
 
 
-## calculate values
+# calculate values
 missing_rows <- sum(!complete.cases(movies))
 num_rows <- nrow(movies)
 num_cols <- ncol(movies)
-
+target_missing <- sum(!complete.cases(movies$revenue))
 # create a table
 summary <- data.frame(
-  Metric = c("Rows with Missing Values", "Number of Observations", "Number of Variables"),
-  Value = c(missing_rows, num_rows, num_cols)
+  Metric = c("Rows with Missing Values", "Number of Observations", "Number of Variables", "Number of Missing Target Variable Observations (`revenue`)"),
+  Value = c(missing_rows, num_rows, num_cols, target_missing)
 )
 
 # display as a table
 summary_table <- knitr::kable(summary, caption = "Dataset Summary")
 
 summary_table
+
 
 ```
 There is missingness in the data, but it is only a small portion and it does not affect the target variable for the model.

@@ -22,11 +22,12 @@ movies |>
 missing_rows <- sum(!complete.cases(movies))
 num_rows <- nrow(movies)
 num_cols <- ncol(movies)
+target_missing <- sum(!complete.cases(movies$revenue))
 
 # create a table
 summary <- data.frame(
-  Metric = c("Rows with Missing Values", "Number of Observations", "Number of Variables"),
-  Value = c(missing_rows, num_rows, num_cols)
+  Metric = c("Rows with Missing Values", "Number of Observations", "Number of Variables", "Number of Missing Target Variable Observations (`revenue`)"),
+  Value = c(missing_rows, num_rows, num_cols, target_missing)
 )
 
 # display as a table
