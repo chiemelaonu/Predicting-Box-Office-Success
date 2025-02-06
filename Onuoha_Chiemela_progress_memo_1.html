@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chiemela Onuoha">
-<meta name="dcterms.date" content="2025-02-04">
+<meta name="dcterms.date" content="2025-02-05">
 
 <title>PM1 Chiemela Onuoha</title>
 <style>
@@ -3088,7 +3088,7 @@ Data Science 2 with R (STAT 301-2)</div><p></p>
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 4, 2025</p>
+      <p class="date">February 5, 2025</p>
     </div>
   </div>
   
@@ -3124,7 +3124,7 @@ Having an accurate prediction model for movie revenue could be highly valuable f
 </section>
 <section id="data-qualitymissingness-check" class="level2">
 <h2 class="anchored" data-anchor-id="data-qualitymissingness-check">Data Quality/Missingness Check</h2>
-<p>The data has 12 variables, with 10,178 observations. It has 9 categorical variables, and 15 numerical variables.</p>
+<p>The data has 12 variables, with 10,178 observations. It has 9 categorical variables, and 3 numerical variables.</p>
 <div class="cell">
 <div id="tbl-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -3165,7 +3165,7 @@ Table 1: Dataset Summary
 </figure>
 </div>
 </div>
-<p>There is missingness in the data, but it is only a small portion and it does not affect the target variable for the model.</p>
+<p>There is missingness in the data, but it is only a small portion and it does not affect the target variable for the model, so I do not forsee any major issues arising within my model because of it.</p>
 <section id="variable-types" class="level3">
 <h3 class="anchored" data-anchor-id="variable-types">Variable Types</h3>
 <div class="cell">
@@ -3215,11 +3215,11 @@ Figure 1
 </figcaption>
 </figure>
 </div>
-<p>Upon inspecting the original target distribution of <code>revenue</code>, a transformation is needed. A log10 or square root transformation does not work for <code>revenue</code> because there are 73 observations that have a value of “0”. The Yeo-Johnson transformation is able to directly handle those zero values without changing the rest of the data too much. The lambda chosen for the transformation was 0.25, because when looking at different values, 0.25 was made the distribution the most symmetrical. Using this transformation allows for a better predictive model that wont be riddled with overfitting.</p>
+<p>Upon inspecting the original target distribution of <code>revenue</code>, a transformation is needed. A log10 or square root transformation does not work for <code>revenue</code> because there are 73 observations that have a value of “0”. The Yeo-Johnson transformation is able to directly handle those zero values without changing the rest of the data too much. The lambda chosen for the transformation was 0.25, because when looking at different values, 0.25 was the value made the distribution the most symmetrical. Using this transformation allows for a better predictive model that wont be riddled with overfitting.</p>
 </section>
 <section id="misc" class="level2">
 <h2 class="anchored" data-anchor-id="misc">Misc</h2>
-<p>Going forward, the plane is to allocate time for training and analyzing the models each week, so that I can come across any issues earlier on. It will also allow me to provide meaningful insights from the data and the model.</p>
+<p>Going forward, the plan is to allocate time for training and analyzing the models each week, so that I can come across any issues earlier on. It will also allow me to provide meaningful insights from the data and the model.</p>
 </section>
 
 
