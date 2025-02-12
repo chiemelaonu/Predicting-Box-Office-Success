@@ -19,11 +19,11 @@ set.seed(17382015)
 movies_split <- movies_data |>
   initial_split(prop = 0.8, strata = yeo_revenue)
 
-movies_train <- movies_split |> training()
-movies_test <- movies_split |> testing()
+movies_training <- movies_split |> training()
+movies_testing <- movies_split |> testing()
 
 
 # write out/save outputs ----
 save(movies_split, file = here("data/movies_split.rda"))
-save(movies_train, file = here("data/movies_train.rda"))
-save(movies_test, file = here("data/movies_test.rda"))
+save(movies_training, file = here("data/movies_training.rda"))
+save(movies_testing, file = here("data/movies_testing.rda"))
