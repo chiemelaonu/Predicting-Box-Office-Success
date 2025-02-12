@@ -6,6 +6,7 @@ library(tidyverse)
 library(patchwork)
 library(car)
 library(lubridate)
+library(here)
 
 
 # load in data ----
@@ -78,7 +79,7 @@ target_eda <- p2 / p1 +
 
 # saving
 ggsave(
-  filename = here::here("figures/target_eda.png"),
+  filename = here("figures/target_eda.png"),
   plot = target_eda,
   height = 5,
   width = 5
@@ -108,7 +109,7 @@ target_eda_2 <- p2 / p1 +
 
 # saving 
 ggsave(
-  filename = here::here("figures/target_eda_2.png"),
+  filename = here("figures/target_eda_2.png"),
   plot = target_eda_2,
   height = 5,
   width = 5
@@ -124,5 +125,5 @@ movies <- movies |>
 
 str(movies)
 # Check the result
-write_csv(movies_clean, "data/movies_clean.csv")
+write_csv(movies, "data/movies_clean.csv")
   

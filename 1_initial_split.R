@@ -4,6 +4,7 @@
 ## loading in data ----
 library(tidyverse)
 library(tidymodels)
+library(here)
 
 # resolve conflicts
 tidymodels_prefer()
@@ -23,6 +24,6 @@ movies_testing <- movies_split |> testing()
 
 
 # write out/save outputs ----
-save(movies_split, file = here::here("data/movies_split.rda"))
-save(movies_training, file = here::here("data/movies_training.rda"))
-save(movies_testing, file = here::here("data/movies_testing.rda"))
+save(movies_split, file = here("data/movies_split.rda"))
+save(movies_training, file = here("data/movies_training.rda"))
+save(movies_testing, file = here("data/movies_testing.rda"))
