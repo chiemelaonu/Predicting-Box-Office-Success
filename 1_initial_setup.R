@@ -124,5 +124,5 @@ movies <- movies |>
 
 str(movies)
 # Check the result
-write_csv(movies, "data/movies.csv")
+write_csv(movies_clean, "data/movies_clean.csv")
   
