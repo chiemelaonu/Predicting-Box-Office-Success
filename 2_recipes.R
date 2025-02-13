@@ -24,10 +24,12 @@ movies_train |>
   geom_density()
   
 # build recipe ----
-movies_recipe <- recipe(yeo_revenue ~ score + genre_list + budget_x + country + date, movies_train) |>
-  step_dummy(all_nominal_predictors()) |>
-  step_naomit(genre_list) |>
+movies_recipe <- recipe(yeo_revenue ~ score + budget_x + date, movies_train) |>
   step_date(date, features = "year", keep_original_cols = FALSE)
+
+movies_recipe |>
+  prep() |>
+  bake(new_data = NULL) |> glimpse()
 
 # write out/save outputs ----
 save(movies_split, file = here("data/movies_split.rda"))

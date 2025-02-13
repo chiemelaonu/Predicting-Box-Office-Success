@@ -120,10 +120,10 @@ ggsave(
 movies <- movies |>
   mutate(
     yeo_revenue = yjPower(revenue, lambda = 0.25),  # transforming target variable
-    date = mdy(date_x),  # converting date_x to a date type
-    genre_list = str_split(genre, ",") |> sapply(function(x) paste(x, collapse = ", "))  # Flatten list to character string
-  ) |>
+    date = mdy(date_x)
+    ) |>
   select(-date_x) 
+
 str(movies)
 # Check the result
 write_csv(movies, "data/movies_clean.csv")
