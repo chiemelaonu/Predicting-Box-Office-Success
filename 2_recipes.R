@@ -5,7 +5,6 @@
 library(tidyverse)
 library(tidymodels)
 library(here)
-library(car)
 
 # resolve conflicts
 tidymodels_prefer()
