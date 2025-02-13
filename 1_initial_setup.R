@@ -118,12 +118,12 @@ ggsave(
 
 # adding transformed target variable and changing date_x column from character to date ----
 movies <- movies |>
-  mutate(yeo_revenue = yjPower(revenue, lambda = 0.25), # transforming target variable
-         date = mdy(date_x), # making it a date column
-         genre_list = str_split(genre, ",") # making genre column a list
-         ) |>
+  mutate(
+    yeo_revenue = yjPower(revenue, lambda = 0.25),  # transforming target variable
+    date = mdy(date_x),  # converting date_x to a date type
+    genre_list = str_split(genre, ",") |> sapply(function(x) paste(x, collapse = ", "))  # Flatten list to character string
+  ) |>
   select(-date_x) 
-
 str(movies)
 # Check the result
 write_csv(movies, "data/movies_clean.csv")

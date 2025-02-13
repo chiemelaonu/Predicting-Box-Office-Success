@@ -5,23 +5,29 @@
 library(tidyverse)
 library(tidymodels)
 library(here)
+library(car)
 
 # resolve conflicts
 tidymodels_prefer()
 
-# read in data ----
-movies_data <- read_csv("data/movies_clean.csv")
+# load in training data ----
+load(here("data/movies_train.rda"))
+glimpse(movies_train)
+movies_train |>
+  mutate(budget_x = yjPower(budget_x, lambda = 0.35)) |>
+  ggplot(aes(budget_x)) +
+  geom_density()
 
-# set seed ----
-set.seed(17382015)
-
-# initial split ----
-movies_split <- movies_data |>
-  initial_split(prop = 0.8, strata = yeo_revenue)
-
-movies_training <- movies_split |> training()
-movies_testing <- movies_split |> testing()
-
+movies_train |>
+  mutate(budget_x = log1p(budget_x)) |>
+  ggplot(aes(budget_x)) +
+  geom_density()
+  
+# build recipe ----
+movies_recipe <- recipe(yeo_revenue ~ score + genre_list + budget_x + country + date, movies_train) |>
+  step_dummy(all_nominal_predictors()) |>
+  step_naomit(genre_list) |>
+  step_date(date, features = "year", keep_original_cols = FALSE)
 
 # write out/save outputs ----
 save(movies_split, file = here("data/movies_split.rda"))
