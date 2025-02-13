@@ -7,6 +7,7 @@ library(patchwork)
 library(car)
 library(lubridate)
 library(here)
+library(splines)
 
 
 # load in data ----
@@ -114,7 +115,24 @@ ggsave(
   height = 5,
   width = 5
 )
+# visualize budget to see if a transformation is needed
+ggplot(movies, aes(x = budget_x, y = yjPower(revenue, lambda = 0.25))) +
+  geom_point() +
+  geom_smooth(
+    method = lm,
+    color = "lightblue",
+    se = FALSE
+  ) +
+  labs(title = "Scatter Plot of Budget vs Target",
+       x = "Budget",
+       y = "Target Variable") +
+  theme_minimal()
 
+ggplot(movies, aes(x = sqrt(budget_x))) +
+  geom_density() 
+
+ggplot(movies, aes(x = budget_x)) +
+  geom_density() 
 
 # adding transformed target variable and changing date_x column from character to date ----
 movies <- movies |>
