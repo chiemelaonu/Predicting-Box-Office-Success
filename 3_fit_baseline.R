@@ -35,3 +35,5 @@ baseline_predictions <- predict(baseline_fit, new_data = movies_test) %>%
 baseline_predictions |>
   rmse(truth = yeo_revenue, estimate = .pred)
 
+# save baseline fit ----
+save(baseline_fit, file = here("results/baseline_fit.rda"))
