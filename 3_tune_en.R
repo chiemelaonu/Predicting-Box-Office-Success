@@ -45,9 +45,10 @@ best_mod <- my_res |> select_best(metric = "rmse")
 best_mod
 
 # fitting workflow ----
-final_fitted <- finalize_workflow(lasso_wflow, best_mod) |>
+lasso_fit <- finalize_workflow(lasso_wflow, best_mod) |>
   fit(data = movies_train)
 
-# predict(final_fitted, movies_train)
+# predict(lasso_fit, movies_train)
 
-
+# save ----
+save(lasso_fit, file = here("results/lasso_fit.rda"))
