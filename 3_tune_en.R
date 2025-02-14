@@ -17,39 +17,37 @@ load(here("data/movies_train.rda"))
 # load in recipe ----
 load(here("recipes/movies_recipe.rda"))
 
+# TUNING PROCESS TO FIND BEST PENALTY ----
+
+# cross validation
+cv_folds <- vfold_cv(movies_train, v = 10)
+
 # define lasso spec ----
-lasso_spec <- linear_reg() |>
+lasso_spec <- linear_reg(penalty = tune(), mixture = 1) |>
   set_engine("glmnet") |>
   set_mode("regression")
 
-# # define workflow ----
-# lasso_wflow <- workflow() |>
-#   add_model(lasso_spec) |>
-#   add_recipe(movies_recipe)
-# 
-# 
-# # fit workflow ----
-# lasso_fit <- fit(lasso_wflow, movies_train)
-# 
-# # save results ----
-# save(lasso_fit, file = here("results/lasso_fit.rda"))
-# 
-# 
-# 
-# # define ridge spec ----
-# ridge_spec <- linear_reg() |>
-#   set_engine("glmnet") |>
-#   set_mode("regression")
-# 
-# # define workflow ----
-# ridge_wflow <- workflow() |>
-#   add_model(ridge_spec) |>
-#   add_recipe(movies_recipe)
-# 
-# 
-# # fit workflow ----
-# ridge_fit <- fit(ridge_wflow, movies_train)
-# 
-# # save results ----
-# save(lasso_fit, file = here("results/ridge_fit.rda"))
-# 
+# define workflow ----
+lasso_wflow <- workflow() |>
+  add_model(lasso_spec) |>
+  add_recipe(movies_recipe)
+
+my_grid <- tibble(penalty = 10^seq(-2, -1, length.out = 10))
+
+my_res <- lasso_wflow |> 
+  tune_grid(resamples = cv_folds,
+            grid = my_grid,
+            control = control_grid(verbose = FALSE, save_pred = TRUE),
+            metrics = metric_set(rmse))
+
+# showing best penalty
+best_mod <- my_res |> select_best(metric = "rmse")
+best_mod
+
+# fitting workflow ----
+final_fitted <- finalize_workflow(lasso_wflow, best_mod) |>
+  fit(data = movies_train)
+
+# predict(final_fitted, movies_train)
+
+
