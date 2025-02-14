@@ -52,3 +52,22 @@ lasso_fit <- finalize_workflow(lasso_wflow, best_mod) |>
 
 # save ----
 save(lasso_fit, file = here("results/lasso_fit.rda"))
+
+
+# ridge model ----
+ridge_spec <- linear_reg(penalty = 0.01, mixture = 0) |> # using the same penalty from tuning the lasso model
+  set_engine("glmnet") |>
+  set_mode("regression")
+
+
+# defining workflow ----
+ridge_wflow <- workflow() |>
+  add_model(ridge_spec) |>
+  add_recipe(movies_recipe)
+
+# fitting ----
+ridge_fit <- fit(ridge_wflow, movies_train)
+
+# save results ----
+save(ridge_fit, file = here("results/ridge_fit.rda"))
+
