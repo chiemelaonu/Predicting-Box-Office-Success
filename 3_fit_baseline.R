@@ -28,6 +28,7 @@ baseline_workflow <- workflow() |>
 # fit model ----
 baseline_fit <- fit(baseline_workflow, data = movies_train)
 
+tidy(baseline_fit)
 
 # save baseline fit ----
 save(baseline_fit, file = here("results/baseline_fit.rda"))

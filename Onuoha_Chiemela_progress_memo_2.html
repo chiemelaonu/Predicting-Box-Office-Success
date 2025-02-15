@@ -3095,7 +3095,6 @@ vertical-align: -.125em;
   <li><a href="#ols-model" id="toc-ols-model" class="nav-link" data-scroll-target="#ols-model">OLS Model</a></li>
   <li><a href="#fitted-results" id="toc-fitted-results" class="nav-link" data-scroll-target="#fitted-results">Fitted Results</a></li>
   </ul></li>
-  <li><a href="#misc" id="toc-misc" class="nav-link" data-scroll-target="#misc">Misc</a></li>
   </ul>
 </nav>
 </div>
@@ -3223,26 +3222,50 @@ Github Repo Link
 <section id="fitted-results" class="level3">
 <h3 class="anchored" data-anchor-id="fitted-results">Fitted Results</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Term =</span> <span class="fu">tidy</span>(lm_fit) <span class="sc">|&gt;</span> <span class="fu">pull</span>(term),</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">OLS =</span> <span class="fu">tidy</span>(lm_fit) <span class="sc">|&gt;</span> <span class="fu">pull</span>(estimate),</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Baseline =</span> <span class="fu">tidy</span>(baseline_fit) <span class="sc">|&gt;</span> <span class="fu">pull</span>(estimate)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4 × 3
-  Term             OLS Baseline
-  &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept) 638.         420.
-2 score         2.43       420.
-3 budget_x      0.0358     420.
-4 date_year    -0.312      420.</code></pre>
+<div id="tbl-fit-results" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fit-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table 1: Fitted Results
+</figcaption>
+<div aria-describedby="tbl-fit-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Term</th>
+<th style="text-align: right;">OLS</th>
+<th style="text-align: right;">Baseline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">638.0452800</td>
+<td style="text-align: right;">420.0487</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">score</td>
+<td style="text-align: right;">2.4306009</td>
+<td style="text-align: right;">420.0487</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">budget_x</td>
+<td style="text-align: right;">0.0357832</td>
+<td style="text-align: right;">420.0487</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">date_year</td>
+<td style="text-align: right;">-0.3118748</td>
+<td style="text-align: right;">420.0487</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
 </div>
 </div>
 </section>
-</section>
-<section id="misc" class="level2">
-<h2 class="anchored" data-anchor-id="misc">Misc</h2>
-<p>I noticed that the <code>country</code> column is not very accurate, as it is using countries that don’t appear as the initial release or even film countries when searching the internet and looking through IMDB. That will be changing things a bit since I initially had <code>country</code> as a predictor for my recipe. I plan to replace it with a different variable (<code>genre</code> being the most sensible option) but would need to modify the structure of the <code>genre</code> variable before I can do that. That could pose to be a bit difficult, but I will still attempt it so that there are at least 3 predictors for my models.</p>
 </section>
 
 

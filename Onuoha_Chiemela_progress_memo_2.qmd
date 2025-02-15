@@ -82,7 +82,6 @@ save(movies_train, file = here("data/movies_train.rda"))
 save(movies_test, file = here("data/movies_test.rda"))
 ```
 
-
 ### Baseline Model
 ```{r}
 #| label: fit-predict-baseline
@@ -141,14 +140,16 @@ load(here("results/baseline_fit.rda"))
 ```
 
 ```{r}
+#| label: tbl-fit-results
+#| tbl-cap: "Fitted Results"
+#| echo: false
 
 tibble(
   Term = tidy(lm_fit) |> pull(term),
   OLS = tidy(lm_fit) |> pull(estimate),
   Baseline = tidy(baseline_fit) |> pull(estimate)
-)
+  ) |>
+  knitr::kable()
 
 ```
 
-## Misc
-I noticed that the `country` column is not very accurate, as it is using countries that don't appear as the initial release or even film countries when searching the internet and looking through IMDB. That will be changing things a bit since I initially had `country` as a predictor for my recipe. I plan to replace it with a different variable (`genre` being the most sensible option) but would need to modify the structure of the `genre` variable before I can do that. That could pose to be a bit difficult, but I will still attempt it so that there are at least 3 predictors for my models.
