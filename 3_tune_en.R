@@ -1,5 +1,5 @@
 # Final Project Memo 1  ----
-# Initial Data Splitting
+# Tuning, Fitting Elastic Net Models
 
 ## loading in data ----
 library(tidyverse)

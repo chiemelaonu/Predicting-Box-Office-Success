@@ -1,5 +1,5 @@
 # Final Project Memo 1  ----
-# Initial Data Splitting
+# Baseline Model Fitting
 
 ## loading in data ----
 library(tidyverse)

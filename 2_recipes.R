@@ -1,5 +1,5 @@
 # Final Project Memo 1  ----
-# Initial Data Splitting
+# Building Recipes
 
 ## loading in data ----
 library(tidyverse)
