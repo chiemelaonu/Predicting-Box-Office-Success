@@ -29,11 +29,14 @@ citation-location: margin
 #| label: load-packages-data
 
 library(tidyverse)
-library(patchwork)
+library(tidymodels)
 library(DT)
+library(here)
 
+# resolve conflicts
+tidymodels_prefer()
 
-movies <- read_csv("data/imdb_movies.csv")
+load(here("data/movies_train.rda"))
 
 ```
 
@@ -51,7 +54,36 @@ movies <- read_csv("data/imdb_movies.csv")
 Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025^[The Kaggle data was compiled from IMDB.com]
 
 ## Analysis Plan
-My data has been split and my recipes have also been defined. I have so far defined and fit the baseline, the OLS model, and I have tuned and fit the Elastic Net models. I do plan on defining and fitting a Random Forest model and one other model as well, but I not been able to decide on which final model I want to use. I plan to figure that out by the time this memo is due or shortly thereafter. For my assessment metrics, I plan to analyze RMSE, MAE, and R-squared. 
+My data has been split and my recipes have also been defined. I have so far defined and fit the baseline, the OLS model, and I have tuned and fit the Elastic Net models. I do plan on defining and fitting a Random Forest model and one other model as well, but I not been able to decide on which final model I want to use. I plan to figure that out by the time this memo is due or shortly thereafter. For my assessment metrics, I plan to analyze RMSE, MAE, and R-squared.  
+
+### Baseline Model
+```{r}
+#| label: fit-predict-baseline
+#| eval: false
+
+# define baseline model ----
+baseline_model <- linear_reg() |>
+  set_engine("lm") |>
+  set_mode("regression")
+
+# workflow ----
+baseline_workflow <- workflow() |>
+  add_model(baseline_model) |>
+  add_recipe(recipe(yeo_revenue ~ 1, data = movies_train))
+
+# fit model ----
+baseline_fit <- fit(baseline_workflow, data = movies_train)
+
+# predictions and rmse ----
+baseline_predictions <- predict(baseline_fit, new_data = movies_test) |>
+  bind_cols(movies_test)
+
+baseline_predictions |>
+  rmse(truth = yeo_revenue, estimate = .pred)
+
+
+```
+
 
 ## Misc
 I noticed that the `country` column is not very accurate, as it is using countries that don't appear as the initial release or even film countries when searching the internet and looking through IMDB. That will be changing things a bit since I initially had `country` as a predictor for my recipe. I plan to replace it with a different variable (`genre` being the most sensible option) but would need to modify the structure of the `genre` variable before I can do that. That could pose to be a bit difficult, but I will still attempt it so that there are at least 3 predictors for my models.
