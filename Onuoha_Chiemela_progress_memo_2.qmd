@@ -55,7 +55,33 @@ load(here("recipes/movies_recipe.rda"))
 Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025^[The Kaggle data was compiled from IMDB.com]
 
 ## Analysis Plan
-My data has been split and my recipes have also been defined. I have so far defined and fit the baseline, the OLS model, and I have tuned and fit the Elastic Net models. I do plan on defining and fitting a Random Forest model and one other model as well, but I not been able to decide on which final model I want to use. I plan to figure that out by the time this memo is due or shortly thereafter. For my assessment metrics, I plan to analyze RMSE, MAE, and R-squared.  
+My data has been split and my recipes have also been defined. I have so far defined and fit the baseline, the OLS model, and I have tuned and fit the Elastic Net models. I do plan on defining and fitting a Random Forest model and one other model as well, but I not been able to decide on which final model I want to use. I plan to figure that out by the time this memo is due or shortly thereafter. For my assessment metrics, I plan to analyze RMSE, MAE, and R-squared. 
+
+### Set Seed 
+```{r}
+set.seed(17382015)
+
+```
+
+### Initial Split
+```{r}
+#| label: initial-split
+#| eval: false
+
+# initial split ----
+movies_split <- movies_data |>
+  initial_split(prop = 0.8, strata = yeo_revenue)
+
+movies_train <- movies_split |> training()
+movies_test <- movies_split |> testing()
+
+
+# write out/save outputs ----
+save(movies_split, file = here("data/movies_split.rda"))
+save(movies_train, file = here("data/movies_train.rda"))
+save(movies_test, file = here("data/movies_test.rda"))
+```
+
 
 ### Baseline Model
 ```{r}
@@ -101,6 +127,26 @@ lm_fit <- fit(lm_wflow, movies_train)
 
 # save results ----
 save(lm_fit, file = here("results/lm_fit.rda"))
+
+```
+
+
+### Fitted Results
+```{r}
+#| label: load-fits
+#| echo: false
+
+load(here("results/lm_fit.rda"))
+load(here("results/baseline_fit.rda"))
+```
+
+```{r}
+
+tibble(
+  Term = tidy(lm_fit) |> pull(term),
+  OLS = tidy(lm_fit) |> pull(estimate),
+  Baseline = tidy(baseline_fit) |> pull(estimate)
+)
 
 ```
 
