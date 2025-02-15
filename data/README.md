@@ -12,16 +12,15 @@ Below is the codebook for `movies_clean.csv`:
 
 | variable      | Description                                            |
 |---------------|--------------------------------------------------------|
-|`names`           |Where the patient is from                           |
-|`score`| Gender of the patient|
-|`genre`| Smoking history where 0 means they do not smoke and 1 means they do smoke|
-|`overview`| Whether the patient is obese or not (0 = not obese, 1 = obese)|
-|`crew`| Whether the patient has been diagnosed with diabetes or not (0 = not diagnosed, 1 = diagnosed)|
-|`orig_title`| Whether the patient has been diagnosed with chronic pancreatitis or not (0 = not diagnosed, 1 = diagnosed)|
-|`status`| Whether the patient has a family history of pancreatic cancer or not (0 = no history, 1 = history)|
-|`orig_lang`| Whether the cancer is hereditary or not (0 = not hereditary, 1 = hereditary)|
-|`budget_x`| Whether the patient has experienced jaundice or not (0 = no jaundice, 1 = jaundice)|
-|`revenue`| Whether the patient has abdominal discomfort (0 = no, 1 = yes)|
-|`country`| Whether the patient has back pain or not (0 = no back pain, 1 = back pain)|
-|`yeo_revenue`| Whether the patient has experience weight loss (0 = no, 1 = yes)|
-|`date`| Whether the patient has developed Type 2 Diabetes (0 = no, 1 = yes)|
+|`names`           |The names of the movies                           |
+|`score`| The score given to each movie on IMDB (score is out of 100)|
+|`genre`| The genre of the movie|
+|`overview`| A synopsis of the movie|
+|`crew`| The names of the crew who worked on the movie|
+|`orig_title`| The original title of the movies (more applicable to movies that are not in English and were translated)|
+|`status`| The status of the movie (released or unreleased)|
+|`orig_lang`| The original language the movie is in|
+|`budget_x`| The budget of the movie|
+|`revenue`| The revenue of the movie|
+|`yeo_revenue`| The Yeo-Johnson transformed revenue|
+|`date`| The release date for the movie|
