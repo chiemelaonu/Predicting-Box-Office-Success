@@ -15,6 +15,14 @@ movies_data <- read_csv("data/movies_clean.csv")
 # set seed ----
 set.seed(17382015)
 
+
+# define metric set ----
+my_metrics <- metric_set(rmse, mae, rsq)
+
+# save set ----
+save(my_metrics, file = here("data/my_metrics.rda"))
+
+
 # initial split ----
 movies_split <- movies_data |>
   initial_split(prop = 0.8, strata = yeo_revenue)
