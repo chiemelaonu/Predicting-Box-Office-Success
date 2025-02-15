@@ -29,7 +29,7 @@ baseline_workflow <- workflow() |>
 baseline_fit <- fit(baseline_workflow, data = movies_train)
 
 # predictions and rmse ----
-baseline_predictions <- predict(baseline_fit, new_data = movies_test) %>%
+baseline_predictions <- predict(baseline_fit, new_data = movies_test) |>
   bind_cols(movies_test)
 
 baseline_predictions |>
