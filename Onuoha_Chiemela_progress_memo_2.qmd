@@ -1,10 +1,10 @@
 ---
-title: "Progress Memo 1"
+title: "Progress Memo 2"
 subtitle: |
   | Final Project 
   | Data Science 2 with R (STAT 301-2)
 author: "Chiemela Onuoha"
-pagetitle: "PM1 Chiemela Onuoha"
+pagetitle: "PM2 Chiemela Onuoha"
 date: "today"
 
 format:
@@ -51,74 +51,3 @@ movies <- read_csv("data/imdb_movies.csv")
 Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025^[The Kaggle data was compiled from IMDB.com]
 
 
-## Prediction Problem
-This is a regression problem because the target variable,` revenue`, is continuous rather than categorical. The goal is to predict a movies' revenue based on other parts of the dataset.
-<br>  
-Having an accurate prediction model for movie revenue could be highly valuable for investors and filmmakers because it would help estimate a film’s financial success before release. That would allow for better budget allocation, and even optimize marketing strategies.
-
-## Data Quality/Missingness Check
-
-
-The data has 12 variables, with 10,178 observations. It has 9 categorical variables, and 3 numerical variables.
-
-
-```{r}
-#| label: tbl-summary
-#| tbl-cap: "Dataset Summary"
-#| echo: false
-
-
-# calculate values
-missing_rows <- sum(!complete.cases(movies))
-num_rows <- nrow(movies)
-num_cols <- ncol(movies)
-target_missing <- sum(!complete.cases(movies$revenue))
-# create a table
-summary <- data.frame(
-  Metric = c("Rows with Missing Values", "Number of Observations", "Number of Variables", "Number of Missing Target Variable Observations (`revenue`)"),
-  Value = c(missing_rows, num_rows, num_cols, target_missing)
-)
-
-# display as a table
-summary_table <- knitr::kable(summary, caption = "Dataset Summary")
-
-summary_table
-
-
-```
-There is missingness in the data, but it is only a small portion and it does not affect the target variable for the model, so I do not forsee any major issues arising within my model because of it.
-
-### Variable Types 
-
-```{r}
-#| label: variable-types
-#| echo: false
-
-# count variable types
-variable_types <- sapply(movies, class)
-
-# summarize counts
-num_numerical <- sum(variable_types %in% c("integer", "numeric"))
-num_categorical <- sum(variable_types %in% c("factor", "character"))
-
-# print results
-cat("Numerical Variables:", num_numerical, "\n")
-cat("Categorical Variables:", num_categorical, "\n")
-```
-
-
-
-## Target Variable Analysis
-
-::: {#fig-price-dists layout-ncol=2}
-
-![revenue on Original Scale ($)](figures/target_eda.png){#fig-revenue-orig}
-
-![revenue Transformed with Yeo-Johnson](figures/target_eda_2.png){#fig-revenue-yj}
-
-:::
-
-Upon inspecting the original target distribution of `revenue`, a transformation is needed. A log10 or square root transformation does not work for `revenue` because there are 73 observations that have a value of "0". The Yeo-Johnson transformation is able to directly handle those zero values without changing the rest of the data too much. The lambda chosen for the transformation was 0.25, because when looking at different values, 0.25 was the value made the distribution the most symmetrical. Using this transformation allows for a better predictive model that wont be riddled with overfitting.
-
-## Misc
-Going forward, the plan is to allocate time for training and analyzing the models each week, so that I can come across any issues earlier on. It will also allow me to provide meaningful insights from the data and the model. 
