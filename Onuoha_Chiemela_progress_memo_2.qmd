@@ -146,8 +146,8 @@ load(here("results/baseline_fit.rda"))
 
 tibble(
   Term = tidy(lm_fit) |> pull(term),
-  OLS = tidy(lm_fit) |> pull(estimate),
-  Baseline = tidy(baseline_fit) |> pull(estimate)
+  OLS = round(tidy(lm_fit) |> pull(estimate), 4),
+  Baseline = round(tidy(baseline_fit) |> pull(estimate), 4)
   ) |>
   knitr::kable()
 
