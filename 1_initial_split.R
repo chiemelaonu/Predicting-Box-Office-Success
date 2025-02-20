@@ -33,7 +33,7 @@ movies_folds <- movies_train |>
 
 
 # controls for fitting to resamples ----
-keep_wflow <- control_resamples(save_workflow = TRUE)
+keep_wflow <- control_grid(save_workflow = TRUE)
 my_metrics <- metric_set(rmse)
 
 # write out/save outputs ----
