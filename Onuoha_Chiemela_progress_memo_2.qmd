@@ -77,6 +77,7 @@ performance_table
 
 ```
 
+### Moving Forward
 My data has been split and so far, 2 recipes have been defined. I have defined and fit the baseline, the OLS model, and I have tuned and fit the Lasso model. I will be continuing with tuning and fitting Ridge, Random Forest, and K-Nearest Neighbors. The last things I will do is train the best model to the training set and predict on the testing and assess that final model. As of right now, I do not see an issues or areas of concern, but will be stay vigilant in case any appear.
 
 
