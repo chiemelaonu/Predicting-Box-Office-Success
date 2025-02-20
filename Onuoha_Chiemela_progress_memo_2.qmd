@@ -61,7 +61,7 @@ My data has been split and my recipes have also been defined. I have so far defi
 ### Load Data 
 ```{r}
 #| echo: false
-laod(here("data/movies_train.rda"))
+load(here("data/movies_train.rda"))
 load(here("data/movies_test.rda"))
 
 ```
@@ -73,78 +73,24 @@ set.seed(17382015)
 ```
 
 
-### Baseline Model
-```{r}
-#| label: fit-predict-baseline
-#| echo: false
-
-# define baseline model ----
-baseline_spec <- linear_reg() |>
-  set_engine("lm") |>
-  set_mode("regression")
-
-# workflow ----
-baseline_workflow <- workflow() |>
-  add_model(baseline_spec) |>
-  add_recipe(null_recipe)
-
-# fit model ----
-baseline_fit <- fit(baseline_workflow, data = movies_train)
-
-tidy(baseline_fit)
-
-
-# predictions and rmse ----
-baseline_predictions <- predict(baseline_fit, new_data = movies_test) |>
-  bind_cols(movies_test)
-
-baseline_rmse <- baseline_predictions |>
-  rmse(truth = yeo_revenue, estimate = .pred)
-```
-
-### OLS Model
-```{r}
-#| label: fit-ols
-#| echo: false
-
-# define model spec ----
-lm_spec <- linear_reg() |>
-  set_engine("lm") |>
-  set_mode("regression")
-
-# define workflow ----
-lm_wflow <- workflow() |>
-  add_model(lm_spec) |>
-  add_recipe(movies_recipe)
-
-
-# fit workflow ----
-lm_fit <- fit(lm_wflow, movies_train)
-
-# save results ----
-save(lm_fit, file = here("results/lm_fit.rda"))
-
-# predictions and rmse ----
-lm_predictions <- predict(lm_fit, new_data = movies_test) |>
-  bind_cols(movies_test)
-
-lm_rmse <- lm_predictions |>
-  rmse(truth = yeo_revenue, estimate = .pred)
-
-```
-
 
 ### Fitted Results
 ```{r}
-load(here("results/baseline_fit.rda"))
 load(here("results/lm_fit.rda"))
+load(here("results/baseline_fit.rda"))
 
-# tibble(
-#   Term = tidy(lm_fit) |> pull(term),
-#   OLS = round(tidy(lm_fit) |> pull(.pred), 4),
-#   Baseline = round(tidy(baseline_fit) |> pull(.pred), 4)
-# ) |>
-#   knitr::kable()
+
+# calculate metrics for each fitted model (fitted with kc_folds) ----
+linear_metrics <- collect_metrics(lm_fit)
+baseline_metrics  <- collect_metrics(baseline_fit)
+
+performance_table <- bind_rows(
+  linear_metrics |> mutate(Model = "Linear Regression"),
+  baseline_metrics |> mutate(Model = "Baseline Regression")
+) |>
+  knitr::kable()
+
+performance_table
 
 
 ```

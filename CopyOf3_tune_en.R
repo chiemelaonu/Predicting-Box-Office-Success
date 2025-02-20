@@ -16,52 +16,21 @@ num_cores <- parallel::detectCores(logical = FALSE)
 registerDoMC(cores = 6)
 
 # load in training data ----
-load(here("data/movies_folds.rda"))
-load(here("data/keep_wflow.rda"))
-load(here("data/my_metrics.rda"))
+load(here("results/lm_fit.rda"))
+load(here("results/baseline_fit.rda"))
 
 
-# load in recipe ----
-load(here("recipes/movies_recipe.rda"))
+# calculate metrics for each fitted model (fitted with kc_folds) ----
+linear_metrics <- collect_metrics(lm_fit)
+baseline_metrics  <- collect_metrics(baseline_fit)
+# ridge_metrics  <- collect_metrics(ridge_fit)
+# rf_metrics     <- collect_metrics(rf_fit)
+# knn_metrics    <- collect_metrics(knn_fit)
 
-# model specifications ----
-lasso_spec <- linear_reg(penalty = tune(), mixture = 1)|> 
-  set_engine("glmnet") |> 
-  set_mode("regression")
+performance_table <- bind_rows(
+  linear_metrics |> mutate(Model = "Linear Regression"),
+  baseline_metrics |> mutate(Model = "Baseline Regression")
+) |>
+  knitr::kable()
 
-# define workflows ----
-lasso_wflow <- workflow() |>
-  add_model(lasso_spec) |>
-  add_recipe(movies_recipe)
-
-# hyperparameter tuning values ----
-
-# check ranges for hyperparameters
-hardhat::extract_parameter_set_dials(lasso_spec)
-
-# change hyperparameter ranges
-lasso_params <- hardhat::extract_parameter_set_dials(lasso_spec) |> 
-  # N:= maximum number of random predictor columns we want to try 
-  # should be less than the number of available columns
-  update(
-    penalty = penalty()
-  ) 
-
-# build tuning grid
-# lasso_grid <- grid_regular(lasso_params, levels = 5)
-
-lasso_grid <- grid_random(lasso_params, size = 10)
-
-
-# fit workflows/models ----
-lasso_tuned <- 
-  lasso_wflow |> 
-  tune_grid(
-    movies_folds, 
-    grid = lasso_grid, 
-    control = keep_wflow,
-    metrics = my_metrics
-  )
-
-# write out results (fitted/trained workflows) ----
-save(lasso_tuned, file = here("results/lasso_tuned.rda"))
+performance_table
