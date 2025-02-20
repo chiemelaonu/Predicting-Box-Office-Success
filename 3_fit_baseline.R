@@ -13,17 +13,19 @@ tidymodels_prefer()
 load(here("data/movies_train.rda"))
 load(here("data/movies_test.rda"))
 
+# load recipe
+load(here("recipes/null_recipe.rda"))
 
 
 # define baseline model ----
-baseline_model <- linear_reg() |>
+baseline_spec <- linear_reg() |>
   set_engine("lm") |>
   set_mode("regression")
 
 # workflow ----
 baseline_workflow <- workflow() |>
-  add_model(baseline_model) |>
-  add_recipe(recipe(yeo_revenue ~ 1, data = movies_train))
+  add_model(baseline_spec) |>
+  add_recipe(null_recipe)
 
 # fit model ----
 baseline_fit <- fit(baseline_workflow, data = movies_train)
