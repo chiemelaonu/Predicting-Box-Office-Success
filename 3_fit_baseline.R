@@ -15,9 +15,10 @@ num_cores <- parallel::detectCores(logical = FALSE)
 registerDoMC(cores = 6)
 
 
-# load in data ----
-load(here("data/movies_train.rda"))
-load(here("data/movies_test.rda"))
+# load data ----
+load(here("data/keep_wflow.rda"))
+load(here("data/movies_folds.rda"))
+load(here("data/my_metrics.rda"))
 
 # load recipe
 load(here("recipes/null_recipe.rda"))
@@ -29,24 +30,15 @@ baseline_spec <- linear_reg() |>
   set_mode("regression")
 
 # workflow ----
-baseline_workflow <- workflow() |>
+baseline_wflow<- workflow() |>
   add_model(baseline_spec) |>
   add_recipe(null_recipe)
 
 # fit model ----
-baseline_fit <- fit(baseline_workflow, data = movies_train)
+baseline_fit <- fit_resamples(baseline_wflow, resamples = movies_folds, metrics = my_metrics, control = keep_wflow)
 
-tidy(baseline_fit)
 
 # save baseline fit ----
 save(baseline_fit, file = here("results/baseline_fit.rda"))
 
-
-
-# predictions and rmse ----
-baseline_predictions <- predict(baseline_fit, new_data = movies_test) |>
-  bind_cols(movies_test)
-
-baseline_predictions |>
-  rmse(truth = yeo_revenue, estimate = .pred)
 

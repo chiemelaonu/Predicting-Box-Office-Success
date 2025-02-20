@@ -57,58 +57,55 @@ Data was sourced from Kaggle.com, a site hosting thousands of datasets for the p
 ## Analysis Plan
 My data has been split and my recipes have also been defined. I have so far defined and fit the baseline, the OLS model, and I have tuned and fit the Elastic Net models. I do plan on defining and fitting a Random Forest model and one other model as well, but I not been able to decide on which final model I want to use. I plan to figure that out by the time this memo is due or shortly thereafter. For my assessment metrics, I plan to analyze RMSE, MAE, and R-squared. 
 
+
+### Load Data 
+```{r}
+#| echo: false
+laod(here("data/movies_train.rda"))
+load(here("data/movies_test.rda"))
+
+```
+
 ### Set Seed 
 ```{r}
 set.seed(17382015)
 
 ```
 
-### Initial Split
-```{r}
-#| label: initial-split
-#| eval: false
-
-# initial split ----
-movies_split <- movies_data |>
-  initial_split(prop = 0.8, strata = yeo_revenue)
-
-movies_train <- movies_split |> training()
-movies_test <- movies_split |> testing()
-
-
-# write out/save outputs ----
-save(movies_split, file = here("data/movies_split.rda"))
-save(movies_train, file = here("data/movies_train.rda"))
-save(movies_test, file = here("data/movies_test.rda"))
-```
 
 ### Baseline Model
 ```{r}
 #| label: fit-predict-baseline
-#| eval: false
+#| echo: false
 
 # define baseline model ----
-baseline_model <- linear_reg() |>
+baseline_spec <- linear_reg() |>
   set_engine("lm") |>
   set_mode("regression")
 
 # workflow ----
 baseline_workflow <- workflow() |>
-  add_model(baseline_model) |>
-  add_recipe(recipe(yeo_revenue ~ 1, data = movies_train))
+  add_model(baseline_spec) |>
+  add_recipe(null_recipe)
 
 # fit model ----
 baseline_fit <- fit(baseline_workflow, data = movies_train)
 
-# save baseline fit ----
-save(baseline_fit, file = here("results/baseline_fit.rda"))
+tidy(baseline_fit)
 
+
+# predictions and rmse ----
+baseline_predictions <- predict(baseline_fit, new_data = movies_test) |>
+  bind_cols(movies_test)
+
+baseline_rmse <- baseline_predictions |>
+  rmse(truth = yeo_revenue, estimate = .pred)
 ```
 
 ### OLS Model
 ```{r}
 #| label: fit-ols
-#| eval: false
+#| echo: false
 
 # define model spec ----
 lm_spec <- linear_reg() |>
@@ -127,29 +124,30 @@ lm_fit <- fit(lm_wflow, movies_train)
 # save results ----
 save(lm_fit, file = here("results/lm_fit.rda"))
 
+# predictions and rmse ----
+lm_predictions <- predict(lm_fit, new_data = movies_test) |>
+  bind_cols(movies_test)
+
+lm_rmse <- lm_predictions |>
+  rmse(truth = yeo_revenue, estimate = .pred)
+
 ```
 
 
 ### Fitted Results
 ```{r}
-#| label: load-fits
-#| echo: false
-
-load(here("results/lm_fit.rda"))
 load(here("results/baseline_fit.rda"))
-```
+load(here("results/lm_fit.rda"))
 
-```{r}
-#| label: tbl-fit-results
-#| tbl-cap: "Fitted Results"
-#| echo: false
+# tibble(
+#   Term = tidy(lm_fit) |> pull(term),
+#   OLS = round(tidy(lm_fit) |> pull(.pred), 4),
+#   Baseline = round(tidy(baseline_fit) |> pull(.pred), 4)
+# ) |>
+#   knitr::kable()
 
-tibble(
-  Term = tidy(lm_fit) |> pull(term),
-  OLS = round(tidy(lm_fit) |> pull(estimate), 4),
-  Baseline = round(tidy(baseline_fit) |> pull(estimate), 4)
-  ) |>
-  knitr::kable()
 
 ```
+
+
 
