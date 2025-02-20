@@ -17,7 +17,7 @@ set.seed(17382015)
 
 
 # define metric set ----
-my_metrics <- metric_set(rmse, mae, rsq)
+my_metrics <- metric_set(rmse)
 
 # save set ----
 save(my_metrics, file = here("data/my_metrics.rda"))
