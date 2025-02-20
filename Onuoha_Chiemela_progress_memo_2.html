@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chiemela Onuoha">
-<meta name="dcterms.date" content="2025-02-19">
+<meta name="dcterms.date" content="2025-02-20">
 
 <title>PM2 Chiemela Onuoha</title>
 <style>
@@ -20,40 +20,6 @@ ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
 width: 0.8em;
 margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
-}
-
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-{ counter-reset: source-line 0; }
-pre.numberSource code > span
-{ position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-{ content: counter(source-line);
-position: relative; left: -1em; text-align: right; vertical-align: baseline;
-border: none; display: inline-block;
--webkit-touch-callout: none; -webkit-user-select: none;
--khtml-user-select: none; -moz-user-select: none;
--ms-user-select: none; user-select: none;
-padding: 0 4px; width: 4em;
-}
-pre.numberSource { margin-left: 3em; padding-left: 4px; }
-div.sourceCode
-{ }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -3089,8 +3055,6 @@ vertical-align: -.125em;
   <li><a href="#data-source" id="toc-data-source" class="nav-link active" data-scroll-target="#data-source">Data source</a></li>
   <li><a href="#analysis-plan" id="toc-analysis-plan" class="nav-link" data-scroll-target="#analysis-plan">Analysis Plan</a>
   <ul>
-  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load Data</a></li>
-  <li><a href="#set-seed" id="toc-set-seed" class="nav-link" data-scroll-target="#set-seed">Set Seed</a></li>
   <li><a href="#fitted-results" id="toc-fitted-results" class="nav-link" data-scroll-target="#fitted-results">Fitted Results</a></li>
   </ul></li>
   </ul>
@@ -3121,7 +3085,7 @@ Data Science 2 with R (STAT 301-2)</div><p></p>
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 19, 2025</p>
+      <p class="date">February 20, 2025</p>
     </div>
   </div>
   
@@ -3152,34 +3116,10 @@ Github Repo Link
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup> The Kaggle data was compiled from IMDB.com</p></div></div></section>
 <section id="analysis-plan" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-plan">Analysis Plan</h2>
-<p>My data has been split and my recipes have also been defined. I have so far defined and fit the baseline, the OLS model, and I have tuned and fit the Elastic Net models. I do plan on defining and fitting a Random Forest model and one other model as well, but I not been able to decide on which final model I want to use. I plan to figure that out by the time this memo is due or shortly thereafter. For my assessment metrics, I plan to analyze RMSE, MAE, and R-squared.</p>
-<section id="load-data" class="level3">
-<h3 class="anchored" data-anchor-id="load-data">Load Data</h3>
-</section>
-<section id="set-seed" class="level3">
-<h3 class="anchored" data-anchor-id="set-seed">Set Seed</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">17382015</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
+<p>My data has been split and so far, 2 recipes have been defined. I have defined and fit the baseline, the OLS model, and I have tuned and fit the Lasso model. I will be continuing with tuning and fitting Ridge, Random Forest, and K-Nearest Neighbors. My assessment metric for this project is RMSE.</p>
 <section id="fitted-results" class="level3">
 <h3 class="anchored" data-anchor-id="fitted-results">Fitted Results</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">here</span>(<span class="st">&quot;results/lm_fit.rda&quot;</span>))</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">here</span>(<span class="st">&quot;results/baseline_fit.rda&quot;</span>))</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate metrics for each fitted model (fitted with kc_folds) ----</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>linear_metrics <span class="ot">&lt;-</span> <span class="fu">collect_metrics</span>(lm_fit)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>baseline_metrics  <span class="ot">&lt;-</span> <span class="fu">collect_metrics</span>(baseline_fit)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>performance_table <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  linear_metrics <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;Linear Regression&quot;</span>),</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  baseline_metrics <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;Baseline Regression&quot;</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>performance_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>

@@ -36,9 +36,8 @@ library(here)
 # resolve conflicts
 tidymodels_prefer()
 
-load(here("data/movies_train.rda"))
-load(here("recipes/movies_recipe.rda"))
-
+load(here("results/lm_fit.rda"))
+load(here("results/baseline_fit.rda"))
 ```
 
 ::: {.callout-tip icon=false}
@@ -55,29 +54,13 @@ load(here("recipes/movies_recipe.rda"))
 Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025^[The Kaggle data was compiled from IMDB.com]
 
 ## Analysis Plan
-My data has been split and my recipes have also been defined. I have so far defined and fit the baseline, the OLS model, and I have tuned and fit the Elastic Net models. I do plan on defining and fitting a Random Forest model and one other model as well, but I not been able to decide on which final model I want to use. I plan to figure that out by the time this memo is due or shortly thereafter. For my assessment metrics, I plan to analyze RMSE, MAE, and R-squared. 
-
-
-### Load Data 
-```{r}
-#| echo: false
-load(here("data/movies_train.rda"))
-load(here("data/movies_test.rda"))
-
-```
-
-### Set Seed 
-```{r}
-set.seed(17382015)
-
-```
-
+My data has been split and so far, 2 recipes have been defined. I have defined and fit the baseline, the OLS model, and I have tuned and fit the Lasso model. I will be continuing with tuning and fitting Ridge, Random Forest, and K-Nearest Neighbors. My assessment metric for this project is RMSE.
 
 
 ### Fitted Results
 ```{r}
-load(here("results/lm_fit.rda"))
-load(here("results/baseline_fit.rda"))
+#| label: fitted-results
+#| echo: false
 
 
 # calculate metrics for each fitted model (fitted with kc_folds) ----
