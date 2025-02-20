@@ -26,8 +26,8 @@ movies_test <- movies_split |> testing()
 # setup resamples ----
 movies_folds <- movies_train |> 
   vfold_cv(
-    v = 10, 
-    repeats = 5,
+    v = 5, 
+    repeats = 3,
     strata = yeo_revenue
   )
 
@@ -42,3 +42,4 @@ save(movies_train, file = here("data/movies_train.rda"))
 save(movies_test, file = here("data/movies_test.rda"))
 save(my_metrics, file = here("data/my_metrics.rda"))
 save(keep_wflow, file = here("data/keep_wflow.rda"))
+save(movies_folds, file = here("data/movies_folds.rda"))

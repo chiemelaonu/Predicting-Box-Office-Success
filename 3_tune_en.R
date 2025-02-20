@@ -16,63 +16,50 @@ num_cores <- parallel::detectCores(logical = FALSE)
 registerDoMC(cores = 6)
 
 # load in training data ----
-load(here("data/movies_train.rda"))
+load(here("data/movies_folds.rda"))
 
 
 # load in recipe ----
 load(here("recipes/movies_recipe.rda"))
 
-# TUNING PROCESS TO FIND BEST PENALTY ----
-
-# cross validation
-cv_folds <- vfold_cv(movies_train, v = 10)
-
-# define lasso spec ----
-lasso_spec <- linear_reg(penalty = tune(), mixture = 1) |>
-  set_engine("glmnet") |>
+# model specifications ----
+lasso_spec <- linear_reg(penalty = tune(), mixture = 1)|> 
+  set_engine("glmnet") |> 
   set_mode("regression")
 
-# define workflow ----
+# define workflows ----
 lasso_wflow <- workflow() |>
   add_model(lasso_spec) |>
   add_recipe(movies_recipe)
 
-my_grid <- tibble(penalty = 10^seq(-2, -1, length.out = 10))
+# hyperparameter tuning values ----
 
-my_res <- lasso_wflow |> 
-  tune_grid(resamples = cv_folds,
-            grid = my_grid,
-            control = control_grid(verbose = FALSE, save_pred = TRUE),
-            metrics = metric_set(rmse))
+# check ranges for hyperparameters
+hardhat::extract_parameter_set_dials(lasso_spec)
 
-# showing best penalty
-best_mod <- my_res |> select_best(metric = "rmse")
-best_mod
+# change hyperparameter ranges
+lasso_params <- hardhat::extract_parameter_set_dials(lasso_spec) |> 
+  # N:= maximum number of random predictor columns we want to try 
+  # should be less than the number of available columns
+  update(
+    penalty = penalty()
+  ) 
 
-# fitting workflow ----
-lasso_fit <- finalize_workflow(lasso_wflow, best_mod) |>
-  fit(data = movies_train)
+# build tuning grid
+# lasso_grid <- grid_regular(lasso_params, levels = 5)
 
-# predict(lasso_fit, movies_train)
-
-# save ----
-save(lasso_fit, file = here("results/lasso_fit.rda"))
+lasso_grid <- grid_random(lasso_params, size = 10)
 
 
-# ridge model ----
-ridge_spec <- linear_reg(penalty = 0.01, mixture = 0) |> # using the same penalty from tuning the lasso model
-  set_engine("glmnet") |>
-  set_mode("regression")
+# fit workflows/models ----
+lasso_tuned <- 
+  lasso_wflow |> 
+  tune_grid(
+    movies_folds, 
+    grid = lasso_grid, 
+    control = keep_wflow,
+    metrics = my_metrics
+  )
 
-
-# defining workflow ----
-ridge_wflow <- workflow() |>
-  add_model(ridge_spec) |>
-  add_recipe(movies_recipe)
-
-# fitting ----
-ridge_fit <- fit(ridge_wflow, movies_train)
-
-# save results ----
-save(ridge_fit, file = here("results/ridge_fit.rda"))
-
+# write out results (fitted/trained workflows) ----
+save(lasso_tuned, file = here("results/lasso_tuned.rda"))
