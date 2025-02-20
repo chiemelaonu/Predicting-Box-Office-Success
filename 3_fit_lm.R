@@ -15,8 +15,11 @@ tidymodels_prefer()
 num_cores <- parallel::detectCores(logical = FALSE)
 registerDoMC(cores = 6)
 
-# load in training data ----
-load(here("data/movies_train.rda"))
+# load data ----
+load(here("data/keep_wflow.rda"))
+load(here("data/movies_folds.rda"))
+load(here("data/my_metrics.rda"))
+
 
 
 # load in recipe ----
@@ -34,7 +37,7 @@ lm_wflow <- workflow() |>
 
 
 # fit workflow ----
-lm_fit <- fit(lm_wflow, movies_train)
+lm_fit <- fit_resamples(lm_wflow, resamples = movies_folds, metrics = my_metrics, control = keep_wflow)
 
 # save results ----
 save(lm_fit, file = here("results/lm_fit.rda"))
