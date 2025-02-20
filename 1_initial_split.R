@@ -16,13 +16,6 @@ movies_data <- read_csv("data/movies_clean.csv")
 set.seed(17382015)
 
 
-# define metric set ----
-my_metrics <- metric_set(rmse)
-
-# save set ----
-save(my_metrics, file = here("data/my_metrics.rda"))
-
-
 # initial split ----
 movies_split <- movies_data |>
   initial_split(prop = 0.8, strata = yeo_revenue)
@@ -30,8 +23,22 @@ movies_split <- movies_data |>
 movies_train <- movies_split |> training()
 movies_test <- movies_split |> testing()
 
+# setup resamples ----
+movies_folds <- movies_train |> 
+  vfold_cv(
+    v = 10, 
+    repeats = 5,
+    strata = yeo_revenue
+  )
+
+
+# controls for fitting to resamples ----
+keep_wflow <- control_resamples(save_workflow = TRUE)
+my_metrics <- metric_set(rmse)
 
 # write out/save outputs ----
 save(movies_split, file = here("data/movies_split.rda"))
 save(movies_train, file = here("data/movies_train.rda"))
 save(movies_test, file = here("data/movies_test.rda"))
+save(my_metrics, file = here("data/my_metrics.rda"))
+save(keep_wflow, file = here("data/keep_wflow.rda"))
