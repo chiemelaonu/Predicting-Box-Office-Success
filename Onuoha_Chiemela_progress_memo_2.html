@@ -3116,7 +3116,7 @@ Github Repo Link
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup> The Kaggle data was compiled from IMDB.com</p></div></div></section>
 <section id="analysis-plan" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-plan">Analysis Plan</h2>
-<p>My data has been split and so far, 2 recipes have been defined. I have defined and fit the baseline, the OLS model, and I have tuned and fit the Lasso model. I will be continuing with tuning and fitting Ridge, Random Forest, and K-Nearest Neighbors. My assessment metric for this project is RMSE.</p>
+<p>My analysis plan is to split the data with <code>prop = 0.8</code> and <code>strata = yeo_revenue</code>. I also will be using V-fold cross validation and fitting my models (Baseline, OLS, Lasso, Ridge, Random Forest, and KNN) to the resamples. My V-fold cross validation consists of 5 folds and 3 repeats. I will also be tuning the models that utilize hyperparameters so that I can use the most suitable hyperparamaters for my data. I currently have 2 recipes, but will be finishing off with at least 4. There will be a 3rd for Random Forest and a 4th for KNN.</p>
 <section id="fitted-results" class="level3">
 <h3 class="anchored" data-anchor-id="fitted-results">Fitted Results</h3>
 <div class="cell">
@@ -3165,6 +3165,7 @@ Github Repo Link
 </table>
 </div>
 </div>
+<p>My data has been split and so far, 2 recipes have been defined. I have defined and fit the baseline, the OLS model, and I have tuned and fit the Lasso model. I will be continuing with tuning and fitting Ridge, Random Forest, and K-Nearest Neighbors. The last things I will do is train the best model to the training set and predict on the testing and assess that final model. As of right now, I do not see an issues or areas of concern, but will be stay vigilant in case any appear.</p>
 </section>
 </section>
 
