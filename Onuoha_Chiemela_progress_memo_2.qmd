@@ -54,8 +54,7 @@ load(here("results/baseline_fit.rda"))
 Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025^[The Kaggle data was compiled from IMDB.com]
 
 ## Analysis Plan
-My analysis plan is to split the data with `prop = 0.8` and `strata = yeo_revenue`. I also will be using V-fold cross validation and fitting my models (Baseline, OLS, Lasso, Ridge, Random Forest, and KNN) to the resamples. I will also be tuning the models that utilize hyperparameters so that I can use the most suitable hyperparamaters for my data. 
-
+My analysis plan is to split the data with `prop = 0.8` and `strata = yeo_revenue`. I also will be using V-fold cross validation and fitting my models (Baseline, OLS, Lasso, Ridge, Random Forest, and KNN) to the resamples. I will also be tuning the models that utilize hyperparameters so that I can use the most suitable hyperparamaters for my data. The last things I will do, is train the best model to the training set and predict on the testing and assess that final model.
 ### Fitted Results
 ```{r}
 #| label: fitted-results
