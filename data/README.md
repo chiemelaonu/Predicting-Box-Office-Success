@@ -7,6 +7,9 @@ The IMDB movie dataset was sourced from [Kaggle.com](https://www.kaggle.com/data
 - `movies_split.rda`: the initial split proportions of the data
 - `movies_train.rda`: the training data used for modeling
 - `movies_test.rda`: the testing data used for predicting
+- `movies_folds.rda`: the V-folded data
+- `my_metrics.rda`: our defined metric set used to calculate RMSE
+- `keep_wflow.rda`: object that holds the argument for saving the workflow after the model is fitted to resamples
 
 Below is the codebook for `movies_clean.csv`:
 
