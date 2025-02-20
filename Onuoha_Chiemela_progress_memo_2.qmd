@@ -54,7 +54,8 @@ load(here("results/baseline_fit.rda"))
 Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025^[The Kaggle data was compiled from IMDB.com]
 
 ## Analysis Plan
-My analysis plan is to split the data with `prop = 0.8` and `strata = yeo_revenue`. I also will be using V-fold cross validation and fitting my models (Baseline, OLS, Lasso, Ridge, Random Forest, and KNN) to the resamples. I will also be tuning the models that utilize hyperparameters so that I can use the most suitable hyperparamaters for my data. The last things I will do, is train the best model to the training set and predict on the testing and assess that final model.
+My analysis plan is to split the data with `prop = 0.8` and `strata = yeo_revenue`. I also will be using V-fold cross validation and fitting my models (Baseline, OLS, Lasso, Ridge, Random Forest, and KNN) to the resamples. I will also be tuning the models that utilize hyperparameters so that I can use the most suitable hyperparamaters for my data. I currently have 2 recipes, but will be finishing off with at least 4. There will be a 3rd for Random Forest and a 4th for KNN.
+
 ### Fitted Results
 ```{r}
 #| label: fitted-results
@@ -76,6 +77,6 @@ performance_table
 
 ```
 
-My data has been split and so far, 2 recipes have been defined. I have defined and fit the baseline, the OLS model, and I have tuned and fit the Lasso model. I will be continuing with tuning and fitting Ridge, Random Forest, and K-Nearest Neighbors. As of right now, I do not see an issues or areas of concern, but will be stay vigilant in case any appear.
+My data has been split and so far, 2 recipes have been defined. I have defined and fit the baseline, the OLS model, and I have tuned and fit the Lasso model. I will be continuing with tuning and fitting Ridge, Random Forest, and K-Nearest Neighbors. The last things I will do is train the best model to the training set and predict on the testing and assess that final model. As of right now, I do not see an issues or areas of concern, but will be stay vigilant in case any appear.
 
 
