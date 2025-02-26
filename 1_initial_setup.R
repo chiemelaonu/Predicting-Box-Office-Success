@@ -119,16 +119,6 @@ ggsave(
   width = 5
 )
 
-# adding transformed target variable and changing date_x column from character to date ----
-movies <- movies |>
-  mutate(
-    yeo_revenue = yjPower(revenue, lambda = 0.25),  # transforming target variable
-    date = mdy(date_x),
-    num_genres = str_count(genre, ",") + 1, # adding a column that counts the number of genres for each movie
-    ) |>
-  select(-date_x) 
-
-str(movies)
 
 # parsing the overview column to find the number of negative and positive words in the description of the movie
 # and adding a column with the overall sentiment
@@ -153,17 +143,28 @@ movies <- movies |>
 
 library(purrr)
 
-# Function to count the number of crew members
+# function to count the number of crew members
 count_crew <- function(crew) {
   sapply(str_split(crew, ", "), function(x) length(x[seq(1, length(x), by = 2)]))
 }
 
-# Apply function and create new column
-movies <- movies %>%
+# apply function and create new column
+movies <- movies |>
   mutate(num_crew = count_crew(crew)) |> glimpse()
 
-# view the result
-print(movies)
+# adding transformed target variable and changing date_x column from character to date ----
+movies <- movies |>
+  mutate(
+    yeo_revenue = yjPower(revenue, lambda = 0.25),  # transforming target variable
+    date = mdy(date_x),
+    num_genres = str_count(genre, ",") + 1, # adding a column that counts the number of genres for each movie
+    overall_sentiment = factor(overall_sentiment),
+    status = factor(status)
+    ) |>
+  select(-date_x) 
 
-write_csv(movies, "data/movies_clean.csv")
+str(movies)
+
+
+# write_csv(movies, "data/movies_clean.csv")
   
