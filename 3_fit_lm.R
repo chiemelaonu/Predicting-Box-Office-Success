@@ -16,9 +16,7 @@ num_cores <- parallel::detectCores(logical = FALSE)
 registerDoMC(cores = 6)
 
 # load data ----
-load(here("data/keep_wflow.rda"))
 load(here("data/movies_folds.rda"))
-load(here("data/my_metrics.rda"))
 
 
 
@@ -37,7 +35,11 @@ lm_wflow <- workflow() |>
 
 
 # fit workflow ----
-lm_fit <- fit_resamples(lm_wflow, resamples = movies_folds, metrics = my_metrics, control = keep_wflow)
+lm_fit <- fit_resamples(
+  lm_wflow,
+  resamples = movies_folds,
+  control = control_resamples(save_workflow = TRUE)
+  )
 
 # save results ----
 save(lm_fit, file = here("results/lm_fit.rda"))
