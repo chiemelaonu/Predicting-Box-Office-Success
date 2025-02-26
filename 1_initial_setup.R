@@ -160,11 +160,8 @@ movies <- movies |>
     num_genres = str_count(genre, ",") + 1, # adding a column that counts the number of genres for each movie
     overall_sentiment = factor(overall_sentiment),
     status = factor(status)
-    ) |>
-  select(-date_x) 
-
-str(movies)
-
+    ) 
+glimpse(movies)
 
 # write_csv(movies, "data/movies_clean.csv")
-  
+#   
