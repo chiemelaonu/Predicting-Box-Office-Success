@@ -12,24 +12,28 @@ tidymodels_prefer()
 # load in training data ----
 load(here("data/movies_train.rda"))
 
-# build null recipe ----
-null_recipe <- recipe(yeo_revenue ~ 1, movies_train)
+# build null/baseline recipe ----
+movies_recipe_baseline <- recipe(yeo_revenue ~ score + budget_x + date
+                                 + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
+  step_impute_mean(positive, negative) |>
+  step_impute_mode(overall_sentiment) |>
+  step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
+  step_dummy(all_nominal_predictors())
+
+movies_recipe_baseline |>
+  prep() |>
+  bake(new_data = NULL) |> glimpse()
 
 
-# null_recipe |>
-#   prep() |>
-#   bake(new_data = NULL) |> glimpse()
-#   
-
-# build primary recipe ----
-movies_recipe <- recipe(yeo_revenue ~ score + budget_x + date, movies_train) |>
-  step_sqrt(budget_x) |>
-  step_date(date, features = "year", keep_original_cols = FALSE)
-
-# movies_recipe |>
-#   prep() |>
-#   bake(new_data = NULL) |> glimpse()
-
-# save results ----
-save(movies_recipe, file = here("recipes/movies_recipe.rda"))
-save(null_recipe, file = here("recipes/null_recipe.rda"))
+# # build primary recipe ----
+# movies_recipe <- recipe(yeo_revenue ~ score + budget_x + date, movies_train) |>
+#   step_sqrt(budget_x) |>
+#   step_date(date, features = "year", keep_original_cols = FALSE)
+# 
+# # movies_recipe |>
+# #   prep() |>
+# #   bake(new_data = NULL) |> glimpse()
+# 
+# # save results ----
+# save(movies_recipe, file = here("recipes/movies_recipe.rda"))
+save(movies_recipe_baseline, file = here("recipes/movies_recipe_baseline.rda"))
