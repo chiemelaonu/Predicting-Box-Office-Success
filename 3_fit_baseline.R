@@ -20,7 +20,7 @@ load(here("data/movies_folds.rda"))
 load(here("data/my_metrics.rda"))
 
 # load recipe
-save(here("recipes/movies_recipe_baseline.rda"))
+load(here("recipes/movies_recipe_baseline.rda"))
 
 # null model ----
 
