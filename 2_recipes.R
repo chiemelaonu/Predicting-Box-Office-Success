@@ -18,7 +18,7 @@ movies_recipe_baseline <- recipe(yeo_revenue ~ score + budget_x + date
   step_impute_mean(positive, negative) |>
   step_impute_mode(overall_sentiment) |>
   step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
-  step_dummy(all_nominal_predictors())
+  step_dummy(overall_sentiment)
 
 movies_recipe_baseline |>
   prep() |>
@@ -26,9 +26,13 @@ movies_recipe_baseline |>
 
 
 # # build primary recipe ----
-# movies_recipe <- recipe(yeo_revenue ~ score + budget_x + date, movies_train) |>
-#   step_sqrt(budget_x) |>
-#   step_date(date, features = "year", keep_original_cols = FALSE)
+movies_recipe <- recipe(yeo_revenue ~ score + budget_x + date
+                                 + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
+  step_impute_mean(positive, negative) |>
+  step_impute_mode(overall_sentiment) |>
+  step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
+  step_dummy(all_nominal_predictors())
+
 # 
 # # movies_recipe |>
 # #   prep() |>
