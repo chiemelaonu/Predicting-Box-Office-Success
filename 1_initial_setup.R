@@ -8,6 +8,9 @@ library(car)
 library(lubridate)
 library(here)
 library(splines)
+library(tidytext)
+library(textdata)
+
 
 
 # load in data ----
@@ -120,11 +123,34 @@ ggsave(
 movies <- movies |>
   mutate(
     yeo_revenue = yjPower(revenue, lambda = 0.25),  # transforming target variable
-    date = mdy(date_x)
+    date = mdy(date_x),
+    num_genres = str_count(genre, ",") + 1, # adding a column that counts the number of genres for each movie
     ) |>
   select(-date_x) 
 
 str(movies)
-# Check the result
+
+# parsing the overview column to find the number of negative and positive words in the description of the movie
+# and adding a column with the overall sentiment
+movies_sentiments <- movies |>
+  unnest_tokens(word, overview) |>
+  inner_join(bing_sentiments, by = "word") |>
+  count(names, sentiment) |>
+  spread(key = sentiment, value = n, fill = 0) |>
+  mutate(
+    overall_sentiment = case_when(
+      positive > negative ~ "Positive",
+      negative > positive ~ "Negative",
+      TRUE ~ "Neutral"
+    )
+  )
+
+# merge the sentiment analysis result back into the original movies dataset
+movies <- movies |>
+  left_join(movies_sentiments, by = "names")
+
+# view the result
+print(movies)
+
 write_csv(movies, "data/movies_clean.csv")
   
