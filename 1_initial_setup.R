@@ -132,6 +132,8 @@ str(movies)
 
 # parsing the overview column to find the number of negative and positive words in the description of the movie
 # and adding a column with the overall sentiment
+bing_sentiments <- get_sentiments("bing")
+
 movies_sentiments <- movies |>
   unnest_tokens(word, overview) |>
   inner_join(bing_sentiments, by = "word") |>
@@ -148,6 +150,17 @@ movies_sentiments <- movies |>
 # merge the sentiment analysis result back into the original movies dataset
 movies <- movies |>
   left_join(movies_sentiments, by = "names")
+
+library(purrr)
+
+# Function to count the number of crew members
+count_crew <- function(crew) {
+  sapply(str_split(crew, ", "), function(x) length(x[seq(1, length(x), by = 2)]))
+}
+
+# Apply function and create new column
+movies <- movies %>%
+  mutate(num_crew = count_crew(crew)) |> glimpse()
 
 # view the result
 print(movies)
