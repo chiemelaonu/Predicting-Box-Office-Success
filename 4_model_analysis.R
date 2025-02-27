@@ -40,16 +40,12 @@ model_results |>
 
 model_results |>
   collect_metrics() 
-  
-# examine rmse
-# model_results |>
-#   autoplot(metric = "rmse")
-
-# model_results |>
-#   autoplot(metric = "rmse", select_best = TRUE)
 
 model_results |>
   collect_metrics() |>
   filter(.metric == "rmse") |>
   slice_min(mean, by = wflow_id) |>
   arrange(mean)
+
+
+
