@@ -17,7 +17,6 @@ registerDoMC(cores = 6)
 
 # load data ----
 load(here("data/movies_folds.rda"))
-load(here("data/my_metrics.rda"))
 
 # load recipe
 load(here("recipes/movies_recipe_baseline.rda"))

@@ -15,8 +15,8 @@ load(here("data/movies_train.rda"))
 # build null/baseline recipe ----
 movies_recipe_baseline <- recipe(yeo_revenue ~ score + budget_x + date
                                  + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
-  step_impute_mean(positive, negative) |>
   step_impute_mode(overall_sentiment) |>
+  step_impute_mean(positive, negative) |>
   step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
   step_dummy(all_nominal_predictors(), one_hot = TRUE)
 
