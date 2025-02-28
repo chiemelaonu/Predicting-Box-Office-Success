@@ -59,12 +59,48 @@ I initially only had 3 predictors for my models, but I have been able to conduct
 
 ### Fitted Results
 ```{r}
+#| label: load-basic-fits
+#| echo: false
+#| results: hide
+
+# load in training data ----
+list.files(
+  here("results/"),
+  pattern = ".rda",
+  full.names = TRUE
+) |>
+  map(load, envir = .GlobalEnv)
+```
+
+
+```{r}
 #| label: fitted-results
 #| echo: false
 
 
-# calculate metrics for each fitted model (fitted with kc_folds) ----
+# examine results
+model_results <-
+  as_workflow_set(
+    lm = lm_fit,
+    null = null_results,
+    baseline = baseline_results
+  ) 
 
+
+basic_fits_table <- model_results |>
+  collect_metrics() |>
+  filter(.metric == "rmse") |>
+  slice_min(mean, by = wflow_id) |>
+  arrange(mean) |>
+  select(
+    `Model Name` = wflow_id,          
+    `Metric Type` = .metric,          
+    `Mean RMSE` = mean,               
+    `Standard Error` = std_err,
+    n              
+  ) |> knitr::kable()
+
+basic_fits_table
 ```
 
 ### Moving Forward
