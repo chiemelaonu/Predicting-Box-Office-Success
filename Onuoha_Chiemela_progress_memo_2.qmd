@@ -36,8 +36,6 @@ library(here)
 # resolve conflicts
 tidymodels_prefer()
 
-load(here("results/lm_fit.rda"))
-load(here("results/baseline_fit.rda"))
 ```
 
 ::: {.callout-tip icon=false}
@@ -54,7 +52,10 @@ load(here("results/baseline_fit.rda"))
 Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025^[The Kaggle data was compiled from IMDB.com]
 
 ## Analysis Plan
-My analysis plan is to split the data with `prop = 0.8` and `strata = yeo_revenue`. I also will be using V-fold cross validation and fitting my models (Baseline, OLS, Lasso, Ridge, Random Forest, and KNN) to the resamples. My V-fold cross validation consists of 5 folds and 3 repeats. I will also be tuning the models that utilize hyperparameters so that I can use the most suitable hyperparamaters for my data. I currently have 2 recipes, but will be finishing off with at least 4. There will be a 3rd for Random Forest and a 4th for KNN.
+My analysis plan is to split the data with `prop = 0.8` and `strata = yeo_revenue`. I also will be using V-fold cross validation and fitting my models (Null, Baseline, OLS, Lasso, Ridge, Random Forest, and KNN) to the resamples. My V-fold cross validation consists of 5 folds and 3 repeats. I will be tuning the models that utilize hyperparameters so that I can use the most suitable hyperparamaters for my data. I currently have my null/baseline recipe, and 2 OLS recipes (one with interactions and one without). I will be finishing off with at least 4 recipes.
+
+### Updates on Data Since Memo 1
+I initially only had 3 predictors for my models, but I have been able to conduct more manipulation of the data to allow for more usable predictors in my models. I added a column called `num_genres` that has the counts of the genres for each movie. I added columns `negative`, `positive`, and `overall_sentiment` that uses the `tidytext` package to parse the `overview` column and note which words are positive or negative. The `positive` and `negative` columns hold the counts of those kinds of words present in each observation, and the `overall_sentiment` column gives the overall sentiment: Negative, Positive, or Neutral, depending on how many of each kind was counted. Some of the observations had NA for these columns, but I imputed those values with the mean (for the `negative` and `positive` columns) and the mode (for the `overall_sentiment` column). Lastly, I added a column called `num_crew` that counts the number of crew members listed for each movie. These new columns will serve as better features for my model, in the hopes of creating more accurate and meaningful predictions.
 
 ### Fitted Results
 ```{r}
@@ -63,21 +64,10 @@ My analysis plan is to split the data with `prop = 0.8` and `strata = yeo_revenu
 
 
 # calculate metrics for each fitted model (fitted with kc_folds) ----
-linear_metrics <- collect_metrics(lm_fit)
-baseline_metrics  <- collect_metrics(baseline_fit)
-
-performance_table <- bind_rows(
-  linear_metrics |> mutate(Model = "Linear Regression"),
-  baseline_metrics |> mutate(Model = "Baseline Regression")
-) |>
-  knitr::kable()
-
-performance_table
-
 
 ```
 
 ### Moving Forward
-My data has been split and so far, 2 recipes have been defined. I have defined and fit the baseline, the OLS model, and I have tuned and fit the Lasso model. I will be continuing with tuning and fitting Ridge, Random Forest, and K-Nearest Neighbors. The last things I will do is train the best model to the training set and predict on the testing and assess that final model. As of right now, I do not see an issues or areas of concern, but will be stay vigilant in case any appear.
+My data has been split and so far and 3 recipes have been defined. I have defined and fit the null, baseline, and one OLS model, and I have tuned and fit the Lasso model. I will be continuing with building recipes and tuning and fitting Ridge, Random Forest, and K-Nearest Neighbors. After I have tuned all of the models, I will compare the results and pick wich model produces the best RMSE. Then I will train that model to the training set and predict on the testing and assess that final model. As of right now, I do not see an issues or areas of concern, but will be stay vigilant in case any appear.
 
 

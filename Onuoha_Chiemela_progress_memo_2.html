@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chiemela Onuoha">
-<meta name="dcterms.date" content="2025-02-20">
+<meta name="dcterms.date" content="2025-02-28">
 
 <title>PM2 Chiemela Onuoha</title>
 <style>
@@ -3055,6 +3055,7 @@ vertical-align: -.125em;
   <li><a href="#data-source" id="toc-data-source" class="nav-link active" data-scroll-target="#data-source">Data source</a></li>
   <li><a href="#analysis-plan" id="toc-analysis-plan" class="nav-link" data-scroll-target="#analysis-plan">Analysis Plan</a>
   <ul>
+  <li><a href="#updates-on-data-since-memo-1" id="toc-updates-on-data-since-memo-1" class="nav-link" data-scroll-target="#updates-on-data-since-memo-1">Updates on Data Since Memo 1</a></li>
   <li><a href="#fitted-results" id="toc-fitted-results" class="nav-link" data-scroll-target="#fitted-results">Fitted Results</a></li>
   <li><a href="#moving-forward" id="toc-moving-forward" class="nav-link" data-scroll-target="#moving-forward">Moving Forward</a></li>
   </ul></li>
@@ -3086,7 +3087,7 @@ Data Science 2 with R (STAT 301-2)</div><p></p>
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 20, 2025</p>
+      <p class="date">February 28, 2025</p>
     </div>
   </div>
   
@@ -3117,59 +3118,17 @@ Github Repo Link
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup> The Kaggle data was compiled from IMDB.com</p></div></div></section>
 <section id="analysis-plan" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-plan">Analysis Plan</h2>
-<p>My analysis plan is to split the data with <code>prop = 0.8</code> and <code>strata = yeo_revenue</code>. I also will be using V-fold cross validation and fitting my models (Baseline, OLS, Lasso, Ridge, Random Forest, and KNN) to the resamples. My V-fold cross validation consists of 5 folds and 3 repeats. I will also be tuning the models that utilize hyperparameters so that I can use the most suitable hyperparamaters for my data. I currently have 2 recipes, but will be finishing off with at least 4. There will be a 3rd for Random Forest and a 4th for KNN.</p>
+<p>My analysis plan is to split the data with <code>prop = 0.8</code> and <code>strata = yeo_revenue</code>. I also will be using V-fold cross validation and fitting my models (Null, Baseline, OLS, Lasso, Ridge, Random Forest, and KNN) to the resamples. My V-fold cross validation consists of 5 folds and 3 repeats. I will be tuning the models that utilize hyperparameters so that I can use the most suitable hyperparamaters for my data. I currently have my null/baseline recipe, and 2 OLS recipes (one with interactions and one without). I will be finishing off with at least 4 recipes.</p>
+<section id="updates-on-data-since-memo-1" class="level3">
+<h3 class="anchored" data-anchor-id="updates-on-data-since-memo-1">Updates on Data Since Memo 1</h3>
+<p>I initially only had 3 predictors for my models, but I have been able to conduct more manipulation of the data to allow for more usable predictors in my models. I added a column called <code>num_genres</code> that has the counts of the genres for each movie. I added columns <code>negative</code>, <code>positive</code>, and <code>overall_sentiment</code> that uses the <code>tidytext</code> package to parse the <code>overview</code> column and note which words are positive or negative. The <code>positive</code> and <code>negative</code> columns hold the counts of those kinds of words present in each observation, and the <code>overall_sentiment</code> column gives the overall sentiment: Negative, Positive, or Neutral, depending on how many of each kind was counted. Some of the observations had NA for these columns, but I imputed those values with the mean (for the <code>negative</code> and <code>positive</code> columns) and the mode (for the <code>overall_sentiment</code> column). Lastly, I added a column called <code>num_crew</code> that counts the number of crew members listed for each movie. These new columns will serve as better features for my model, in the hopes of creating more accurate and meaningful predictions.</p>
+</section>
 <section id="fitted-results" class="level3">
 <h3 class="anchored" data-anchor-id="fitted-results">Fitted Results</h3>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 13%">
-<col style="width: 10%">
-<col style="width: 3%">
-<col style="width: 12%">
-<col style="width: 25%">
-<col style="width: 24%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">.metric</th>
-<th style="text-align: left;">.estimator</th>
-<th style="text-align: right;">mean</th>
-<th style="text-align: right;">n</th>
-<th style="text-align: right;">std_err</th>
-<th style="text-align: left;">.config</th>
-<th style="text-align: left;">Model</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">rmse</td>
-<td style="text-align: left;">standard</td>
-<td style="text-align: right;">113.3561</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">0.4191817</td>
-<td style="text-align: left;">Preprocessor1_Model1</td>
-<td style="text-align: left;">Linear Regression</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">rmse</td>
-<td style="text-align: left;">standard</td>
-<td style="text-align: right;">174.6586</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">0.3938825</td>
-<td style="text-align: left;">Preprocessor1_Model1</td>
-<td style="text-align: left;">Baseline Regression</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
 </section>
 <section id="moving-forward" class="level3">
 <h3 class="anchored" data-anchor-id="moving-forward">Moving Forward</h3>
-<p>My data has been split and so far, 2 recipes have been defined. I have defined and fit the baseline, the OLS model, and I have tuned and fit the Lasso model. I will be continuing with tuning and fitting Ridge, Random Forest, and K-Nearest Neighbors. The last things I will do is train the best model to the training set and predict on the testing and assess that final model. As of right now, I do not see an issues or areas of concern, but will be stay vigilant in case any appear.</p>
+<p>My data has been split and so far and 3 recipes have been defined. I have defined and fit the null, baseline, and one OLS model, and I have tuned and fit the Lasso model. I will be continuing with building recipes and tuning and fitting Ridge, Random Forest, and K-Nearest Neighbors. After I have tuned all of the models, I will compare the results and pick wich model produces the best RMSE. Then I will train that model to the training set and predict on the testing and assess that final model. As of right now, I do not see an issues or areas of concern, but will be stay vigilant in case any appear.</p>
 </section>
 </section>
 
