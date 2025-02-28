@@ -12,22 +12,9 @@ tidymodels_prefer()
 # load in training data ----
 load(here("data/movies_train.rda"))
 
-# build null/baseline recipe ----
-movies_recipe_baseline <- recipe(yeo_revenue ~ score + budget_x + date
-                                 + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
-  step_impute_mode(overall_sentiment) |>
-  step_impute_mean(positive, negative) |>
-  step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
-  step_dummy(all_nominal_predictors(), one_hot = TRUE)
-
-movies_recipe_baseline |>
-  prep() |>
-  bake(new_data = NULL) |> glimpse()
-
-
 # first OLS recipe ----
-movies_recipe <- recipe(yeo_revenue ~ score + budget_x + date
-                                 + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
+movies_recipe_ols <- recipe(yeo_revenue ~ score + budget_x + date
+                        + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
   step_impute_mean(positive, negative) |>
   step_impute_mode(overall_sentiment) |>
   step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
@@ -36,7 +23,7 @@ movies_recipe <- recipe(yeo_revenue ~ score + budget_x + date
   step_normalize(all_numeric_predictors())
 
 # second OLS recipe (without interactions)
-# movies_recipe <- recipe(yeo_revenue ~ score + budget_x + date
+# movies_recipe_ols_basic <- recipe(yeo_revenue ~ score + budget_x + date
 #                         + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
 #   step_impute_mean(positive, negative) |>
 #   step_impute_mode(overall_sentiment) |>
@@ -49,6 +36,5 @@ movies_recipe <- recipe(yeo_revenue ~ score + budget_x + date
 #   bake(new_data = NULL) |> glimpse()
 
 # save results ----
-save(movies_recipe, file = here("recipes/movies_recipe.rda"))
-
-save(movies_recipe_baseline, file = here("recipes/movies_recipe_baseline.rda"))
+save(movies_recipe_ols_basic, file = here("recipes/movies_recipe_ols_basic.rda"))
+save(movies_recipe_ols, file = here("recipes/movies_recipe_ols.rda"))
