@@ -19,7 +19,7 @@ movies_recipe_tree <- recipe(yeo_revenue ~ score + budget_x + date
   step_impute_mode(overall_sentiment) |>
   step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
   step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
-  step_zv(all_predictors()) |> 
+  step_zv(all_predictors()) |>
   step_normalize(all_numeric_predictors())
 
 movies_recipe_tree |>
