@@ -1,5 +1,5 @@
 # Final Project Memo 1  ----
-# Tuning, Fitting Elastic Net Models
+# Model Analysis
 
 ## loading in data ----
 library(tidyverse)
