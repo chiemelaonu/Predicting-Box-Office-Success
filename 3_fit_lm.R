@@ -15,7 +15,7 @@ tidymodels_prefer()
 set.seed(8160082)
 
 # parallel processing ----
-num_cores <- parallel::detectCores(logical = FALSE)
+num_cores <- parallel::detectCores(logical = TRUE)
 registerDoMC(cores = 6)
 
 # load data ----

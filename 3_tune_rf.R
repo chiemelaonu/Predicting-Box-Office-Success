@@ -15,8 +15,8 @@ tidymodels_prefer()
 set.seed(101932)
 
 # parallel processing ----
-num_cores <- parallel::detectCores(logical = FALSE)
-registerDoMC(cores = 6)
+num_cores <- parallel::detectCores(logical = TRUE)
+registerDoMC(cores = num_cores)
 
 # load in data ----
 load(here("data/movies_folds.rda"))
@@ -47,9 +47,9 @@ rf_params <- hardhat::extract_parameter_set_dials(rf_spec) |>
   # N:= maximum number of random predictor columns we want to try 
   # should be less than the number of available columns
   update(
-    trees = trees()
+    trees = trees(c(500, 2000)),
     mtry = mtry(c(1, 10)),
-    min_n = min_n()
+    min_n = min_n(c(2,40))
   ) 
 
 # build tuning grid
