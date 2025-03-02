@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chiemela Onuoha">
-<meta name="dcterms.date" content="2025-02-28">
+<meta name="dcterms.date" content="2025-03-02">
 
 <title>PM2 Chiemela Onuoha</title>
 <style>
@@ -3053,7 +3053,8 @@ vertical-align: -.125em;
    
   <ul>
   <li><a href="#data-source" id="toc-data-source" class="nav-link active" data-scroll-target="#data-source">Data source</a></li>
-  <li><a href="#analysis-plan" id="toc-analysis-plan" class="nav-link" data-scroll-target="#analysis-plan">Analysis Plan</a>
+  <li><a href="#analysis-plan" id="toc-analysis-plan" class="nav-link" data-scroll-target="#analysis-plan">Analysis Plan</a></li>
+  <li><a href="#recipes" id="toc-recipes" class="nav-link" data-scroll-target="#recipes">Recipes</a>
   <ul>
   <li><a href="#updates-on-data-since-memo-1" id="toc-updates-on-data-since-memo-1" class="nav-link" data-scroll-target="#updates-on-data-since-memo-1">Updates on Data Since Memo 1</a></li>
   <li><a href="#fitted-results" id="toc-fitted-results" class="nav-link" data-scroll-target="#fitted-results">Fitted Results</a></li>
@@ -3087,7 +3088,7 @@ Data Science 2 with R (STAT 301-2)</div><p></p>
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 28, 2025</p>
+      <p class="date">March 2, 2025</p>
     </div>
   </div>
   
@@ -3118,7 +3119,13 @@ Github Repo Link
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup> The Kaggle data was compiled from IMDB.com</p></div></div></section>
 <section id="analysis-plan" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-plan">Analysis Plan</h2>
-<p>My analysis plan is to split the data with <code>prop = 0.8</code> and <code>strata = yeo_revenue</code>. I also will be using V-fold cross validation and fitting my models (Null, Baseline, OLS, Lasso, Ridge, Random Forest, and KNN) to the resamples. My V-fold cross validation consists of 5 folds and 3 repeats. I will be tuning the models that utilize hyperparameters so that I can use the most suitable hyperparamaters for my data. I currently have my null/baseline recipe, and 2 OLS recipes (one with interactions and one without). I will be finishing off with at least 4 recipes.</p>
+<p>My analysis plan is to split the data with <code>prop = 0.8</code> and <code>strata = yeo_revenue</code>. I also will be using V-fold cross validation and fitting my models (Null, Baseline, OLS, Lasso, Ridge, Random Forest, and KNN) to the resamples. My V-fold cross validation consists of 5 folds and 3 repeats. I will be tuning the models that utilize hyperparameters so that I can use the most suitable hyperparamaters for my data. I currently have my null/baseline recipe, and 2 OLS recipes. I will be finishing off with at least 4 recipes.</p>
+</section>
+<section id="recipes" class="level2">
+<h2 class="anchored" data-anchor-id="recipes">Recipes</h2>
+<p>The first recipe was for the null and baseline models. My first step was to impute the mean values for the <code>positive</code> and <code>negative</code> columns since there were missing values. I also imputed the mode of the <code>overall_sentiment</code> column. Next, I used <code>step_date()</code> to extract the year and month out of the date column to use as predictors. Lastly, I used <code>step_dummy()</code> to one-hot encode the <code>overall_sentiment</code> column so that all 3 types of sentiments are captured and used as predictors.<br>
+<br><br>
+The second recipe I have is for my OLS model and most of the steps are the same as the null/baseline recipe, except I used <code>step_interact()</code> to create an interaction with 2 predictors I feel would work together in this predictive process, and used <code>step_normalize()</code> to scale and center the numerical predictors to prevent multicollinearity.</p>
 <section id="updates-on-data-since-memo-1" class="level3">
 <h3 class="anchored" data-anchor-id="updates-on-data-since-memo-1">Updates on Data Since Memo 1</h3>
 <p>I initially only had 3 predictors for my models, but I have been able to conduct more manipulation of the data to allow for more usable predictors in my models. I added a column called <code>num_genres</code> that has the counts of the genres for each movie. I added columns <code>negative</code>, <code>positive</code>, and <code>overall_sentiment</code> that uses the <code>tidytext</code> package to parse the <code>overview</code> column and note which words are positive or negative. The <code>positive</code> and <code>negative</code> columns hold the counts of those kinds of words present in each observation, and the <code>overall_sentiment</code> column gives the overall sentiment: Negative, Positive, or Neutral, depending on how many of each kind was counted. Some of the observations had NA for these columns, but I imputed those values with the mean (for the <code>negative</code> and <code>positive</code> columns) and the mode (for the <code>overall_sentiment</code> column). Lastly, I added a column called <code>num_crew</code> that counts the number of crew members listed for each movie. These new columns will serve as better features for my model, in the hopes of creating more accurate and meaningful predictions.</p>
