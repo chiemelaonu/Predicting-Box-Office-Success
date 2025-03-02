@@ -21,7 +21,7 @@ load(here("data/movies_folds.rda"))
 
 
 # load in recipe ----
-load(here("recipes/movies_recipe.rda"))
+load(here("recipes/movies_recipe_ols.rda"))
 
 # define model spec ----
 lm_spec <- linear_reg() |>
@@ -31,7 +31,7 @@ lm_spec <- linear_reg() |>
 # define workflow ----
 lm_wflow <- workflow() |>
   add_model(lm_spec) |>
-  add_recipe(movies_recipe)
+  add_recipe(movies_recipe_ols)
 
 
 # fit workflow ----

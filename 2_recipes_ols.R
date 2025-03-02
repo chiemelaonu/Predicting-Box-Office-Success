@@ -19,7 +19,7 @@ movies_recipe_ols <- recipe(yeo_revenue ~ score + budget_x + date
   step_impute_mode(overall_sentiment) |>
   step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
   step_interact(terms = ~ budget_x:num_crew ) |> 
-  step_dummy(all_nominal_predictors()) |>
+  step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
   step_normalize(all_numeric_predictors())
 
 # second OLS recipe (without interactions)
@@ -28,13 +28,13 @@ movies_recipe_ols <- recipe(yeo_revenue ~ score + budget_x + date
 #   step_impute_mean(positive, negative) |>
 #   step_impute_mode(overall_sentiment) |>
 #   step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
-#   step_dummy(all_nominal_predictors()) |>
+#   step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
 #   step_normalize(all_numeric_predictors())
 
-# movies_recipe |>
+# movies_recipe_ols |>
 #   prep() |>
 #   bake(new_data = NULL) |> glimpse()
 
 # save results ----
-save(movies_recipe_ols_basic, file = here("recipes/movies_recipe_ols_basic.rda"))
+# save(movies_recipe_ols_basic, file = here("recipes/movies_recipe_ols_basic.rda"))
 save(movies_recipe_ols, file = here("recipes/movies_recipe_ols.rda"))

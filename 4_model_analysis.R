@@ -41,11 +41,15 @@ model_results |>
 model_results |>
   collect_metrics() 
 
-model_results |>
+basic_fits_table <- model_results |>
   collect_metrics() |>
   filter(.metric == "rmse") |>
   slice_min(mean, by = wflow_id) |>
-  arrange(mean)
-
-
-
+  arrange(mean) |>
+  select(
+    `Model Name` = wflow_id,          
+    `Metric Type` = .metric,          
+    `Mean RMSE` = mean,               
+    `Standard Error` = std_err,
+    n              
+  ) |> knitr::kable()
