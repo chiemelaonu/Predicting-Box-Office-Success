@@ -11,13 +11,15 @@ library(doMC)
 # resolve conflicts
 tidymodels_prefer()
 
+# set seed 
+set.seed(8160082)
+
 # parallel processing ----
 num_cores <- parallel::detectCores(logical = FALSE)
 registerDoMC(cores = 6)
 
 # load data ----
 load(here("data/movies_folds.rda"))
-
 
 
 # load in recipe ----
