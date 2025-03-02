@@ -20,6 +20,7 @@ movies_recipe_lm <- recipe(yeo_revenue ~ score + budget_x + date
   step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
   step_interact(terms = ~ budget_x:num_crew ) |> 
   step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
+  step_zv(all_predictors()) |>
   step_normalize(all_numeric_predictors())
 
 # second OLS recipe (without interactions)
