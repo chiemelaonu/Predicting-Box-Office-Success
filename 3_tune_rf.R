@@ -28,7 +28,7 @@ load(here("data/my_metrics.rda"))
 load(here("recipes/movies_recipe_tree.rda"))
 
 # model specifications ----
-  rf_spec <- rand_forest(trees = tune(), min_n = tune(), mtry = tune())|> 
+  rf_spec <- rand_forest(trees = 500, min_n = tune(), mtry = tune())|> 
   set_engine("ranger") |> 
   set_mode("regression")
 
@@ -47,9 +47,8 @@ rf_params <- hardhat::extract_parameter_set_dials(rf_spec) |>
   # N:= maximum number of random predictor columns we want to try 
   # should be less than the number of available columns
   update(
-    trees = trees(c(500, 2000)),
-    mtry = mtry(c(1, 10)),
-    min_n = min_n(c(2,40))
+    mtry = mtry(range = c(1, 10)),
+    min_n = min_n(range = c(2, 40))
   ) 
 
 # build tuning grid
