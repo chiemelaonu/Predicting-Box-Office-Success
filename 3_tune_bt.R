@@ -12,7 +12,7 @@ library(doMC)
 tidymodels_prefer()
 
 # set seed
-set.seed(101932)
+set.seed(6791822)
 
 # parallel processing ----
 num_cores <- parallel::detectCores(logical = TRUE)
@@ -28,46 +28,47 @@ load(here("data/my_metrics.rda"))
 load(here("recipes/movies_recipe_tree.rda"))
 
 # model specifications ----
-  rf_spec <- rand_forest(trees = tune(), min_n = tune(), mtry = tune())|> 
-  set_engine("ranger") |> 
+  bt_spec <- rand_forest(trees = tune(), min_n = tune(), mtry = tune())|> 
+  set_engine("xgboost") |> 
   set_mode("regression")
 
 # define workflows ----
-rf_wflow <- workflow() |>
-  add_model(rf_spec) |>
+bt_wflow <- workflow() |>
+  add_model(bt_spec) |>
   add_recipe(movies_recipe_tree)
 
 # hyperparameter tuning values ----
 
 # check ranges for hyperparameters
-hardhat::extract_parameter_set_dials(rf_spec)
+hardhat::extract_parameter_set_dials(bt_spec)
 
 # change hyperparameter ranges
-rf_params <- hardhat::extract_parameter_set_dials(rf_spec) |> 
+bt_params <- hardhat::extract_parameter_set_dials(bt_spec) |> 
   # N:= maximum number of random predictor columns we want to try 
   # should be less than the number of available columns
   update(
-    trees = trees(c(500, 2000)),
+    trees = trees(c(100, 300)),
     mtry = mtry(c(1, 10)),
-    min_n = min_n(c(2,40))
+    min_n = min_n(c(2, 40)),
+    learn_rate = learn_rate(range = c(-5, -0.2))
   ) 
 
 # build tuning grid
-rf_grid <- grid_regular(rf_params, levels = 5)
+bt_grid <- grid_regular(bt_params, levels = 5)
 
-# rf_grid <- grid_random(rf_params, size = 10)
+# bt_grid <- grid_random(bt_params, size = 10)
 
 
 # fit workflows/models ----
-rf_tuned <- 
-  rf_wflow |> 
+bt_tuned <- 
+  bt_wflow |> 
   tune_grid(
     movies_folds, 
-    grid = rf_grid, 
+    grid = bt_grid, 
     control = keep_wflow,
     metrics = my_metrics
   )
 
 # write out results (fitted/trained workflows) ----
-save(rf_tuned, file = here("results/rf_tuned.rda"))
+save(bt_tuned, file = here("results/bt_tuned.rda"))
 
