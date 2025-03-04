@@ -30,7 +30,7 @@ movies_recipe_tree_basic |>
 
 
 # complex tree recipe ----
-# categorize by seasons, transform budget?
+# categorize by seasons
 movies_recipe_tree <- recipe(yeo_revenue ~ score + budget_x + date
                              + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
   step_impute_mean(all_numeric_predictors()) |>
@@ -54,4 +54,4 @@ movies_recipe_tree |>
 
 # save results ----
 save(movies_recipe_tree_basic, file = here("recipes/movies_recipe_tree_basic.rda"))
-# save(movies_recipe_tree, file = here("recipes/movies_recipe_tree.rda"))
+save(movies_recipe_tree, file = here("recipes/movies_recipe_tree.rda"))
