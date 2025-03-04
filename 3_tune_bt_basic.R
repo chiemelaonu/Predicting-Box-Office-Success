@@ -25,17 +25,22 @@ load(here("data/my_metrics.rda"))
 
 
 # load in recipe ----
-load(here("recipes/movies_recipe_tree.rda"))
+load(here("recipes/movies_recipe_tree_basic.rda"))
 
 # model specifications ----
-  bt_spec <- rand_forest(trees = tune(), min_n = tune(), mtry = tune())|> 
+bt_spec <- 
+  boost_tree(trees = 250,
+             min_n = tune(),
+             mtry = tune(),
+             learn_rate = tune()
+             ) |> 
   set_engine("xgboost") |> 
   set_mode("regression")
 
 # define workflows ----
 bt_wflow <- workflow() |>
   add_model(bt_spec) |>
-  add_recipe(movies_recipe_tree)
+  add_recipe(movies_recipe_tree_basic)
 
 # hyperparameter tuning values ----
 
@@ -47,7 +52,6 @@ bt_params <- hardhat::extract_parameter_set_dials(bt_spec) |>
   # N:= maximum number of random predictor columns we want to try 
   # should be less than the number of available columns
   update(
-    trees = trees(c(100, 300)),
     mtry = mtry(c(1, 10)),
     min_n = min_n(c(2, 40)),
     learn_rate = learn_rate(range = c(-5, -0.2))
@@ -60,7 +64,7 @@ bt_grid <- grid_regular(bt_params, levels = 5)
 
 
 # fit workflows/models ----
-bt_tuned <- 
+bt_tuned_basic <- 
   bt_wflow |> 
   tune_grid(
     movies_folds, 
@@ -70,5 +74,5 @@ bt_tuned <-
   )
 
 # write out results (fitted/trained workflows) ----
-save(bt_tuned, file = here("results/bt_tuned.rda"))
+save(bt_tuned_basic, file = here("results/bt_tuned_basic.rda"))
 
