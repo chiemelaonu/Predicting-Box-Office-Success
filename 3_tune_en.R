@@ -27,8 +27,103 @@ load(here("data/my_metrics.rda"))
 # load in recipe ----
 load(here("recipes/movies_recipe_lm.rda"))
 
-# LASSO MODEL ----
 
+# BASIC TUNE ----
+
+# model specifications ----
+lasso_spec_basic <- linear_reg(penalty = tune(), mixture = tune())|> 
+  set_engine("glmnet") |> 
+  set_mode("regression")
+
+# define workflows ----
+lasso_wflow_basic <- workflow() |>
+  add_model(lasso_spec_basic) |>
+  add_recipe(movies_recipe_lm_basic)
+
+# hyperparameter tuning values ----
+
+# check ranges for hyperparameters
+hardhat::extract_parameter_set_dials(lasso_spec_basic)
+
+# change hyperparameter ranges
+lasso_params <- hardhat::extract_parameter_set_dials(lasso_spec_basic) |> 
+  # N:= maximum number of random predictor columns we want to try 
+  # should be less than the number of available columns
+  update(
+    penalty = penalty(trans = NULL, range = 10^c(-10, 0)),
+    mixture = mixture()
+  ) 
+
+# build tuning grid
+lasso_grid_basic <- grid_regular(lasso_params, levels = 5)
+
+# lasso_grid <- grid_random(lasso_params, size = 10)
+
+
+# fit workflows/models ----
+lasso_tuned_basic <- 
+  lasso_wflow |> 
+  tune_grid(
+    movies_folds, 
+    grid = lasso_grid_basic, 
+    control = keep_wflow,
+    metrics = my_metrics
+  )
+
+# write out results (fitted/trained workflows) ----
+save(lasso_tuned_basic, file = here("results/lasso_tuned_basic.rda"))
+
+
+
+
+# model specifications ----
+ridge_spec_basic <- linear_reg(penalty = tune(), mixture = tune())|> 
+  set_engine("glmnet") |> 
+  set_mode("regression")
+
+# define workflows ----
+ridge_wflow_basic <- workflow() |>
+  add_model(ridge_spec_basic) |>
+  add_recipe(movies_recipe_lm_basic)
+
+# hyperparameter tuning values ----
+
+# check ranges for hyperparameters
+hardhat::extract_parameter_set_dials(rideg_spec_basic)
+
+# change hyperparameter ranges
+lasso_params <- hardhat::extract_parameter_set_dials(ridge_spec_basic) |> 
+  # N:= maximum number of random predictor columns we want to try 
+  # should be less than the number of available columns
+  update(
+    penalty = penalty(trans = NULL, range = 10^c(-10, 0)),
+    mixture = mixture()
+  ) 
+
+# build tuning grid
+ridge_grid_basic <- grid_regular(lasso_params, levels = 5)
+
+# lasso_grid <- grid_random(lasso_params, size = 10)
+
+
+# fit workflows/models ----
+ridge_tuned_basic <- 
+  ridge_wflow_basic |> 
+  tune_grid(
+    movies_folds, 
+    grid = ridge_grid_basic, 
+    control = keep_wflow,
+    metrics = my_metrics
+  )
+
+# write out results (fitted/trained workflows) ----
+save(ridge_tuned_basic, file = here("results/ridge_tuned_basic.rda"))
+
+
+
+
+
+# COMPLEX TUNE ----
 
 # model specifications ----
 lasso_spec <- linear_reg(penalty = tune(), mixture = tune())|> 
@@ -73,95 +168,8 @@ lasso_tuned <-
 # write out results (fitted/trained workflows) ----
 save(lasso_tuned, file = here("results/lasso_tuned.rda"))
 
-# RIDGE MODEL ----  
-# model specifications ----
-lasso_spec <- linear_reg(penalty = tune(), mixture = tune())|> 
-  set_engine("glmnet") |> 
-  set_mode("regression")
-
-# define workflows ----
-lasso_wflow <- workflow() |>
-  add_model(lasso_spec) |>
-  add_recipe(movies_recipe_lm)
-
-# hyperparameter tuning values ----
-
-# check ranges for hyperparameters
-hardhat::extract_parameter_set_dials(lasso_spec)
-
-# change hyperparameter ranges
-lasso_params <- hardhat::extract_parameter_set_dials(lasso_spec) |> 
-  # N:= maximum number of random predictor columns we want to try 
-  # should be less than the number of available columns
-  update(
-    penalty = penalty(trans = NULL, range = 10^c(-10, 0)),
-    mixture = mixture()
-  ) 
-
-# build tuning grid
-lasso_grid <- grid_regular(lasso_params, levels = 5)
-
-# lasso_grid <- grid_random(lasso_params, size = 10)
 
 
-# fit workflows/models ----
-lasso_tuned <- 
-  lasso_wflow |> 
-  tune_grid(
-    movies_folds, 
-    grid = lasso_grid, 
-    control = keep_wflow,
-    metrics = my_metrics
-  )
-
-# write out results (fitted/trained workflows) ----
-save(lasso_tuned, file = here("results/lasso_tuned.rda"))
-
-
-# RIDGE MODEL ----
-
-# model specifications ----
-  lasso_spec <- linear_reg(penalty = tune(), mixture = tune())|> 
-  set_engine("glmnet") |> 
-  set_mode("regression")
-
-# define workflows ----
-lasso_wflow <- workflow() |>
-  add_model(lasso_spec) |>
-  add_recipe(movies_recipe_lm)
-
-# hyperparameter tuning values ----
-
-# check ranges for hyperparameters
-hardhat::extract_parameter_set_dials(lasso_spec)
-
-# change hyperparameter ranges
-lasso_params <- hardhat::extract_parameter_set_dials(lasso_spec) |> 
-  # N:= maximum number of random predictor columns we want to try 
-  # should be less than the number of available columns
-  update(
-    penalty = penalty(trans = NULL, range = 10^c(-10, 0)),
-    mixture = mixture()
-  ) 
-
-# build tuning grid
-lasso_grid <- grid_regular(lasso_params, levels = 5)
-
-# lasso_grid <- grid_random(lasso_params, size = 10)
-
-
-# fit workflows/models ----
-lasso_tuned <- 
-  lasso_wflow |> 
-  tune_grid(
-    movies_folds, 
-    grid = lasso_grid, 
-    control = keep_wflow,
-    metrics = my_metrics
-  )
-
-# write out results (fitted/trained workflows) ----
-save(lasso_tuned, file = here("results/lasso_tuned.rda"))
 
 # RIDGE MODEL ----  
 
@@ -178,10 +186,10 @@ ridge_wflow <- workflow() |>
 # hyperparameter tuning values ----
 
 # check ranges for hyperparameters
-hardhat::extract_parameter_set_dials(lasso_spec)
+hardhat::extract_parameter_set_dials(ridge_spec)
 
 # change hyperparameter ranges
-ridge_params <- hardhat::extract_parameter_set_dials(lasso_spec) |> 
+ridge_params <- hardhat::extract_parameter_set_dials(ridge_spec) |> 
   # N:= maximum number of random predictor columns we want to try 
   # should be less than the number of available columns
   update(

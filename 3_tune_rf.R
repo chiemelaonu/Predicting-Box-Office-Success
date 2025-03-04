@@ -26,26 +26,27 @@ load(here("data/my_metrics.rda"))
 
 # load in recipe ----
 load(here("recipes/movies_recipe_tree_basic.rda"))
+load(here("recipes/movies_recipe_tree.rda"))
 
 # BASIC MODEL TUNING ----
 
 # model specifications ----
-  rf_spec <- rand_forest(trees = 500, min_n = tune(), mtry = tune())|> 
+rf_spec_basic <- rand_forest(trees = 500, min_n = tune(), mtry = tune()) |>
   set_engine("ranger") |> 
   set_mode("regression")
 
 # define workflows ----
-rf_wflow <- workflow() |>
-  add_model(rf_spec) |>
+rf_wflow_basic <- workflow() |>
+  add_model(rf_spec_basic) |>
   add_recipe(movies_recipe_tree_basic)
 
 # hyperparameter tuning values ----
 
 # check ranges for hyperparameters
-hardhat::extract_parameter_set_dials(rf_spec)
+hardhat::extract_parameter_set_dials(rf_spec_basic)
 
 # change hyperparameter ranges
-rf_params <- hardhat::extract_parameter_set_dials(rf_spec) |> 
+rf_params <- hardhat::extract_parameter_set_dials(rf_spec_basic) |> 
   # N:= maximum number of random predictor columns we want to try 
   # should be less than the number of available columns
   update(
@@ -54,17 +55,17 @@ rf_params <- hardhat::extract_parameter_set_dials(rf_spec) |>
   ) 
 
 # build tuning grid
-rf_grid <- grid_regular(rf_params, levels = 5)
+rf_grid_basic <- grid_regular(rf_params, levels = 5)
 
 # rf_grid <- grid_random(rf_params, size = 10)
 
 
 # fit workflows/models ----
 rf_tuned_basic <- 
-  rf_wflow |> 
+  rf_wflow_basic |> 
   tune_grid(
     movies_folds, 
-    grid = rf_grid, 
+    grid = rf_grid_basic, 
     control = keep_wflow,
     metrics = my_metrics
   )
