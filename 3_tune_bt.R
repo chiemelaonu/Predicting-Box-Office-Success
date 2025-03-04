@@ -85,7 +85,7 @@ save(bt_tuned_basic, file = here("results/bt_tuned_basic.rda"))
 # COMPLEX TUNE ----
 
 # model specifications ----
-bt_spec <- rand_forest(trees = 250, min_n = tune(), mtry = tune())|> 
+bt_spec <- boost_tree(trees = 250, min_n = tune(), mtry = tune(), learn_rate = tune())|> 
   set_engine("xgboost") |> 
   set_mode("regression")
 
