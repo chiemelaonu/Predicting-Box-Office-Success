@@ -25,7 +25,7 @@ load(here("data/my_metrics.rda"))
 
 
 # load in recipe ----
-load(here("recipes/movies_recipe_tree.rda"))
+load(here("recipes/movies_recipe_tree_basic.rda"))
 
 # model specifications ----
   rf_spec <- rand_forest(trees = 500, min_n = tune(), mtry = tune())|> 
@@ -35,7 +35,7 @@ load(here("recipes/movies_recipe_tree.rda"))
 # define workflows ----
 rf_wflow <- workflow() |>
   add_model(rf_spec) |>
-  add_recipe(movies_recipe_tree)
+  add_recipe(movies_recipe_tree_basic)
 
 # hyperparameter tuning values ----
 
@@ -58,7 +58,7 @@ rf_grid <- grid_regular(rf_params, levels = 5)
 
 
 # fit workflows/models ----
-rf_tuned <- 
+rf_tuned_basic <- 
   rf_wflow |> 
   tune_grid(
     movies_folds, 
@@ -68,5 +68,5 @@ rf_tuned <-
   )
 
 # write out results (fitted/trained workflows) ----
-save(rf_tuned, file = here("results/rf_tuned.rda"))
+save(rf_tuned_basic, file = here("results/rf_tuned_basic.rda"))
 
