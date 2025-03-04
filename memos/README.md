@@ -3,9 +3,8 @@ This is a repo for my final project including the final report, executive summar
 This project utilizes `tidymodels` to build a predictive model on the revenue of movies. The target variable used for this model is `yeo_revenue`. 
 
 
-## Subfolders
-- [`data`](data): holds the initial read-in data for this repo, as well as the initial split, training, and testing sets
-- [`figures`](figures): holds the saved plots included in the final HTML
-- [`r_scripts`](r_scripts): holds the R scripts for the repo
-- [`results`](results): holds the fitted training models
-- [`memos`](memos): holds the progress memos 1 and 2
+## Files
+- `Onuoha_Chiemela_progress_memo_1.html`: holds the fitted training models
+- `Onuoha_Chiemela_progress_memo_1.qmd`: holds the fitted training models
+- `Onuoha_Chiemela_progress_memo_2.html`: holds the fitted training models
+- `Onuoha_Chiemela_progress_memo_2.qmd`: holds the fitted training models
