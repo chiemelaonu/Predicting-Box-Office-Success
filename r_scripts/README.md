@@ -8,4 +8,12 @@ This is a folder for the R scripts used in my final project
 - `3_fit_baseline.R`: R script for fitting the baseline model
 - `3_fit_lm.R`: R script for fitting the OLS model
 - `3_tune_en.R`: R script for tuning and fitting the Lasso and Ridge models
+- `3_tune_rf.R`: R script for tuning and fitting the Lasso and Ridge models
+- `3_tune_bt.R`: R script for tuning and fitting the Lasso and Ridge models
+- `3_tune_knn.R`: R script for tuning and fitting the Lasso and Ridge models
+- `4_model_analysis.R`: R script for fitting the OLS model
+- `5_train_final_model.R`: R script for tuning and fitting the Lasso and Ridge models
+- `6_assess_final_model.R`: R script for fitting the OLS model
+
+
 

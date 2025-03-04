@@ -25,10 +25,62 @@ load(here("data/my_metrics.rda"))
 
 
 # load in recipe ----
-load(here("recipes/movies_recipe_tree.rda"))
+load(here("recipes/movies_recipe_tree_basic.rda"))
+
+# BASIC MODEL TUNING ----
 
 # model specifications ----
   rf_spec <- rand_forest(trees = 500, min_n = tune(), mtry = tune())|> 
+  set_engine("ranger") |> 
+  set_mode("regression")
+
+# define workflows ----
+rf_wflow <- workflow() |>
+  add_model(rf_spec) |>
+  add_recipe(movies_recipe_tree_basic)
+
+# hyperparameter tuning values ----
+
+# check ranges for hyperparameters
+hardhat::extract_parameter_set_dials(rf_spec)
+
+# change hyperparameter ranges
+rf_params <- hardhat::extract_parameter_set_dials(rf_spec) |> 
+  # N:= maximum number of random predictor columns we want to try 
+  # should be less than the number of available columns
+  update(
+    mtry = mtry(range = c(1, 10)),
+    min_n = min_n(range = c(2, 40))
+  ) 
+
+# build tuning grid
+rf_grid <- grid_regular(rf_params, levels = 5)
+
+# rf_grid <- grid_random(rf_params, size = 10)
+
+
+# fit workflows/models ----
+rf_tuned_basic <- 
+  rf_wflow |> 
+  tune_grid(
+    movies_folds, 
+    grid = rf_grid, 
+    control = keep_wflow,
+    metrics = my_metrics
+  )
+
+# write out results (fitted/trained workflows) ----
+save(rf_tuned_basic, file = here("results/rf_tuned_basic.rda"))
+
+
+
+# COMPLEX MODEL TUNING ----
+
+# set seed
+set.seed(1492781)
+
+# model specifications ----
+rf_spec <- rand_forest(trees = 500, min_n = tune(), mtry = tune())|> 
   set_engine("ranger") |> 
   set_mode("regression")
 
@@ -69,4 +121,5 @@ rf_tuned <-
 
 # write out results (fitted/trained workflows) ----
 save(rf_tuned, file = here("results/rf_tuned.rda"))
+
 
