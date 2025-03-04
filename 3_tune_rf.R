@@ -46,7 +46,7 @@ rf_wflow_basic <- workflow() |>
 hardhat::extract_parameter_set_dials(rf_spec_basic)
 
 # change hyperparameter ranges
-rf_params <- hardhat::extract_parameter_set_dials(rf_spec_basic) |> 
+rf_params_basic <- hardhat::extract_parameter_set_dials(rf_spec_basic) |> 
   # N:= maximum number of random predictor columns we want to try 
   # should be less than the number of available columns
   update(
@@ -55,7 +55,7 @@ rf_params <- hardhat::extract_parameter_set_dials(rf_spec_basic) |>
   ) 
 
 # build tuning grid
-rf_grid_basic <- grid_regular(rf_params, levels = 5)
+rf_grid_basic <- grid_regular(rf_params_basic, levels = 5)
 
 # rf_grid <- grid_random(rf_params, size = 10)
 
@@ -77,8 +77,6 @@ save(rf_tuned_basic, file = here("results/rf_tuned_basic.rda"))
 
 # COMPLEX MODEL TUNING ----
 
-# set seed
-set.seed(1492781)
 
 # model specifications ----
 rf_spec <- rand_forest(trees = 500, min_n = tune(), mtry = tune())|> 

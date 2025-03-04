@@ -47,7 +47,7 @@ lasso_wflow_basic <- workflow() |>
 hardhat::extract_parameter_set_dials(lasso_spec_basic)
 
 # change hyperparameter ranges
-lasso_params <- hardhat::extract_parameter_set_dials(lasso_spec_basic) |> 
+lasso_params_basic <- hardhat::extract_parameter_set_dials(lasso_spec_basic) |> 
   # N:= maximum number of random predictor columns we want to try 
   # should be less than the number of available columns
   update(
@@ -56,7 +56,7 @@ lasso_params <- hardhat::extract_parameter_set_dials(lasso_spec_basic) |>
   ) 
 
 # build tuning grid
-lasso_grid_basic <- grid_regular(lasso_params, levels = 5)
+lasso_grid_basic <- grid_regular(lasso_params_basic, levels = 5)
 
 # lasso_grid <- grid_random(lasso_params, size = 10)
 
@@ -93,7 +93,7 @@ ridge_wflow_basic <- workflow() |>
 hardhat::extract_parameter_set_dials(ridge_spec_basic)
 
 # change hyperparameter ranges
-lasso_params <- hardhat::extract_parameter_set_dials(ridge_spec_basic) |> 
+ridge_params_basic <- hardhat::extract_parameter_set_dials(ridge_spec_basic) |> 
   # N:= maximum number of random predictor columns we want to try 
   # should be less than the number of available columns
   update(
@@ -102,7 +102,7 @@ lasso_params <- hardhat::extract_parameter_set_dials(ridge_spec_basic) |>
   ) 
 
 # build tuning grid
-ridge_grid_basic <- grid_regular(lasso_params, levels = 5)
+ridge_grid_basic <- grid_regular(ridge_params_basic, levels = 5)
 
 # lasso_grid <- grid_random(lasso_params, size = 10)
 

@@ -52,7 +52,7 @@ bt_wflow_basic <- workflow() |>
 hardhat::extract_parameter_set_dials(bt_spec_basic)
 
 # change hyperparameter ranges
-bt_params <- hardhat::extract_parameter_set_dials(bt_spec_basic) |> 
+bt_params_basic <- hardhat::extract_parameter_set_dials(bt_spec_basic) |> 
   # N:= maximum number of random predictor columns we want to try 
   # should be less than the number of available columns
   update(
@@ -62,7 +62,7 @@ bt_params <- hardhat::extract_parameter_set_dials(bt_spec_basic) |>
   ) 
 
 # build tuning grid
-bt_grid_basic <- grid_regular(bt_params, levels = 5)
+bt_grid_basic <- grid_regular(bt_params_basic, levels = 5)
 
 # bt_grid <- grid_random(bt_params, size = 10)
 
@@ -85,7 +85,7 @@ save(bt_tuned_basic, file = here("results/bt_tuned_basic.rda"))
 # COMPLEX TUNE ----
 
 # model specifications ----
-bt_spec <- rand_forest(trees = tune(), min_n = tune(), mtry = tune())|> 
+bt_spec <- rand_forest(trees = 250, min_n = tune(), mtry = tune())|> 
   set_engine("xgboost") |> 
   set_mode("regression")
 
@@ -104,7 +104,6 @@ bt_params <- hardhat::extract_parameter_set_dials(bt_spec) |>
   # N:= maximum number of random predictor columns we want to try 
   # should be less than the number of available columns
   update(
-    trees = trees(c(100, 300)),
     mtry = mtry(c(1, 10)),
     min_n = min_n(c(2, 40)),
     learn_rate = learn_rate(range = c(-5, -0.2))
