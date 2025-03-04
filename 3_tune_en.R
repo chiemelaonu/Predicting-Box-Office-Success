@@ -26,6 +26,7 @@ load(here("data/my_metrics.rda"))
 
 # load in recipe ----
 load(here("recipes/movies_recipe_lm.rda"))
+load(here("recipes/movies_recipe_lm_basic.rda"))
 
 
 # BASIC TUNE ----
@@ -62,7 +63,7 @@ lasso_grid_basic <- grid_regular(lasso_params, levels = 5)
 
 # fit workflows/models ----
 lasso_tuned_basic <- 
-  lasso_wflow |> 
+  lasso_wflow_basic |> 
   tune_grid(
     movies_folds, 
     grid = lasso_grid_basic, 
@@ -89,7 +90,7 @@ ridge_wflow_basic <- workflow() |>
 # hyperparameter tuning values ----
 
 # check ranges for hyperparameters
-hardhat::extract_parameter_set_dials(rideg_spec_basic)
+hardhat::extract_parameter_set_dials(ridge_spec_basic)
 
 # change hyperparameter ranges
 lasso_params <- hardhat::extract_parameter_set_dials(ridge_spec_basic) |> 
