@@ -1,5 +1,5 @@
 # Final Project Memo 1  ----
-# Tuning, Fitting Elastic Net Models
+# Tuning, Fitting Random Forest Model
 
 ## loading in data ----
 library(tidyverse)

@@ -1,5 +1,5 @@
 # Final Project Memo 1  ----
-# Fitting OLS Model
+# Fitting Basic OLS Model
 
 ## loading in data ----
 library(tidyverse)
