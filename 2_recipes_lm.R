@@ -31,18 +31,18 @@ movies_recipe_lm |>
 
   
 # basic ols recipe ----
-# movies_recipe_lm_basic <- recipe(yeo_revenue ~ score + budget_x + date
-#                         + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
-#   step_impute_mean(positive, negative) |>
-#   step_impute_mode(overall_sentiment) |>
-#   step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
-#   step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
-#   step_normalize(all_numeric_predictors())
+movies_recipe_lm_basic <- recipe(yeo_revenue ~ score + budget_x + date
+                        + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
+  step_impute_mean(positive, negative) |>
+  step_impute_mode(overall_sentiment) |>
+  step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
+  step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
+  step_normalize(all_numeric_predictors())
 
-# movies_recipe_lm_basic |>
-#   prep() |>
-#   bake(new_data = NULL) |> glimpse()
+movies_recipe_lm_basic |>
+  prep() |>
+  bake(new_data = NULL) |> glimpse()
 
 # save results ----
-# save(movies_recipe_lm_basic, file = here("recipes/movies_recipe_lm_basic.rda"))
+save(movies_recipe_lm_basic, file = here("recipes/movies_recipe_lm_basic.rda"))
 save(movies_recipe_lm, file = here("recipes/movies_recipe_lm.rda"))
