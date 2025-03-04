@@ -26,7 +26,7 @@ list.files(
 # examine results
 model_results <-
   as_workflow_set(
-    lm = lm_fit,
+    lm = lm_basic_fit,
     null = null_results,
     baseline = baseline_results
   ) 
