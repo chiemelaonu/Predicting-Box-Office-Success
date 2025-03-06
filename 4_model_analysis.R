@@ -28,7 +28,11 @@ model_results <-
   as_workflow_set(
     lm = lm_basic_fit,
     null = null_results,
-    baseline = baseline_results
+    baseline = baseline_results,
+    knn = knn_tuned_basic,
+    rf = rf_tuned_basic,
+    bt = bt_tuned_basic,
+    en = en_tuned_basic
   ) 
 
 # examine rmse
