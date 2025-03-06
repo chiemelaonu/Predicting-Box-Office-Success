@@ -13,6 +13,24 @@ tidymodels_prefer()
 
 # parallel processing ----
 num_cores <- parallel::detectCores(logical = FALSE)
-registerDoMC(cores = 6)
+registerDoMC(cores = num_cores)
 
-# load in training data ----
+# load data ----
+load(here("data/movies_train.rda"))
+load(here("results/bt_tuned_basic.rda"))
+
+# train best model (basic bt model) ----
+final_wflow <- bt_tuned_basic |> 
+  extract_workflow(bt_tuned_basic) |>  
+  finalize_workflow(select_best(bt_tuned_basic, metric = "rmse"))
+
+# train final model ----
+
+# set seed
+set.seed(962719)
+
+final_fit <- fit(final_wflow, movies_train)
+
+# save results ----
+save(final_fit, file = here("results/final_fit.rda"))
+
