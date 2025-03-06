@@ -12,7 +12,7 @@ tidymodels_prefer()
 
 # parallel processing ----
 num_cores <- parallel::detectCores(logical = TRUE)
-registerDoMC(cores = 6)
+registerDoMC(cores = num_cores)
 
 
 # load data ----

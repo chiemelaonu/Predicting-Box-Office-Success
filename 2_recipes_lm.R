@@ -19,9 +19,9 @@ movies_recipe_lm <- recipe(yeo_revenue ~ score + budget_x + date
   step_impute_mean(all_numeric_predictors()) |>
   step_impute_mode(overall_sentiment) |>
   step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
-  step_YeoJohnson(budget_x, lambdas = 0.25) |>
-  step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
   step_interact(terms = ~ budget_x:num_crew + budget_x:score) |> 
+  step_YeoJohnson(budget_x) |>
+  step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
   step_normalize(all_numeric_predictors())
 
 movies_recipe_lm |>
