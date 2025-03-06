@@ -11,9 +11,6 @@ library(doMC)
 # resolve conflicts
 tidymodels_prefer()
 
-# set seed 
-set.seed(8160082)
-
 # parallel processing ----
 num_cores <- parallel::detectCores(logical = TRUE)
 registerDoMC(cores = num_cores)
