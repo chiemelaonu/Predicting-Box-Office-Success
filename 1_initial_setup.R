@@ -95,8 +95,10 @@ ggsave(
 # density plot
 p1 <- ggplot(movies, aes(x = yjPower(revenue, lambda = 0.25))) +
   geom_density(alpha = 0.5) +
+  geom_rug(alpha = 0.1) +
   labs(
-    xlab = "Yeo-Johnson Transformed Revenue"
+    xlab = "Yeo-Johnson Transformed Revenue",
+    caption = "test"
     ) +
   theme_minimal()
 
