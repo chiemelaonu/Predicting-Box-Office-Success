@@ -1,0 +1,71 @@
+---
+title: "Final Report"
+subtitle: |
+  | Final Project 
+  | Data Science 2 with R (STAT 301-2)
+author: "Chiemela Onuoha"
+pagetitle: "FR Chiemela Onuoha"
+date: "today"
+
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-location: left
+    embed-resources: true
+    link-external-newwindow: true
+
+execute:
+  warning: false
+
+from: markdown+emoji
+reference-location: margin
+citation-location: margin
+---
+
+
+```{r}
+#| echo: false
+#| label: load-packages-data
+
+library(tidyverse)
+library(tidymodels)
+library(DT)
+library(here)
+
+# resolve conflicts
+tidymodels_prefer()
+
+
+# load in data ----
+movies <- read_csv("data/imdb_movies.csv")
+
+```
+
+::: {.callout-tip icon=false}
+
+## Github Repo Link
+
+[Chiemela's Github (chiemelaonu)](https://github.com/stat301-2-2025-winter/final-project-2-chiemelaonu.git)
+
+:::
+
+# Introduction
+The objective of this report is to present findings of predictive modeling done on a movies dataset. I would like to see how well a movies' revenue can be predicted using other features of the movie/data. This is a regression problem because the target variable, revenue, is continuous rather than categorical. 
+<br>  
+These predictions are useful because having an accurate prediction model for movie revenue could be highly valuable for investors and filmmakers because it would help estimate a film’s financial success before release. That would allow for better budget allocation, and even optimize marketing strategies.
+
+# Data Overview
+Below is a table showing the attributes of our movies dataset, like the column type and number of missing variables. With this table, we see that there are very few missing values, and those that are missing are present in the genre and crew columns. The main purpose of this check is to see any missingness in the target variable, which is not present in this data. 
+```{r}
+#| label: tbl-missing
+#| tbl-cap: "Skim of Missing Data"
+#| echo: false
+
+# missingness check ----
+movies |>
+  skimr::skim_without_charts() |>
+  knitr::kable()
+
+```
+
