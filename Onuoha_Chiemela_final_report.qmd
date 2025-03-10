@@ -69,3 +69,25 @@ movies |>
 
 ```
 
+The table below provides a more concise skimming of the data, telling us that we have just under 10,200 observations, 12 columns, 126 rows with missing values.
+```{r}
+#| label: tbl-eda
+#| tbl-cap: "Dataset Summary"
+#| echo: false
+
+# calculate values
+missing_rows <- sum(!complete.cases(movies))
+num_rows <- nrow(movies)
+num_cols <- ncol(movies)
+target_missing <- sum(!complete.cases(movies$revenue))
+
+# create a table
+summary_table <- tibble(
+  Metric = c("Rows with Missing Values", "Number of Observations", "Number of Variables", "Number of Missing Target Variable Observations (`revenue`)"),
+  Value = c(missing_rows, num_rows, num_cols, target_missing)
+) |> knitr::kable()
+
+
+summary_table
+```
+
