@@ -3053,7 +3053,10 @@ vertical-align: -.125em;
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#data-overview" id="toc-data-overview" class="nav-link" data-scroll-target="#data-overview">Data Overview</a></li>
+  <li><a href="#data-overview" id="toc-data-overview" class="nav-link" data-scroll-target="#data-overview">Data Overview</a>
+  <ul>
+  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link" data-scroll-target="#data-wrangling">Data Wrangling</a></li>
+  </ul></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul>
   <li><a href="#data-splitting" id="toc-data-splitting" class="nav-link" data-scroll-target="#data-splitting">Data Splitting</a>
@@ -3484,7 +3487,10 @@ Figure 1
 </figure>
 </div>
 <p>On the left, we have the original distribution of the target variable, revenue, visualized with a density plot and box plot. The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The density and box plot on the right shows those values post-transformation.</p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup> A lambda value of 0.25 was used</p></div></div></section>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup> A lambda value of 0.25 was used</p></div></div><section id="data-wrangling" class="level3">
+<h3 class="anchored" data-anchor-id="data-wrangling">Data Wrangling</h3>
+</section>
+</section>
 <section id="methods" class="level2">
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
 <section id="data-splitting" class="level3">
