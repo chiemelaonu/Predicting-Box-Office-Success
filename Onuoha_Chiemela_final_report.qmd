@@ -50,12 +50,12 @@ movies <- read_csv("data/imdb_movies.csv")
 
 :::
 
-# Introduction
-The objective of this report is to present findings of predictive modeling done on a movies dataset. I would like to see how well a movies' revenue can be predicted using other features of the movie/data. This is a regression problem because the target variable, revenue, is continuous rather than categorical. 
+## Introduction
+The objective of this report is to present findings of predictive modeling done on a movies dataset. I would like to see how well a movies' revenue can be predicted using other features of the movie/data.
 <br>  
 These predictions are useful because having an accurate prediction model for movie revenue could be highly valuable for investors and filmmakers because it would help estimate a film’s financial success before release. That would allow for better budget allocation, and even optimize marketing strategies.
 
-# Data Overview
+## Data Overview
 Below is a table showing the attributes of our movies dataset, like the column type and number of missing variables. With this table, we see that there are very few missing values, and those that are missing are present in the genre and crew columns. The main purpose of this check is to see any missingness in the target variable, which is not present in this data. 
 ```{r}
 #| label: tbl-missing
@@ -98,4 +98,40 @@ summary_table
 ![revenue Transformed with Yeo-Johnson](figures/target_eda_2.png){#fig-revenue-yj}
 
 :::
-On the left, we have the original distribution of the target variable, visualized with a density plot and box plot. The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.^[A lambda value of 0.25 was used] The density and box plot on the right shows those values post-transformation. 
+On the left, we have the original distribution of the target variable, revenue, visualized with a density plot and box plot. The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.^[A lambda value of 0.25 was used] The density and box plot on the right shows those values post-transformation. 
+
+## Methods
+
+### Data Splitting
+I decided on a split proportion of 80-20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue). The metric I used for comparing and selecting a final model is RMSE because it is very widely used in predictive modeling and a relatively simple error to interpet and explain.
+
+#### Resampling
+
+
+
+### Model Descriptions
+This is a regression problem because the target variable, revenue, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a NUll/Baseline model, an OLS model, Elastic Net models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.
+
+#### Null/Baseline
+
+#### OLS
+
+#### Elastic Net
+
+#### Random Forest
+
+#### Boosted Trees
+
+#### K-Nearest Neighbors
+
+### Recipes
+There are 2 recipes defined for each model (or set of models in the case of the Elastic Net models), excluding the Null/Baseline models that use only one recipe. There is each a "basic" recipe and a "complex" recipe used for the models. 
+
+#### Null/Baseline Model Recipe
+The first recipe was for the null and baseline models. My first step was to impute the mean of all missing numerical values. I also imputed the mode of the `overall_sentiment` column because of NAs. Next, I used `step_date()` to extract the year and month out of the date column to use as predictors. Lastly, I used `step_dummy()` to one-hot encode the `overall_sentiment` column so that all 3 types of sentiments are captured and used as predictors.  
+
+#### Linear Model Recipes
+For my complex Linear model recipe, most of the steps are the same as the null/baseline recipe, except I used `step_interact()` to create an interaction with 2 sets of predictors I feel would work together in this predictive process, and used `step_normalize()` to scale and center the numerical predictors to prevent multicollinearity. I also added a Yeo-Johnson transformation of the `budget_x` column. For my basic Linear model recipe has everything previously stated, except the interactions and the `budget_x` transformation.  
+
+#### Tree Based Model Recipes  
+For my basic tree model recipe, I kept the same steps as my basic Linear model recipe. For my complex recipe, I created a new column called `season` that splits up the months into the 4 seasons and used that as a predictor as well.

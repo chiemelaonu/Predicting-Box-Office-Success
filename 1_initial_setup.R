@@ -66,6 +66,10 @@ movies |>
 p1 <- ggplot(movies, aes(revenue)) +
   geom_density() +
   geom_rug(alpha = 0.1) +
+  labs(
+    x = "Original Revenue",
+    caption = "Data from Kaggle.com"
+  ) +
   theme_minimal() +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank())
@@ -97,15 +101,14 @@ p1 <- ggplot(movies, aes(x = yjPower(revenue, lambda = 0.25))) +
   geom_density(alpha = 0.5) +
   geom_rug(alpha = 0.1) +
   labs(
-    xlab = "Yeo-Johnson Transformed Revenue",
-    caption = "test"
+    x = "Yeo-Johnson Transformed Revenue",
+    caption = "Data from Kaggle.com"
     ) +
   theme_minimal()
 
 # boxplot
 p2 <- ggplot(movies, aes(yjPower(revenue, lambda = 0.25))) +
   geom_boxplot() +
-  xlab("Yeo-Johnson Transformed Revenue") +
   theme_void()
 
 

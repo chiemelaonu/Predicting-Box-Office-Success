@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chiemela Onuoha">
-<meta name="dcterms.date" content="2025-03-09">
+<meta name="dcterms.date" content="2025-03-10">
 
 <title>FR Chiemela Onuoha</title>
 <style>
@@ -3054,6 +3054,28 @@ vertical-align: -.125em;
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#data-overview" id="toc-data-overview" class="nav-link" data-scroll-target="#data-overview">Data Overview</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
+  <ul>
+  <li><a href="#data-splitting" id="toc-data-splitting" class="nav-link" data-scroll-target="#data-splitting">Data Splitting</a>
+  <ul class="collapse">
+  <li><a href="#resampling" id="toc-resampling" class="nav-link" data-scroll-target="#resampling">Resampling</a></li>
+  </ul></li>
+  <li><a href="#model-descriptions" id="toc-model-descriptions" class="nav-link" data-scroll-target="#model-descriptions">Model Descriptions</a>
+  <ul class="collapse">
+  <li><a href="#nullbaseline" id="toc-nullbaseline" class="nav-link" data-scroll-target="#nullbaseline">Null/Baseline</a></li>
+  <li><a href="#ols" id="toc-ols" class="nav-link" data-scroll-target="#ols">OLS</a></li>
+  <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic Net</a></li>
+  <li><a href="#random-forest" id="toc-random-forest" class="nav-link" data-scroll-target="#random-forest">Random Forest</a></li>
+  <li><a href="#boosted-trees" id="toc-boosted-trees" class="nav-link" data-scroll-target="#boosted-trees">Boosted Trees</a></li>
+  <li><a href="#k-nearest-neighbors" id="toc-k-nearest-neighbors" class="nav-link" data-scroll-target="#k-nearest-neighbors">K-Nearest Neighbors</a></li>
+  </ul></li>
+  <li><a href="#recipes" id="toc-recipes" class="nav-link" data-scroll-target="#recipes">Recipes</a>
+  <ul class="collapse">
+  <li><a href="#nullbaseline-model-recipe" id="toc-nullbaseline-model-recipe" class="nav-link" data-scroll-target="#nullbaseline-model-recipe">Null/Baseline Model Recipe</a></li>
+  <li><a href="#linear-model-recipes" id="toc-linear-model-recipes" class="nav-link" data-scroll-target="#linear-model-recipes">Linear Model Recipes</a></li>
+  <li><a href="#tree-based-model-recipes" id="toc-tree-based-model-recipes" class="nav-link" data-scroll-target="#tree-based-model-recipes">Tree Based Model Recipes</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -3082,7 +3104,7 @@ Data Science 2 with R (STAT 301-2)</div><p></p>
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 9, 2025</p>
+      <p class="date">March 10, 2025</p>
     </div>
   </div>
   
@@ -3107,13 +3129,13 @@ Github Repo Link
 <p><a href="https://github.com/stat301-2-2025-winter/final-project-2-chiemelaonu.git">Chiemela’s Github (chiemelaonu)</a></p>
 </div>
 </div>
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>The objective of this report is to present findings of predictive modeling done on a movies dataset. I would like to see how well a movies’ revenue can be predicted using other features of the movie/data. This is a regression problem because the target variable, revenue, is continuous rather than categorical. <br><br>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The objective of this report is to present findings of predictive modeling done on a movies dataset. I would like to see how well a movies’ revenue can be predicted using other features of the movie/data. <br><br>
 These predictions are useful because having an accurate prediction model for movie revenue could be highly valuable for investors and filmmakers because it would help estimate a film’s financial success before release. That would allow for better budget allocation, and even optimize marketing strategies.</p>
 </section>
-<section id="data-overview" class="level1 page-columns page-full">
-<h1>Data Overview</h1>
+<section id="data-overview" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="data-overview">Data Overview</h2>
 <p>Below is a table showing the attributes of our movies dataset, like the column type and number of missing variables. With this table, we see that there are very few missing values, and those that are missing are present in the genre and crew columns. The main purpose of this check is to see any missingness in the target variable, which is not present in this data.</p>
 <div class="cell">
 <div id="tbl-missing" class="cell quarto-float quarto-figure quarto-figure-center anchored">
@@ -3461,8 +3483,56 @@ Figure 1
 </figcaption>
 </figure>
 </div>
-<p>On the left, we have the original distribution of the target variable, visualized with a density plot and box plot. The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The density and box plot on the right shows those values post-transformation.</p>
+<p>On the left, we have the original distribution of the target variable, revenue, visualized with a density plot and box plot. The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The density and box plot on the right shows those values post-transformation.</p>
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup> A lambda value of 0.25 was used</p></div></div></section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<section id="data-splitting" class="level3">
+<h3 class="anchored" data-anchor-id="data-splitting">Data Splitting</h3>
+<p>I decided on a split proportion of 80-20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue). The metric I used for comparing and selecting a final model is RMSE because it is very widely used in predictive modeling and a relatively simple error to interpet and explain.</p>
+<section id="resampling" class="level4">
+<h4 class="anchored" data-anchor-id="resampling">Resampling</h4>
+</section>
+</section>
+<section id="model-descriptions" class="level3">
+<h3 class="anchored" data-anchor-id="model-descriptions">Model Descriptions</h3>
+<p>This is a regression problem because the target variable, revenue, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a NUll/Baseline model, an OLS model, Elastic Net models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.</p>
+<section id="nullbaseline" class="level4">
+<h4 class="anchored" data-anchor-id="nullbaseline">Null/Baseline</h4>
+</section>
+<section id="ols" class="level4">
+<h4 class="anchored" data-anchor-id="ols">OLS</h4>
+</section>
+<section id="elastic-net" class="level4">
+<h4 class="anchored" data-anchor-id="elastic-net">Elastic Net</h4>
+</section>
+<section id="random-forest" class="level4">
+<h4 class="anchored" data-anchor-id="random-forest">Random Forest</h4>
+</section>
+<section id="boosted-trees" class="level4">
+<h4 class="anchored" data-anchor-id="boosted-trees">Boosted Trees</h4>
+</section>
+<section id="k-nearest-neighbors" class="level4">
+<h4 class="anchored" data-anchor-id="k-nearest-neighbors">K-Nearest Neighbors</h4>
+</section>
+</section>
+<section id="recipes" class="level3">
+<h3 class="anchored" data-anchor-id="recipes">Recipes</h3>
+<p>There are 2 recipes defined for each model (or set of models in the case of the Elastic Net models), excluding the Null/Baseline models that use only one recipe. There is each a “basic” recipe and a “complex” recipe used for the models.</p>
+<section id="nullbaseline-model-recipe" class="level4">
+<h4 class="anchored" data-anchor-id="nullbaseline-model-recipe">Null/Baseline Model Recipe</h4>
+<p>The first recipe was for the null and baseline models. My first step was to impute the mean of all missing numerical values. I also imputed the mode of the <code>overall_sentiment</code> column because of NAs. Next, I used <code>step_date()</code> to extract the year and month out of the date column to use as predictors. Lastly, I used <code>step_dummy()</code> to one-hot encode the <code>overall_sentiment</code> column so that all 3 types of sentiments are captured and used as predictors.</p>
+</section>
+<section id="linear-model-recipes" class="level4">
+<h4 class="anchored" data-anchor-id="linear-model-recipes">Linear Model Recipes</h4>
+<p>For my complex Linear model recipe, most of the steps are the same as the null/baseline recipe, except I used <code>step_interact()</code> to create an interaction with 2 sets of predictors I feel would work together in this predictive process, and used <code>step_normalize()</code> to scale and center the numerical predictors to prevent multicollinearity. I also added a Yeo-Johnson transformation of the <code>budget_x</code> column. For my basic Linear model recipe has everything previously stated, except the interactions and the <code>budget_x</code> transformation.</p>
+</section>
+<section id="tree-based-model-recipes" class="level4">
+<h4 class="anchored" data-anchor-id="tree-based-model-recipes">Tree Based Model Recipes</h4>
+<p>For my basic tree model recipe, I kept the same steps as my basic Linear model recipe. For my complex recipe, I created a new column called <code>season</code> that splits up the months into the 4 seasons and used that as a predictor as well.</p>
+</section>
+</section>
+</section>
 
 
 </main>
