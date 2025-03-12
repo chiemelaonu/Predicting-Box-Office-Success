@@ -39,6 +39,9 @@ tidymodels_prefer()
 
 # load in data ----
 movies <- read_csv("data/imdb_movies.csv")
+# read in data ----
+movies_data <- read_csv("data/movies_clean.csv")
+
 
 ```
 
@@ -101,6 +104,17 @@ summary_table
 On the left, we have the original distribution of the target variable, revenue, visualized with a density plot and box plot. The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.^[A lambda value of 0.25 was used] The density and box plot on the right shows those values post-transformation. 
 
 ### Data Wrangling
+The movies dataset initially had 12 columns and I was only able to extract 3 predictors for my models, but I have been able to conduct more manipulation of the data to allow for more usable predictors in my models. 
+```{r}
+#| label: tbl-modified-data
+#| tbl-cap: "Movies Data with Added Columns"
+#| echo: false
+
+movies_data |>
+  glimpse()
+```
+
+In the table above, you can see that I added a column called `num_genres` that has the counts of the genres for each movie. I added columns `negative`, `positive`, and `overall_sentiment` that uses the `tidytext` package to parse the `overview` column and note which words are positive or negative. The `positive` and `negative` columns hold the counts of those kinds of words present in each observation, and the `overall_sentiment` column gives the overall sentiment: Negative, Positive, or Neutral, depending on how many of each kind was counted. Some of the observations had NA for these columns, but I imputed those values with the mean (for the `negative` and `positive` columns) and the mode (for the `overall_sentiment` column). Lastly, I added a column called `num_crew` that counts the number of crew members listed for each movie. These new columns will serve as better features for my model, in the hopes of creating more accurate and meaningful predictions.
 
 ## Methods
 
@@ -116,7 +130,7 @@ The metric I used for comparing and selecting a final model is RMSE. RMSE is the
 
 
 ### Model Descriptions
-This is a regression problem because the target variable, revenue, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a NUll/Baseline model, an OLS model, Elastic Net models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.
+This is a regression problem because the target variable, revenue, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a Null/Baseline model, an OLS model, Elastic Net models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.
 
 #### Null/Baseline
 A null model is a simple model that based solely on the mean (for regression). It serves as a basic reference to compare the performance of more complex models.  
@@ -158,3 +172,5 @@ For my complex Linear model recipe, most of the steps are the same as the null/b
 
 #### Tree Based Model Recipes  
 For my basic tree model recipe, I kept the same steps as my basic Linear model recipe. For my complex recipe, I created a new column called `season` that splits up the months into the 4 seasons and used that as a predictor as well.
+
+## Model Building and Selection Results

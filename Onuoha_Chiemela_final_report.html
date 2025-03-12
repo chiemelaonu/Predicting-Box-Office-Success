@@ -3080,6 +3080,7 @@ vertical-align: -.125em;
   <li><a href="#tree-based-model-recipes" id="toc-tree-based-model-recipes" class="nav-link" data-scroll-target="#tree-based-model-recipes">Tree Based Model Recipes</a></li>
   </ul></li>
   </ul></li>
+  <li><a href="#model-building-and-selection-results" id="toc-model-building-and-selection-results" class="nav-link" data-scroll-target="#model-building-and-selection-results">Model Building and Selection Results</a></li>
   </ul>
 </nav>
 </div>
@@ -3490,6 +3491,40 @@ Figure 1
 <p>On the left, we have the original distribution of the target variable, revenue, visualized with a density plot and box plot. The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The density and box plot on the right shows those values post-transformation.</p>
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup> A lambda value of 0.25 was used</p></div></div><section id="data-wrangling" class="level3">
 <h3 class="anchored" data-anchor-id="data-wrangling">Data Wrangling</h3>
+<p>The movies dataset initially had 12 columns and I was only able to extract 3 predictors for my models, but I have been able to conduct more manipulation of the data to allow for more usable predictors in my models.</p>
+<div id="tbl-modified-data" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modified-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table 3: Movies Data with Added Columns
+</figcaption>
+<div aria-describedby="tbl-modified-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 10,178
+Columns: 19
+$ names             &lt;chr&gt; &quot;Creed III&quot;, &quot;Avatar: The Way of Water&quot;, &quot;The Super …
+$ date_x            &lt;chr&gt; &quot;03/02/2023&quot;, &quot;12/15/2022&quot;, &quot;04/05/2023&quot;, &quot;01/05/202…
+$ score             &lt;dbl&gt; 73, 78, 76, 70, 61, 66, 80, 83, 59, 58, 58, 55, 65, …
+$ genre             &lt;chr&gt; &quot;Drama, Action&quot;, &quot;Science Fiction, Adventure, Action…
+$ overview          &lt;chr&gt; &quot;After dominating the boxing world, Adonis Creed has…
+$ crew              &lt;chr&gt; &quot;Michael B. Jordan, Adonis Creed, Tessa Thompson, Bi…
+$ orig_title        &lt;chr&gt; &quot;Creed III&quot;, &quot;Avatar: The Way of Water&quot;, &quot;The Super …
+$ status            &lt;chr&gt; &quot;Released&quot;, &quot;Released&quot;, &quot;Released&quot;, &quot;Released&quot;, &quot;Rel…
+$ orig_lang         &lt;chr&gt; &quot;English&quot;, &quot;English&quot;, &quot;English&quot;, &quot;Spanish, Castilian…
+$ budget_x          &lt;dbl&gt; 75000000, 460000000, 100000000, 12300000, 77000000, …
+$ revenue           &lt;dbl&gt; 271616668, 2316794914, 724459031, 34200000, 34094195…
+$ country           &lt;chr&gt; &quot;AU&quot;, &quot;AU&quot;, &quot;AU&quot;, &quot;AU&quot;, &quot;US&quot;, &quot;AU&quot;, &quot;AU&quot;, &quot;AU&quot;, &quot;US&quot;…
+$ negative          &lt;dbl&gt; 2, 2, 1, 2, 4, 2, 1, 2, 2, 1, 0, 10, NA, 1, 2, 0, 5,…
+$ positive          &lt;dbl&gt; 3, 1, 1, 2, 3, 0, 3, 1, 5, 0, 1, 3, NA, 1, 0, 2, 0, …
+$ overall_sentiment &lt;chr&gt; &quot;Positive&quot;, &quot;Negative&quot;, &quot;Neutral&quot;, &quot;Neutral&quot;, &quot;Negat…
+$ num_crew          &lt;dbl&gt; 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 8, 9, 9, 9, 7, 9, 9…
+$ yeo_revenue       &lt;dbl&gt; 509.5102, 873.5702, 652.2411, 301.8909, 539.5382, 37…
+$ date              &lt;date&gt; 2023-03-02, 2022-12-15, 2023-04-05, 2023-01-05, 202…
+$ num_genres        &lt;dbl&gt; 2, 3, 5, 5, 1, 3, 3, 5, 2, 5, 2, 1, 3, 3, 2, 2, 4, 2…</code></pre>
+</div>
+</div>
+</figure>
+</div>
+<p>In the table above, you can see that I added a column called <code>num_genres</code> that has the counts of the genres for each movie. I added columns <code>negative</code>, <code>positive</code>, and <code>overall_sentiment</code> that uses the <code>tidytext</code> package to parse the <code>overview</code> column and note which words are positive or negative. The <code>positive</code> and <code>negative</code> columns hold the counts of those kinds of words present in each observation, and the <code>overall_sentiment</code> column gives the overall sentiment: Negative, Positive, or Neutral, depending on how many of each kind was counted. Some of the observations had NA for these columns, but I imputed those values with the mean (for the <code>negative</code> and <code>positive</code> columns) and the mode (for the <code>overall_sentiment</code> column). Lastly, I added a column called <code>num_crew</code> that counts the number of crew members listed for each movie. These new columns will serve as better features for my model, in the hopes of creating more accurate and meaningful predictions.</p>
 </section>
 </section>
 <section id="methods" class="level2">
@@ -3508,7 +3543,7 @@ Figure 1
 </section>
 <section id="model-descriptions" class="level3">
 <h3 class="anchored" data-anchor-id="model-descriptions">Model Descriptions</h3>
-<p>This is a regression problem because the target variable, revenue, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a NUll/Baseline model, an OLS model, Elastic Net models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.</p>
+<p>This is a regression problem because the target variable, revenue, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a Null/Baseline model, an OLS model, Elastic Net models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.</p>
 <section id="nullbaseline" class="level4">
 <h4 class="anchored" data-anchor-id="nullbaseline">Null/Baseline</h4>
 <p>A null model is a simple model that based solely on the mean (for regression). It serves as a basic reference to compare the performance of more complex models.<br>
@@ -3559,6 +3594,9 @@ The parameters I will be tuning are neighbors.</p>
 <p>For my basic tree model recipe, I kept the same steps as my basic Linear model recipe. For my complex recipe, I created a new column called <code>season</code> that splits up the months into the 4 seasons and used that as a predictor as well.</p>
 </section>
 </section>
+</section>
+<section id="model-building-and-selection-results" class="level2">
+<h2 class="anchored" data-anchor-id="model-building-and-selection-results">Model Building and Selection Results</h2>
 </section>
 
 

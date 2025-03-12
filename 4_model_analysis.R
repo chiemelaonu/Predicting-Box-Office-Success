@@ -23,6 +23,8 @@ list.files(
 ) |>
   map(load, envir = .GlobalEnv)
 
+select_best(rf_tuned, metric = "rmse")
+
 # examine results
 basic_model_results <-
   as_workflow_set(
@@ -34,6 +36,7 @@ basic_model_results <-
     bt = bt_tuned_basic,
     en = en_tuned_basic
   ) 
+select_best(basic_model_results, metric = "rmse")
 
 # examine rmse
 basic_model_results |>
@@ -42,8 +45,7 @@ basic_model_results |>
 basic_model_results |>
   autoplot(metric = "rmse", select_best = TRUE)
 
-basic_model_results |>
-  collect_metrics() 
+
 
 basic_fits_table <- basic_model_results |>
   collect_metrics() |>
@@ -55,7 +57,7 @@ basic_fits_table <- basic_model_results |>
     `Metric Type` = .metric,          
     `Mean RMSE` = mean,               
     `Standard Error` = std_err,
-    n              
+    n
   ) |> knitr::kable()
 
 
