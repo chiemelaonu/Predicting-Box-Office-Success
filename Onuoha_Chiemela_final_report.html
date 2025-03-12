@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chiemela Onuoha">
-<meta name="dcterms.date" content="2025-03-10">
+<meta name="dcterms.date" content="2025-03-11">
 
 <title>FR Chiemela Onuoha</title>
 <style>
@@ -3059,7 +3059,8 @@ vertical-align: -.125em;
   </ul></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul>
-  <li><a href="#data-splitting" id="toc-data-splitting" class="nav-link" data-scroll-target="#data-splitting">Data Splitting</a>
+  <li><a href="#data-splitting" id="toc-data-splitting" class="nav-link" data-scroll-target="#data-splitting">Data Splitting</a></li>
+  <li><a href="#metrics" id="toc-metrics" class="nav-link" data-scroll-target="#metrics">Metrics</a>
   <ul class="collapse">
   <li><a href="#resampling" id="toc-resampling" class="nav-link" data-scroll-target="#resampling">Resampling</a></li>
   </ul></li>
@@ -3107,7 +3108,7 @@ Data Science 2 with R (STAT 301-2)</div><p></p>
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 10, 2025</p>
+      <p class="date">March 11, 2025</p>
     </div>
   </div>
   
@@ -3495,9 +3496,14 @@ Figure 1
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
 <section id="data-splitting" class="level3">
 <h3 class="anchored" data-anchor-id="data-splitting">Data Splitting</h3>
-<p>I decided on a split proportion of 80-20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue). The metric I used for comparing and selecting a final model is RMSE because it is very widely used in predictive modeling and a relatively simple error to interpet and explain.</p>
+<p>I decided on a split proportion of 80-20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue).</p>
+</section>
+<section id="metrics" class="level3">
+<h3 class="anchored" data-anchor-id="metrics">Metrics</h3>
+<p>The metric I used for comparing and selecting a final model is RMSE. RMSE is the Root Mean Squared Error which measures the square root of the average squared differences between the predicted and actual values, providing a way to quantify how much the model’s predictions deviate from the true values. I picked RMSE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.</p>
 <section id="resampling" class="level4">
 <h4 class="anchored" data-anchor-id="resampling">Resampling</h4>
+<p>I will be using V-fold cross-validation for resampling, with 5 folds (V) and 3 repeats. This method is useful because it ensures that each data point is used for both training and testing, providing a more reliable estimate of model performance.</p>
 </section>
 </section>
 <section id="model-descriptions" class="level3">
@@ -3505,21 +3511,36 @@ Figure 1
 <p>This is a regression problem because the target variable, revenue, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a NUll/Baseline model, an OLS model, Elastic Net models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.</p>
 <section id="nullbaseline" class="level4">
 <h4 class="anchored" data-anchor-id="nullbaseline">Null/Baseline</h4>
+<p>A null model is a simple model that based solely on the mean (for regression). It serves as a basic reference to compare the performance of more complex models.<br>
+<br><br>
+A baseline model is a simple predictive model used as a benchmark. Its use is to set a reasonable lower bound for predictive performance. Comparing against a baseline helps measure whether advanced modeling techniques provide meaningful improvement.</p>
 </section>
 <section id="ols" class="level4">
 <h4 class="anchored" data-anchor-id="ols">OLS</h4>
+<p>An Ordinary Least Squared (OLS) model is used for when relationships are linear, features are independent, and interpretability is needed. An OLS model captures linear relationships, effect sizes, and predictor significance well, and is a almost always one of the first models to be used in a regression problem. It provides another fairly simple benchmark for our model.</p>
 </section>
 <section id="elastic-net" class="level4">
 <h4 class="anchored" data-anchor-id="elastic-net">Elastic Net</h4>
+<p>Elastic Net is a regularized regression method that combines Ridge and Lasoo penalties. It stabilizes coefficient estimates like Ridge while also eliminating irrelevant variables like Lasso. Elastic Net is particularly useful when predictors are highly correlated, when there are more features than observations, or when handling noisy or sparse data.<br>
+<br><br>
+The parameters I will be tuning are mixture and penalty.</p>
 </section>
 <section id="random-forest" class="level4">
 <h4 class="anchored" data-anchor-id="random-forest">Random Forest</h4>
+<p>Random Forest is an ensemble learning method that builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting. It is ideal for capturing nonlinear relationships and handling high-dimensional data.<br>
+<br> The parameters I will be tuning are mtry, and min_n.</p>
 </section>
 <section id="boosted-trees" class="level4">
 <h4 class="anchored" data-anchor-id="boosted-trees">Boosted Trees</h4>
+<p>Boosted trees is a method that builds decision trees sequentially, where each tree corrects the errors of the previous one, leading to high predictive accuracy and strong performance on complex datasets. They do well at capturing nonlinear relationships, handling feature importance, and reducing bias, making them ideal for structured data with intricate patterns.<br>
+<br><br>
+The parameters I will be tuning are min_n, mtry, and learn_rate.</p>
 </section>
 <section id="k-nearest-neighbors" class="level4">
 <h4 class="anchored" data-anchor-id="k-nearest-neighbors">K-Nearest Neighbors</h4>
+<p>K-Nearest Neighbors is a non-parametric model that classifies or predicts values based on the majority vote of nearby data points or their average. It works well for nonlinear relationships.<br>
+<br><br>
+The parameters I will be tuning are neighbors.</p>
 </section>
 </section>
 <section id="recipes" class="level3">

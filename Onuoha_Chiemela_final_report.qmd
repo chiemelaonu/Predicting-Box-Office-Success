@@ -105,26 +105,46 @@ On the left, we have the original distribution of the target variable, revenue, 
 ## Methods
 
 ### Data Splitting
-I decided on a split proportion of 80-20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue). The metric I used for comparing and selecting a final model is RMSE because it is very widely used in predictive modeling and a relatively simple error to interpet and explain.
+I decided on a split proportion of 80-20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue).
+
+### Metrics
+The metric I used for comparing and selecting a final model is RMSE. RMSE is the Root Mean Squared Error which measures the square root of the average squared differences between the predicted and actual values, providing a way to quantify how much the model's predictions deviate from the true values. I picked RMSE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.
 
 #### Resampling
-
+I will be using V-fold cross-validation for resampling, with 5 folds (V) and 3 repeats. This method is useful because it ensures that each data point is used for both training and testing, providing a more reliable estimate of model performance.
 
 
 ### Model Descriptions
 This is a regression problem because the target variable, revenue, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a NUll/Baseline model, an OLS model, Elastic Net models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.
 
 #### Null/Baseline
+A null model is a simple model that based solely on the mean (for regression). It serves as a basic reference to compare the performance of more complex models.  
+<br>  
+A baseline model is a simple predictive model used as a benchmark. Its use is to set a reasonable lower bound for predictive performance. Comparing against a baseline helps measure whether advanced modeling techniques provide meaningful improvement.
+
 
 #### OLS
+An Ordinary Least Squared (OLS) model is used for when relationships are linear, features are independent, and interpretability is needed. An OLS model captures linear relationships, effect sizes, and predictor significance well, and is a almost always one of the first models to be used in a regression problem. It provides another fairly simple benchmark for our model.
 
 #### Elastic Net
+Elastic Net is a regularized regression method that combines Ridge and Lasoo penalties. It stabilizes coefficient estimates like Ridge while also eliminating irrelevant variables like Lasso. Elastic Net is particularly useful when predictors are highly correlated, when there are more features than observations, or when handling noisy or sparse data.  
+<br>  
+The parameters I will be tuning are mixture and penalty.
 
 #### Random Forest
+Random Forest is an ensemble learning method that builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting. It is ideal for capturing nonlinear relationships and handling high-dimensional data.  
+<br> 
+The parameters I will be tuning are mtry, and min_n.
 
 #### Boosted Trees
+Boosted trees is a method that builds decision trees sequentially, where each tree corrects the errors of the previous one, leading to high predictive accuracy and strong performance on complex datasets. They do well at capturing nonlinear relationships, handling feature importance, and reducing bias, making them ideal for structured data with intricate patterns.  
+<br>  
+The parameters I will be tuning are min_n, mtry, and learn_rate.
 
 #### K-Nearest Neighbors
+K-Nearest Neighbors is a non-parametric model that classifies or predicts values based on the majority vote of nearby data points or their average. It works well for nonlinear relationships.  
+<br>  
+The parameters I will be tuning are neighbors.
 
 ### Recipes
 There are 2 recipes defined for each model (or set of models in the case of the Elastic Net models), excluding the Null/Baseline models that use only one recipe. There is each a "basic" recipe and a "complex" recipe used for the models. 
