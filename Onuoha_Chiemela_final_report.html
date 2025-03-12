@@ -3059,11 +3059,11 @@ vertical-align: -.125em;
   </ul></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul>
-  <li><a href="#data-splitting" id="toc-data-splitting" class="nav-link" data-scroll-target="#data-splitting">Data Splitting</a></li>
-  <li><a href="#metrics" id="toc-metrics" class="nav-link" data-scroll-target="#metrics">Metrics</a>
+  <li><a href="#data-splitting" id="toc-data-splitting" class="nav-link" data-scroll-target="#data-splitting">Data Splitting</a>
   <ul class="collapse">
   <li><a href="#resampling" id="toc-resampling" class="nav-link" data-scroll-target="#resampling">Resampling</a></li>
   </ul></li>
+  <li><a href="#metrics" id="toc-metrics" class="nav-link" data-scroll-target="#metrics">Metrics</a></li>
   <li><a href="#model-descriptions" id="toc-model-descriptions" class="nav-link" data-scroll-target="#model-descriptions">Model Descriptions</a>
   <ul class="collapse">
   <li><a href="#nullbaseline" id="toc-nullbaseline" class="nav-link" data-scroll-target="#nullbaseline">Null/Baseline</a></li>
@@ -3497,14 +3497,14 @@ Figure 1
 <section id="data-splitting" class="level3">
 <h3 class="anchored" data-anchor-id="data-splitting">Data Splitting</h3>
 <p>I decided on a split proportion of 80-20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue).</p>
-</section>
-<section id="metrics" class="level3">
-<h3 class="anchored" data-anchor-id="metrics">Metrics</h3>
-<p>The metric I used for comparing and selecting a final model is RMSE. RMSE is the Root Mean Squared Error which measures the square root of the average squared differences between the predicted and actual values, providing a way to quantify how much the model’s predictions deviate from the true values. I picked RMSE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.</p>
 <section id="resampling" class="level4">
 <h4 class="anchored" data-anchor-id="resampling">Resampling</h4>
 <p>I will be using V-fold cross-validation for resampling, with 5 folds (V) and 3 repeats. This method is useful because it ensures that each data point is used for both training and testing, providing a more reliable estimate of model performance.</p>
 </section>
+</section>
+<section id="metrics" class="level3">
+<h3 class="anchored" data-anchor-id="metrics">Metrics</h3>
+<p>The metric I used for comparing and selecting a final model is RMSE. RMSE is the Root Mean Squared Error which measures the square root of the average squared differences between the predicted and actual values, providing a way to quantify how much the model’s predictions deviate from the true values. I picked RMSE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.</p>
 </section>
 <section id="model-descriptions" class="level3">
 <h3 class="anchored" data-anchor-id="model-descriptions">Model Descriptions</h3>

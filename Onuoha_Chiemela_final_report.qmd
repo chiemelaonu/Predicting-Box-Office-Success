@@ -107,11 +107,12 @@ On the left, we have the original distribution of the target variable, revenue, 
 ### Data Splitting
 I decided on a split proportion of 80-20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue).
 
+#### Resampling
+I will be using V-fold cross-validation for resampling, with 5 folds (V) and 3 repeats. This method is useful because it ensures that each data point is used for both training and testing, providing a more reliable estimate of model performance.
+
 ### Metrics
 The metric I used for comparing and selecting a final model is RMSE. RMSE is the Root Mean Squared Error which measures the square root of the average squared differences between the predicted and actual values, providing a way to quantify how much the model's predictions deviate from the true values. I picked RMSE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.
 
-#### Resampling
-I will be using V-fold cross-validation for resampling, with 5 folds (V) and 3 repeats. This method is useful because it ensures that each data point is used for both training and testing, providing a more reliable estimate of model performance.
 
 
 ### Model Descriptions
