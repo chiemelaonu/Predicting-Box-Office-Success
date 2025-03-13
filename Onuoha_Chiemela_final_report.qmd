@@ -26,12 +26,14 @@ citation-location: margin
 
 ```{r}
 #| echo: false
+#| results: hide
 #| label: load-packages-data
 
 library(tidyverse)
 library(tidymodels)
 library(DT)
 library(here)
+library(doMC)
 
 # resolve conflicts
 tidymodels_prefer()
@@ -42,7 +44,31 @@ movies <- read_csv("data/imdb_movies.csv")
 # read in data ----
 movies_data <- read_csv("data/movies_clean.csv")
 
+# parallel processing ----
+num_cores <- parallel::detectCores(logical = FALSE)
+registerDoMC(cores = 6)
 
+# load in results ----
+list.files(
+  here("results/"),
+  pattern = ".rda",
+  full.names = TRUE
+) |>
+  map(load, envir = .GlobalEnv)
+
+select_best(rf_tuned, metric = "rmse")
+
+# examine results
+basic_model_results <-
+  as_workflow_set(
+    lm = lm_basic_fit,
+    null = null_results,
+    baseline = baseline_results,
+    knn = knn_tuned_basic,
+    rf = rf_tuned_basic,
+    bt = bt_tuned_basic,
+    en = en_tuned_basic
+  ) 
 ```
 
 ::: {.callout-tip icon=false}
@@ -94,7 +120,7 @@ summary_table <- tibble(
 summary_table
 ```
 
-::: {#fig-price-dists layout-ncol=2}
+::: {#fig-rev-dists layout-ncol=2}
 
 ![revenue on Original Scale ($)](figures/target_eda.png){#fig-revenue-orig}
 
@@ -174,3 +200,25 @@ For my complex Linear model recipe, most of the steps are the same as the null/b
 For my basic tree model recipe, I kept the same steps as my basic Linear model recipe. For my complex recipe, I created a new column called `season` that splits up the months into the 4 seasons and used that as a predictor as well.
 
 ## Model Building and Selection Results
+::: {#fig-result layout-ncol=1}
+
+![Basic Workflow Plot ](figures/basic_autoplot.png){#fig-plot}
+:::
+
+```{r}
+#| label: tbl-basic-fits
+#| tbl-cap: "Basic Fits Table"
+#| echo: false
+basic_model_results |>
+  collect_metrics() |>
+  filter(.metric == "rmse") |>
+  slice_min(mean, by = wflow_id) |>
+  arrange(mean) |>
+  select(
+    `Model Type` = wflow_id,
+    Accuracy = mean,
+    `Std Error` = std_err, n = n
+  ) |>
+  knitr::kable(digits = 4)
+```
+

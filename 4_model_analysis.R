@@ -42,23 +42,29 @@ select_best(basic_model_results, metric = "rmse")
 basic_model_results |>
   autoplot(metric = "rmse")
 
-basic_model_results |>
+basic_autoplot <- basic_model_results |>
   autoplot(metric = "rmse", select_best = TRUE)
 
+# saving
+ggsave(
+  filename = here("figures/basic_autoplot.png"),
+  plot = basic_autoplot,
+  height = 5,
+  width = 8
+)
 
 
 basic_fits_table <- basic_model_results |>
-  collect_metrics() |>
-  filter(.metric == "rmse") |>
-  slice_min(mean, by = wflow_id) |>
-  arrange(mean) |>
-  select(
-    `Model Name` = wflow_id,          
-    `Metric Type` = .metric,          
-    `Mean RMSE` = mean,               
-    `Standard Error` = std_err,
-    n
-  ) |> knitr::kable()
+    collect_metrics() |>
+    filter(.metric == "rmse") |>
+    slice_min(mean, by = wflow_id) |>
+    arrange(mean) |>
+    select(
+      `Model Type` = wflow_id,
+      Accuracy = mean,
+      `Std Error` = std_err, n = n
+    ) |>
+    knitr::kable(digits = 4)
 
 
 # examine results
