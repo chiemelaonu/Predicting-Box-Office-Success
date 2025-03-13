@@ -58,7 +58,7 @@ list.files(
 
 select_best(rf_tuned, metric = "rmse")
 
-# examine results
+# basic workflow set
 basic_model_results <-
   as_workflow_set(
     lm = lm_basic_fit,
@@ -68,6 +68,18 @@ basic_model_results <-
     rf = rf_tuned_basic,
     bt = bt_tuned_basic,
     en = en_tuned_basic
+  ) 
+
+# complex workflow set
+model_results <-
+  as_workflow_set(
+    lm = lm_fit,
+    null = null_results,
+    baseline = baseline_results,
+    knn = knn_tuned,
+    rf = rf_tuned,
+    bt = bt_tuned,
+    en = en_tuned
   ) 
 ```
 
@@ -210,6 +222,25 @@ For my basic tree model recipe, I kept the same steps as my basic Linear model r
 #| tbl-cap: "Basic Fits Table"
 #| echo: false
 basic_model_results |>
+  collect_metrics() |>
+  filter(.metric == "rmse") |>
+  slice_min(mean, by = wflow_id) |>
+  arrange(mean) |>
+  select(
+    `Model Type` = wflow_id,
+    Accuracy = mean,
+    `Std Error` = std_err, n = n
+  ) |>
+  knitr::kable(digits = 4)
+```
+
+![Complex Workflow Plot ](figures/complex_autoplot.png){#fig-plot}
+:::
+```{r}
+#| label: tbl-complex-results
+#| tbl-cap: "Complex Model Results"
+#| echo: false
+model_results |>
   collect_metrics() |>
   filter(.metric == "rmse") |>
   slice_min(mean, by = wflow_id) |>
