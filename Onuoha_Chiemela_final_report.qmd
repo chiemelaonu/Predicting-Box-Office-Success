@@ -216,7 +216,7 @@ For my basic tree model recipe, I kept the same steps as my basic Linear model r
 
 ![Basic Workflow Plot ](figures/basic_autoplot.png){#fig-plot}
 :::
-
+@fig-result shows the distribution of the RMSE's of the "basic" model workflows, along with the null and baseline models. The sharp decline from the null model to the rest of the models is evidence that more complex models and recipes are needed to produce better predictions. Additionally, among the complex models, the RMSE is still decreasing, though the change is not much between a few models. Since the changes between the Baseline, KNN, OLS, and EN model are not very significant, we learn that we should try to be pickier about the models we want to tune/fit, since the computational toll is not worth it for those models. On the other hand, Random Forest and Boosted Trees have a significant decrease from the 4 aforementioned workflows, and that proves that tuning those models were helpful and worth the time it takes to run them. 
 ```{r}
 #| label: tbl-basic-fits
 #| tbl-cap: "Basic Fits Table"
@@ -233,9 +233,14 @@ basic_model_results |>
   ) |>
   knitr::kable(digits = 4)
 ```
+@tbl-basic-fits shows the more precise RMSE's for the "basic" workflows. The RMSE of null model is significantly higher than the rest, at about 175. KNN has an RMSE of about 122. The baseline, EN, and Linear model are all around the same RMSE values in the 120 range. Then, Random Forest and Boosted Trees have a significant drop to around 100. The gap between Random Forest and Boosted Trees is quite miniscule, at less than one standard deviation apart.
 
+::: {#fig-result-complex layout-ncol=1}
 ![Complex Workflow Plot ](figures/complex_autoplot.png){#fig-plot}
 :::
+
+@fig-result-complex shows the distribution of the RMSE's of the "complex" model workflows, along with the null and baseline models. The plot paints a very similar picture compared to the "basic" workflows, but the most notable difference is that the Baseline model performs significantly worse than the EN and OLS models, though it still fairly close to the KNN model. Between the KNN and Baseline model, there is a standard deviation of more than 1, so the difference, though small in a general sense, is significant. The rest of the models perfom about the same.
+
 ```{r}
 #| label: tbl-complex-results
 #| tbl-cap: "Complex Model Results"
@@ -252,4 +257,4 @@ model_results |>
   ) |>
   knitr::kable(digits = 4)
 ```
-
+With the "complex" models performing about the same as the "basic" models, we can choose either Random Forest or Boosted Trees as the best model. The difference between the is less than 1 standard deviation in both cases, so either is usable for a final model analysis. Since the standard errors for the Boosted Trees model are lower, I will be picking Boosted Trees as the best model. Additionally, since the basic Boosted Tree model workflow has a lower standard error, I will specifically be using that workflow for the final model analysis.
