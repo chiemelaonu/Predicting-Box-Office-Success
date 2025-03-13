@@ -235,6 +235,7 @@ basic_model_results |>
 ```
 @tbl-basic-fits shows the more precise RMSE's for the "basic" workflows. The RMSE of null model is significantly higher than the rest, at about 175. KNN has an RMSE of about 122. The baseline, EN, and Linear model are all around the same RMSE values in the 120 range. Then, Random Forest and Boosted Trees have a significant drop to around 100. The gap between Random Forest and Boosted Trees is quite miniscule, at less than one standard deviation apart.
 
+
 ::: {#fig-result-complex layout-ncol=1}
 ![Complex Workflow Plot ](figures/complex_autoplot.png){#fig-plot}
 :::
@@ -258,3 +259,8 @@ model_results |>
   knitr::kable(digits = 4)
 ```
 With the "complex" models performing about the same as the "basic" models, we can choose either Random Forest or Boosted Trees as the best model. The difference between the is less than 1 standard deviation in both cases, so either is usable for a final model analysis. Since the standard errors for the Boosted Trees model are lower, I will be picking Boosted Trees as the best model. Additionally, since the basic Boosted Tree model workflow has a lower standard error, I will specifically be using that workflow for the final model analysis.
+
+### Differences in Performance Between Model Types and Recipes
+The EN and OLS models were fit with the same set of recipes, a more "basic" one and a more "complex" one. Their performance is around the same, which should make sense since they are both linear regression and using sets of recipes. What interests me is that the Baseline model performs very similarly to them, even though it was fit with a different recipe. Granted, for the basic EN and OLS workflows, the recipes used were not actually different from the null/baseline recipe used to fit the baseline model. But for the complex EN and OLS recipes, I added interactions and a transformation of the budget column, which seemingly made them perform worse.  
+<br>  
+Another interesting point is the KNN model. Though I used the same set of the recipes to fit the KNN, Boosted Tree and Random Forest Workflows. KNN performed significantly worse than the other 2. That could mean that I did not perform inadequate tuning, the recipe needs changes, or the predictors and/or the data as a whole do not work well with the model. In the future, it could be meaningful to change the way I tuned the KNN model or possibly find different ways to change the recipe so that the model could perform better, though those changes are not a guarantee the KNN model would perform better. 
