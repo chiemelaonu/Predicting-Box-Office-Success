@@ -34,7 +34,8 @@ rmse_result
 
 # predictions on original scale ----
 test_preds_orig <- predict(final_fit, movies_test) |>
-  mutate(.pred_orig = yeo.johnson(.pred, lambda = 0.25, derivative = 0, inverse = TRUE))
+  mutate(.pred_orig = yeo.johnson(.pred, lambda = 0.25, derivative = 0, inverse = TRUE)) |>
+  bind_cols(movies_test)
 
 rmse_result_orig <- rmse(test_preds_orig, truth = revenue, estimate = .pred_orig)
 

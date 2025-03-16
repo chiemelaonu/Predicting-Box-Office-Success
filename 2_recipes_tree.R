@@ -33,7 +33,8 @@ movies_recipe_tree_basic |>
 # complex tree recipe ----
 # categorize by seasons
 movies_recipe_tree <- recipe(yeo_revenue ~ score + budget_x + date
-                             + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
+                             + negative + positive + overall_sentiment + num_crew + num_genres + revenue, data = movies_train) |>
+  update_role(revenue, new_role = "ID") |>
   step_impute_mean(all_numeric_predictors()) |>
   step_impute_mode(overall_sentiment) |>
   step_mutate(season = case_when(

@@ -13,6 +13,8 @@ tidymodels_prefer()
 # read in data ----
 movies_data <- read_csv("data/movies_clean.csv")
 
+
+
 # set seed ----
 set.seed(17382015)
 
