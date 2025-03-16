@@ -44,9 +44,14 @@ rmse(test_preds_original, truth = price_actual, estimate = price_predicted) |> k
 rsq(test_preds_original, truth = price_actual, estimate = price_predicted) |> knitr::kable()
 
 
+test_preds_original |> 
+  mutate(residuals = price_actual - price_predicted) |> 
+  summarise(mean_residual = mean(residuals), sd_residual = sd(residuals))
+
+
 # plot ----
-final_plot <- test_preds_orig |>
-  ggplot(aes(x = revenue, y = .pred_orig)) +
+final_plot <- test_preds |>
+  ggplot(aes(x = yeo_revenue, y = .pred)) +
   geom_point(alpha = 0.5, color = "black" ) +  
   geom_abline(linetype = "dashed", linewidth = 0.5) +
   coord_obs_pred() +

@@ -228,7 +228,7 @@ basic_model_results |>
   arrange(mean) |>
   select(
     `Model Type` = wflow_id,
-    Accuracy = mean,
+    RMSE = mean,
     `Std Error` = std_err, n = n
   ) |>
   knitr::kable(digits = 4)
@@ -253,7 +253,7 @@ model_results |>
   arrange(mean) |>
   select(
     `Model Type` = wflow_id,
-    Accuracy = mean,
+    RMSE = mean,
     `Std Error` = std_err, n = n
   ) |>
   knitr::kable(digits = 4)

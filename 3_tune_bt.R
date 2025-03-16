@@ -36,7 +36,8 @@ bt_spec_basic <-
   boost_tree(trees = 250,
              min_n = tune(),
              mtry = tune(),
-             learn_rate = tune()
+             learn_rate = tune(), 
+             tree_depth = tune()
              ) |> 
   set_engine("xgboost") |> 
   set_mode("regression")
@@ -58,7 +59,8 @@ bt_params_basic <- hardhat::extract_parameter_set_dials(bt_spec_basic) |>
   update(
     mtry = mtry(c(1, 10)),
     min_n = min_n(c(2, 40)),
-    learn_rate = learn_rate(range = c(-5, -0.2))
+    learn_rate = learn_rate(range = c(-5, -0.2)),
+    tree_depth = tree_depth(range = c(6, 10))
   ) 
 
 # build tuning grid
