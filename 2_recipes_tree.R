@@ -16,7 +16,8 @@ load(here("data/movies_train.rda"))
 
 # first tree recipe ----
 movies_recipe_tree_basic <- recipe(yeo_revenue ~ score + budget_x + date
-                             + negative + positive + overall_sentiment + num_crew + num_genres, data = movies_train) |>
+                             + negative + positive + overall_sentiment + num_crew + num_genres + revenue, data = movies_train) |>
+  update_role(revenue, new_role = "ID") |>
   step_impute_mean(all_numeric_predictors()) |>
   step_impute_mode(overall_sentiment) |>
   step_date(date, features = c("year", "month"), keep_original_cols = FALSE) |>
