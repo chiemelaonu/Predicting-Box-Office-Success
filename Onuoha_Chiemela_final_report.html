@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chiemela Onuoha">
-<meta name="dcterms.date" content="2025-03-13">
+<meta name="dcterms.date" content="2025-03-15">
 
 <title>FR Chiemela Onuoha</title>
 <style>
@@ -3084,6 +3084,7 @@ vertical-align: -.125em;
   <ul>
   <li><a href="#differences-in-performance-between-model-types-and-recipes" id="toc-differences-in-performance-between-model-types-and-recipes" class="nav-link" data-scroll-target="#differences-in-performance-between-model-types-and-recipes">Differences in Performance Between Model Types and Recipes</a></li>
   </ul></li>
+  <li><a href="#final-model-analysis" id="toc-final-model-analysis" class="nav-link" data-scroll-target="#final-model-analysis">Final Model Analysis</a></li>
   </ul>
 </nav>
 </div>
@@ -3112,7 +3113,7 @@ Data Science 2 with R (STAT 301-2)</div><p></p>
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 13, 2025</p>
+      <p class="date">March 15, 2025</p>
     </div>
   </div>
   
@@ -3788,8 +3789,13 @@ Table 5: Complex Model Results
 <h3 class="anchored" data-anchor-id="differences-in-performance-between-model-types-and-recipes">Differences in Performance Between Model Types and Recipes</h3>
 <p>The EN and OLS models were fit with the same set of recipes, a more “basic” one and a more “complex” one. Their performance is around the same, which should make sense since they are both linear regression and using sets of recipes. What interests me is that the Baseline model performs very similarly to them, even though it was fit with a different recipe. Granted, for the basic EN and OLS workflows, the recipes used were not actually different from the null/baseline recipe used to fit the baseline model. But for the complex EN and OLS recipes, I added interactions and a transformation of the budget column, which seemingly made them perform worse.<br>
 <br><br>
-Another interesting point is the KNN model. Though I used the same set of the recipes to fit the KNN, Boosted Tree and Random Forest Workflows. KNN performed significantly worse than the other 2. That could mean that I did not perform inadequate tuning, the recipe needs changes, or the predictors and/or the data as a whole do not work well with the model. In the future, it could be meaningful to change the way I tuned the KNN model or possibly find different ways to change the recipe so that the model could perform better, though those changes are not a guarantee the KNN model would perform better.</p>
+Another interesting point is the KNN model. Though I used the same set of the recipes to fit the KNN, Boosted Tree and Random Forest Workflows. KNN performed significantly worse than the other 2. That could mean that I did not perform inadequate tuning, the recipe needs changes, or the predictors and/or the data as a whole do not work well with the model. In the future, it could be meaningful to change the way I tuned the KNN model or possibly find different ways to change the recipe so that the model could perform better, though those changes are not a guarantee the KNN model would perform better.<br>
+<br><br>
+In the end, I am not surprised Boosted Trees and Random Forest did the best since their capabilities in predictive modeling are more robust. They handle multi-dimensional data very well, they handle non-linear data without needing to do too much feature engineering, and overall captures many different aspects of the data when producing predicttions.</p>
 </section>
+</section>
+<section id="final-model-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="final-model-analysis">Final Model Analysis</h2>
 </section>
 
 

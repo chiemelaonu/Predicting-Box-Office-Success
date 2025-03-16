@@ -23,9 +23,46 @@ list.files(
 ) |>
   map(load, envir = .GlobalEnv)
 
-select_best(rf_tuned, metric = "rmse")
+select_best(rf_tuned_basic, metric = "rmse") |>
+  mutate(Model_Type = "Random Forest") |>  
+  select(-.config) |>
+  knitr::kable()
+select_best(knn_tuned_basic, metric = "rmse") |>
+  mutate(Model_Type = "Random Forest") |>  
+  select(-.config) |>
+  knitr::kable()
+select_best(bt_tuned_basic, metric = "rmse") |>
+  mutate(Model_Type = "Random Forest") |>  
+  select(-.config) |>
+  knitr::kable()
+select_best(en_tuned_basic, metric = "rmse") |>
+  mutate(Model_Type = "Random Forest") |>  
+  select(-.config) |>
+  knitr::kable()
 
-# examine results
+best_params_table <- bind_rows(
+  select_best(rf_tuned_basic, metric = "rmse") |>
+    mutate(Model_Type = "Random Forest") |>  # Add model name
+    select(-.config),  # Remove the .config column
+  
+  select_best(knn_tuned_basic, metric = "rmse") |>
+    mutate(Model_Type = "K-Nearest Neighbors") |>  # Add model name
+    select(-.config),
+  
+  select_best(bt_tuned_basic, metric = "rmse") |>
+    mutate(Model_Type = "Boosted Trees") |>  # Add model name
+    select(-.config),
+  
+  select_best(en_tuned_basic, metric = "rmse") |>
+    mutate(Model_Type = "Elastic Net") |>  # Add model name
+    select(-.config)
+)
+
+# Print the final table
+best_params_table |> knitr::kable(digits = 4)
+
+
+# basic
 basic_model_results <-
   as_workflow_set(
     lm = lm_basic_fit,
@@ -36,7 +73,6 @@ basic_model_results <-
     bt = bt_tuned_basic,
     en = en_tuned_basic
   ) 
-select_best(basic_model_results, metric = "rmse")
 
 # examine rmse
 basic_model_results |>
@@ -53,21 +89,20 @@ ggsave(
   width = 8
 )
 
-
 basic_fits_table <- basic_model_results |>
-    collect_metrics() |>
-    filter(.metric == "rmse") |>
-    slice_min(mean, by = wflow_id) |>
-    arrange(mean) |>
-    select(
-      `Model Type` = wflow_id,
-      Accuracy = mean,
-      `Std Error` = std_err, n = n
-    ) |>
-    knitr::kable(digits = 4)
+  collect_metrics() |>
+  filter(.metric == "rmse") |>
+  slice_min(mean, by = wflow_id) |>
+  arrange(mean) |>
+  select(
+    `Model Type` = wflow_id,
+    Accuracy = mean,
+    `Std Error` = std_err, n = n
+  ) |>
+  knitr::kable(digits = 4)
 
 
-# examine results
+# complex
 model_results <-
   as_workflow_set(
     lm = lm_fit,
@@ -83,9 +118,16 @@ model_results <-
 model_results |>
   autoplot(metric = "rmse")
 
-model_results |>
+complex_autoplot <- model_results |>
   autoplot(metric = "rmse", select_best = TRUE)
 
+# saving
+ggsave(
+  filename = here("figures/complex_autoplot.png"),
+  plot = complex_autoplot,
+  height = 5,
+  width = 8
+)
 model_results |>
   collect_metrics() 
 
@@ -95,9 +137,8 @@ fits_table <- model_results |>
   slice_min(mean, by = wflow_id) |>
   arrange(mean) |>
   select(
-    `Model Name` = wflow_id,          
-    `Metric Type` = .metric,          
-    `Mean RMSE` = mean,               
-    `Standard Error` = std_err,
-    n              
-  ) |> knitr::kable()
+    `Model Type` = wflow_id,
+    Accuracy = mean,
+    `Std Error` = std_err, n = n
+  ) |>
+  knitr::kable(digits = 4)
