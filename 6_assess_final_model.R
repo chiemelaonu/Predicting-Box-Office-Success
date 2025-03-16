@@ -40,7 +40,7 @@ rmse_result_orig <- rmse(test_preds_orig, truth = revenue, estimate = .pred_orig
 
 rmse_result_orig
 # plot ----
-graphic_2 <- test_preds |>
+final_plot <- test_preds |>
   ggplot(aes(x = yeo_revenue, y = .pred)) +
   geom_point(alpha = 0.5, color = "black" ) +  
   geom_abline(linetype = "dashed", linewidth = 0.5) +
@@ -52,8 +52,8 @@ graphic_2 <- test_preds |>
   theme_minimal()
 
 ggsave(
-  filename = here("figures/graphic_2.png"),
-  plot = graphic_2,
+  filename = here("figures/final_plot.png"),
+  plot = final_plot,
   width = 5,
   height = 3.5
 )
