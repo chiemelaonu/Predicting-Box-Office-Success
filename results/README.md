@@ -1,11 +1,19 @@
 ## Overview
-This is a repo for my final project including the final report, executive summary, and supporting code.  
-This project utilizes `tidymodels` to build a predictive model on the revenue of movies. The target variable used for this model is `yeo_revenue`. 
+This is the folder holding the fitted/tuned results of my final project.
 
 
-## Subfolders
-- [`data`](data): holds the initial read-in data for this repo, as well as the initial split, training, and testing sets
-- [`figures`](figures): holds the saved plots included in the final HTML
-- [`r_scripts`](r_scripts): holds the R scripts for the repo
-- [`results`](results): holds the fitted training models
-- [`memos`](memos): holds the progress memos 1 and 2
+## Results
+- `baseline_results.rda`: baseline results fitted to the resamples
+- `bt_tuned_basic.rda`: the basic Boosted Tree model results 
+- `bt_tuned.rda`: the complex Boosted Tree model results 
+- `en_tuned_basic.rda`: the basic Elastic Net model results 
+- `en_tuned.rda`: the complex Elastic Net model results 
+- `knn_tuned_basic.rda`: the basic KNN model results 
+- `knn_tuned.rda`: the complex KNN model results 
+- `lm_basic_fit.rda`: the basic OLS model results 
+- `lm_fit.rda`: the complex OLS model results 
+- `null_results.rda`: null results fitted to the resamples
+- `rf_tuned_basic.rda`: the basic Random Forest model results 
+- `rf_tuned.rda`: the complex Random Forest model results 
+- `final_fit.rda`: the finalized workflow with the best performing models 
+
