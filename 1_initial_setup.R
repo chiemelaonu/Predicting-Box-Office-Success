@@ -160,7 +160,6 @@ movies <- movies |>
 # adding transformed target variable and changing date_x column from character to date ----
 movies <- movies |>
   mutate(
-    yeo_revenue = yjPower(revenue, lambda = 0.25),  # transforming target variable
     date = mdy(date_x),
     num_genres = str_count(genre, ",") + 1, # adding a column that counts the number of genres for each movie
     overall_sentiment = factor(overall_sentiment),
@@ -169,4 +168,4 @@ movies <- movies |>
 glimpse(movies)
 
 
-# write_csv(movies, "data/movies_clean.csv")
+write_csv(movies, "data/movies_clean.csv")

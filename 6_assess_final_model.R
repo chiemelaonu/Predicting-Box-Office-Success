@@ -7,6 +7,7 @@ library(tidymodels)
 library(here)
 library(car)
 library(doMC)
+library(VGAM)
 
 # resolve conflicts
 tidymodels_prefer()
@@ -31,7 +32,13 @@ rmse_result <- rmse(test_preds, truth = yeo_revenue, estimate = .pred)
 
 rmse_result
 
+# predictions on original scale ----
+test_preds_orig <- predict(final_fit, movies_test) |>
+  mutate(.pred_orig = yeo.johnson(.pred, lambda = 0.25, inverse = TRUE))
 
+rmse_result_orig <- rmse(test_preds_orig, truth = revenue, estimate = .pred_orig)
+
+rmse_result_orig
 # plot ----
 graphic_2 <- test_preds |>
   ggplot(aes(x = yeo_revenue, y = .pred)) +

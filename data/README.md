@@ -23,7 +23,7 @@ Below is the codebook for `movies_clean.csv`:
 |`orig_title`| The original title of the movies (more applicable to movies that are not in English and were translated)|
 |`status`| The status of the movie (released or unreleased)|
 |`orig_lang`| The original language the movie is in|
-|`budget_x`| The budget of the movie|
-|`revenue`| The revenue of the movie|
+|`budget_x`| The budget of the movie (in dollars)|
+|`revenue`| The revenue of the movie (in dollars)|
 |`yeo_revenue`| The Yeo-Johnson transformed revenue|
 |`date`| The release date for the movie|

@@ -19,7 +19,7 @@ set.seed(17382015)
 
 # initial split ----
 movies_split <- movies_data |>
-  initial_split(prop = 0.8, strata = yeo_revenue)
+  initial_split(prop = 0.8, strata = revenue)
 
 movies_train <- movies_split |> training()
 movies_test <- movies_split |> testing()
@@ -29,7 +29,7 @@ movies_folds <- movies_train |>
   vfold_cv(
     v = 5, 
     repeats = 3,
-    strata = yeo_revenue
+    strata = revenue
   )
 
 
