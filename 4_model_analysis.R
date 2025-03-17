@@ -80,6 +80,8 @@ basic_model_results |>
 
 basic_autoplot <- basic_model_results |>
   autoplot(metric = "mae", select_best = TRUE)
+basic_model_results |> collect_metrics() |> distinct(.metric)
+
 
 # saving
 ggsave(
@@ -133,7 +135,7 @@ model_results |>
 
 fits_table <- model_results |>
   collect_metrics() |>
-  filter(.metric == "rmse") |>
+  filter(.metric == "mae") |>
   slice_min(mean, by = wflow_id) |>
   arrange(mean) |>
   select(

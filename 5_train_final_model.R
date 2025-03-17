@@ -22,7 +22,7 @@ load(here("results/bt_tuned_basic.rda"))
 # train best model (basic bt model) ----
 final_wflow <- bt_tuned_basic |> 
   extract_workflow(bt_tuned_basic) |>  
-  finalize_workflow(select_best(bt_tuned_basic, metric = "rmse"))
+  finalize_workflow(select_best(bt_tuned_basic, metric = "mae"))
 
 # train final model ----
 
