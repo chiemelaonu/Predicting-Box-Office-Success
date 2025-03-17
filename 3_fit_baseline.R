@@ -17,6 +17,7 @@ registerDoMC(cores = num_cores)
 
 # load data ----
 load(here("data/movies_folds.rda"))
+load(here("data/my_metrics.rda"))
 
 # load recipe
 load(here("recipes/movies_recipe_baseline.rda"))
@@ -36,7 +37,8 @@ null_workflow <- workflow() |>
 null_results <- fit_resamples(
   null_workflow,
   resamples = movies_folds,
-  control = control_resamples(save_workflow = TRUE)
+  control = control_resamples(save_workflow = TRUE),
+  metrics = my_metrics
 )
 
 # save null
@@ -57,7 +59,8 @@ baseline_workflow <- workflow() |>
 baseline_results <- fit_resamples(
   baseline_workflow,
   resamples = movies_folds,
-  control = control_resamples(save_workflow = TRUE)
+  control = control_resamples(save_workflow = TRUE),
+  metrics = my_metrics
 )
 
 # save baseline ----

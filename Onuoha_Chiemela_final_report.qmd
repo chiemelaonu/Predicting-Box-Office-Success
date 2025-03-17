@@ -223,7 +223,7 @@ For my basic tree model recipe, I kept the same steps as my basic Linear model r
 #| echo: false
 basic_model_results |>
   collect_metrics() |>
-  filter(.metric == "rmse") |>
+  filter(.metric == "mae") |>
   slice_min(mean, by = wflow_id) |>
   arrange(mean) |>
   select(
@@ -248,7 +248,7 @@ basic_model_results |>
 #| echo: false
 model_results |>
   collect_metrics() |>
-  filter(.metric == "rmse") |>
+  filter(.metric == "mae") |>
   slice_min(mean, by = wflow_id) |>
   arrange(mean) |>
   select(
@@ -269,6 +269,7 @@ In the end, I am not surprised Boosted Trees and Random Forest did the best sinc
 
 ## Final Model Analysis
 After training the final model (Boosted Trees) and predicting on the test set, the RMSE value we end up with is 99.2. Since we used `yeo_revenue` as the target variable and not the original `revenue`, it would be useful to transform the values back to the original scale so that meaningful deductions can be made with the RMSE.  
+
 ::: {#fig-final-plot layout-ncol=1}
 ![Final Predictions Plot](figures/final_plot.png){#fig-plot}
 :::

@@ -19,7 +19,7 @@ registerDoMC(cores = num_cores)
 # load data ----
 load(here("data/movies_test.rda"))
 load(here("results/final_fit.rda"))
-
+skimr::skim(movies_test$yeo_revenue)
 # load in training data ----
 # predictions ----
 test_preds <- movies_test |>
@@ -41,7 +41,7 @@ test_preds_original <- test_preds |>
     price_predicted = yeo.johnson(.pred, lambda = 0.25, derivative = 0, inverse = TRUE)       
   )
 rmse(test_preds_original, truth = price_actual, estimate = price_predicted) |> knitr::kable()
-rsq(test_preds_original, truth = price_actual, estimate = price_predicted) |> knitr::kable()
+mae(test_preds_original, truth = price_actual, estimate = price_predicted) |> knitr::kable()
 
 
 test_preds_original |> 

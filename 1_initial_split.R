@@ -13,8 +13,6 @@ tidymodels_prefer()
 # read in data ----
 movies_data <- read_csv("data/movies_clean.csv")
 
-movies_train |>
-  skimr::skim_without_charts()
 
 # set seed ----
 set.seed(17382015)
@@ -38,7 +36,7 @@ movies_folds <- movies_train |>
 
 # controls for fitting to resamples ----
 keep_wflow <- control_grid(save_workflow = TRUE)
-my_metrics <- metric_set(rmse)
+my_metrics <- metric_set(rmse, mae)
 
 # write out/save outputs ----
 save(movies_split, file = here("data/movies_split.rda"))

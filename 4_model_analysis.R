@@ -76,10 +76,10 @@ basic_model_results <-
 
 # examine rmse
 basic_model_results |>
-  autoplot(metric = "rmse")
+  autoplot(metric = "mae")
 
 basic_autoplot <- basic_model_results |>
-  autoplot(metric = "rmse", select_best = TRUE)
+  autoplot(metric = "mae", select_best = TRUE)
 
 # saving
 ggsave(
@@ -116,10 +116,10 @@ model_results <-
 
 # examine rmse
 model_results |>
-  autoplot(metric = "rmse")
+  autoplot(metric = "mae")
 
 complex_autoplot <- model_results |>
-  autoplot(metric = "rmse", select_best = TRUE)
+  autoplot(metric = "mae", select_best = TRUE)
 
 # saving
 ggsave(
