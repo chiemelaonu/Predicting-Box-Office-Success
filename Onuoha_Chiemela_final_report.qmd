@@ -176,13 +176,13 @@ In the table above, you can see that I added a column called `num_genres` that h
 ## Methods
 
 ### Data Splitting
-I decided on a split proportion of 80-20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue).
+I decided on a split proportion of 80/20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue).
 
 #### Resampling
 I will be using V-fold cross-validation for resampling, with 5 folds (V) and 3 repeats. This method is useful because it ensures that each data point is used for both training and testing, providing a more reliable estimate of model performance.
 
 ### Metrics
-The metric I used for comparing and selecting a final model is RMSE. RMSE is the Root Mean Squared Error which measures the square root of the average squared differences between the predicted and actual values, providing a way to quantify how much the model's predictions deviate from the true values. I picked RMSE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.
+The metric I used for comparing and selecting a final model is MAE. MAE measures the average magnitude of the errors between the predicted and actual values, without considering their direction. I picked MAE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.
 
 
 
@@ -206,12 +206,12 @@ The parameters I will be tuning are mixture and penalty.
 #### Random Forest
 Random Forest is an ensemble learning method that builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting. It is ideal for capturing nonlinear relationships and handling high-dimensional data.  
 <br> 
-The parameters I will be tuning are mtry, and min_n.
+The parameters I will be tuning are min_n with a range of 2-40, and mtry with a range of 1-10.
 
 #### Boosted Trees
-Boosted trees is a method that builds decision trees sequentially, where each tree corrects the errors of the previous one, leading to high predictive accuracy and strong performance on complex datasets. They do well at capturing nonlinear relationships, handling feature importance, and reducing bias, making them ideal for structured data with intricate patterns.  
+Boosted trees is a method that builds decision trees sequentially, where each tree corrects the errors of the previous one, leading to high predictive accuracy and strong performance on complex datasets.  
 <br>  
-The parameters I will be tuning are min_n, mtry, and learn_rate.
+The parameters I will be tuning are min_n with a range of 2-40, mtry with a range of 1-10, and learn_rate with a range of -5 to -0.2 .
 
 #### K-Nearest Neighbors
 K-Nearest Neighbors is a non-parametric model that classifies or predicts values based on the majority vote of nearby data points or their average. It works well for nonlinear relationships.  
@@ -247,19 +247,19 @@ basic_model_results |>
   arrange(mean) |>
   select(
     `Model Type` = wflow_id,
-    RMSE = mean,
+    MAE = mean,
     `Std Error` = std_err, n = n
   ) |>
   knitr::kable(digits = 4)
 ```
-@tbl-basic-fits shows the more precise RMSE's for the "basic" workflows. The RMSE of null model is significantly higher than the rest, at about 175. KNN has an RMSE of about 122. The baseline, EN, and Linear model are all around the same RMSE values in the 120 range. Then, Random Forest and Boosted Trees have a significant drop to around 100. The gap between Random Forest and Boosted Trees is quite miniscule, at less than one standard deviation apart.
+@tbl-basic-fits shows the more precise MAE's for the "basic" workflows. The MAE of null model is significantly higher than the rest, at about 149. KNN has an MAE of about 93.5. The baseline, EN, and Linear model are all around the same MAE values of about 93.8. Then, Random Forest and Boosted Trees have a significant drop to around 73.8 and 73, respectively.
 
 
 ::: {#fig-result-complex layout-ncol=1}
 ![Complex Workflow Plot ](figures/complex_autoplot.png){#fig-plot-complex}
 :::
 
-@fig-result-complex shows the distribution of the RMSE's of the "complex" model workflows, along with the null and baseline models. The plot paints a very similar picture compared to the "basic" workflows, but the most notable difference is that the Baseline model performs significantly worse than the EN and OLS models, though it still fairly close to the KNN model. Between the KNN and Baseline model, there is a standard deviation of more than 1, so the difference, though small in a general sense, is significant. The rest of the models perfom about the same.
+@fig-result-complex shows the distribution of the MAE's of the "complex" model workflows, along with the null and baseline models. The plot paints a very similar picture compared to the "basic" workflows, but the most notable difference is that the Elastic Net and OLS models perform significantly worse than their basic workflows. That could mean the feature engineering I conducted in the complex linear recipes were not a very good fit for those models.
 
 ```{r}
 #| label: tbl-complex-results
@@ -272,19 +272,19 @@ model_results |>
   arrange(mean) |>
   select(
     `Model Type` = wflow_id,
-    RMSE = mean,
+    MAE = mean,
     `Std Error` = std_err, n = n
   ) |>
   knitr::kable(digits = 4)
 ```
-With the "complex" models performing about the same as the "basic" models, we can choose either Random Forest or Boosted Trees as the best model. The difference between the is less than 1 standard deviation in both cases, so either is usable for a final model analysis. Since the standard errors for the Boosted Trees model are lower, I will be picking Boosted Trees as the best model. Additionally, since the basic Boosted Tree model workflow has a lower standard error, I will specifically be using that workflow for the final model analysis.
+Boosted Trees and Random Forest have the lowest MAE's and they are within one standard deviation of each other, so we can pick either one of those models for the final analysis. Since the standard errors for the Boosted Trees model are lower, I will be picking Boosted Trees as the best model. Additionally, since the basic Boosted Tree model workflow has a lower standard error, I will specifically be using that workflow for the final model analysis.
 
 ### Differences in Performance Between Model Types and Recipes
-The EN and OLS models were fit with the same set of recipes, a more "basic" one and a more "complex" one. Their performance is around the same, which should make sense since they are both linear regression and using sets of recipes. What interests me is that the Baseline model performs very similarly to them, even though it was fit with a different recipe. Granted, for the basic EN and OLS workflows, the recipes used were not actually different from the null/baseline recipe used to fit the baseline model. But for the complex EN and OLS recipes, I added interactions and a transformation of the budget column, which seemingly made them perform worse.  
+The EN and OLS models were fit with the same set of recipes, a more "basic" one and a more "complex" one. Their performance is around the same, which should make sense since they are both linear regression and using sets of recipes. What interests me is that the Baseline model performs very similarly to them in the basic workflow, even though it was fit with a different recipe. Granted, for the basic EN and OLS workflows, the recipes used were not actually different from the null/baseline recipe used to fit the baseline model. But for the complex EN and OLS recipes, I added interactions and a transformation of the budget column, which seemingly made them perform worse in general, and worse than the baseline model.  
 <br>  
-Another interesting point is the KNN model. Though I used the same set of the recipes to fit the KNN, Boosted Tree and Random Forest Workflows. KNN performed significantly worse than the other 2. That could mean that I did not perform inadequate tuning, the recipe needs changes, or the predictors and/or the data as a whole do not work well with the model. In the future, it could be meaningful to change the way I tuned the KNN model or possibly find different ways to change the recipe so that the model could perform better, though those changes are not a guarantee the KNN model would perform better.  
+Another interesting point is the KNN model. Though I used the same set of the recipes to fit the KNN, Boosted Tree and Random Forest Workflows. KNN performed significantly worse than the other 2. That could mean that I did not perform adequate tuning, the recipe needs changes, or the predictors and/or the data as a whole does not work well with the model. In the future, it could be meaningful to change the way I tuned the KNN model or possibly find different ways to change the recipe so that the model could perform better, though those changes are not a guarantee the KNN model would perform better.  
 <br>  
-In the end, I am not surprised Boosted Trees and Random Forest did the best since their capabilities in predictive modeling are more robust. They handle multi-dimensional data very well, they handle non-linear data without needing to do too much feature engineering, and overall captures many different aspects of the data when producing predictions. 
+In the end, I am not surprised Boosted Trees and Random Forest did the best since their capabilities in predictive modeling are more robust and overall capture many different aspects of the data when producing predictions. 
 
 ## Final Model Analysis
 After training the final model (Boosted Trees) and predicting on the test set, I calculated MAE, as well as R-squared and RMSE to provide more context on the model's predictions. Additionally, since we used `yeo_revenue` as the target variable and not the original `revenue`, I will be transforming the values back to the original scale so that meaningful deductions can be made with the MAE.
@@ -349,3 +349,5 @@ On the original scale in @tbl-final-metrics-orig, the numbers are very high (tho
 :::
 
 To better see the outcomes of the model, @fig-final-plot-orig-zoom is the distribution of the previous @fig-final-plot-orig but restricted to between 0 and 500,000,000. As you can see, the model still does not seem to be doing very well, which the model's R-squared value of 66.7% already foreshadowed. The low R-squared and somewhat high MAE could mean that this prediction problem is difficult to capture in modeling. There could have been inadequate feature engineering as well, which would need to be another area of focus if exploring the reasons for the poor predictions.
+
+## Conclusion

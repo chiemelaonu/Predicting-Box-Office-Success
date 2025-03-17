@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chiemela Onuoha">
-<meta name="dcterms.date" content="2025-03-16">
+<meta name="dcterms.date" content="2025-03-17">
 
 <title>FR Chiemela Onuoha</title>
 <style>
@@ -3085,6 +3085,7 @@ vertical-align: -.125em;
   <li><a href="#differences-in-performance-between-model-types-and-recipes" id="toc-differences-in-performance-between-model-types-and-recipes" class="nav-link" data-scroll-target="#differences-in-performance-between-model-types-and-recipes">Differences in Performance Between Model Types and Recipes</a></li>
   </ul></li>
   <li><a href="#final-model-analysis" id="toc-final-model-analysis" class="nav-link" data-scroll-target="#final-model-analysis">Final Model Analysis</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
 </div>
@@ -3113,7 +3114,7 @@ Data Science 2 with R (STAT 301-2)</div><p></p>
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 16, 2025</p>
+      <p class="date">March 17, 2025</p>
     </div>
   </div>
   
@@ -3535,7 +3536,7 @@ $ num_genres        &lt;dbl&gt; 2, 3, 5, 5, 1, 3, 3, 5, 2, 5, 2, 1, 3, 3, 2, 2, 
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
 <section id="data-splitting" class="level3">
 <h3 class="anchored" data-anchor-id="data-splitting">Data Splitting</h3>
-<p>I decided on a split proportion of 80-20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue).</p>
+<p>I decided on a split proportion of 80/20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue).</p>
 <section id="resampling" class="level4">
 <h4 class="anchored" data-anchor-id="resampling">Resampling</h4>
 <p>I will be using V-fold cross-validation for resampling, with 5 folds (V) and 3 repeats. This method is useful because it ensures that each data point is used for both training and testing, providing a more reliable estimate of model performance.</p>
@@ -3543,7 +3544,7 @@ $ num_genres        &lt;dbl&gt; 2, 3, 5, 5, 1, 3, 3, 5, 2, 5, 2, 1, 3, 3, 2, 2, 
 </section>
 <section id="metrics" class="level3">
 <h3 class="anchored" data-anchor-id="metrics">Metrics</h3>
-<p>The metric I used for comparing and selecting a final model is RMSE. RMSE is the Root Mean Squared Error which measures the square root of the average squared differences between the predicted and actual values, providing a way to quantify how much the model’s predictions deviate from the true values. I picked RMSE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.</p>
+<p>The metric I used for comparing and selecting a final model is MAE. MAE measures the average magnitude of the errors between the predicted and actual values, without considering their direction. I picked MAE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.</p>
 </section>
 <section id="model-descriptions" class="level3">
 <h3 class="anchored" data-anchor-id="model-descriptions">Model Descriptions</h3>
@@ -3567,13 +3568,13 @@ The parameters I will be tuning are mixture and penalty.</p>
 <section id="random-forest" class="level4">
 <h4 class="anchored" data-anchor-id="random-forest">Random Forest</h4>
 <p>Random Forest is an ensemble learning method that builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting. It is ideal for capturing nonlinear relationships and handling high-dimensional data.<br>
-<br> The parameters I will be tuning are mtry, and min_n.</p>
+<br> The parameters I will be tuning are min_n with a range of 2-40, and mtry with a range of 1-10.</p>
 </section>
 <section id="boosted-trees" class="level4">
 <h4 class="anchored" data-anchor-id="boosted-trees">Boosted Trees</h4>
-<p>Boosted trees is a method that builds decision trees sequentially, where each tree corrects the errors of the previous one, leading to high predictive accuracy and strong performance on complex datasets. They do well at capturing nonlinear relationships, handling feature importance, and reducing bias, making them ideal for structured data with intricate patterns.<br>
+<p>Boosted trees is a method that builds decision trees sequentially, where each tree corrects the errors of the previous one, leading to high predictive accuracy and strong performance on complex datasets.<br>
 <br><br>
-The parameters I will be tuning are min_n, mtry, and learn_rate.</p>
+The parameters I will be tuning are min_n with a range of 2-40, mtry with a range of 1-10, and learn_rate with a range of -5 to -0.2 .</p>
 </section>
 <section id="k-nearest-neighbors" class="level4">
 <h4 class="anchored" data-anchor-id="k-nearest-neighbors">K-Nearest Neighbors</h4>
@@ -3637,7 +3638,7 @@ Table 4: Basic Fits Table
 <thead>
 <tr class="header">
 <th style="text-align: left;">Model Type</th>
-<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">MAE</th>
 <th style="text-align: right;">Std Error</th>
 <th style="text-align: right;">n</th>
 </tr>
@@ -3692,7 +3693,7 @@ Table 4: Basic Fits Table
 </figure>
 </div>
 </div>
-<p><a href="#tbl-basic-fits" class="quarto-xref">Table 4</a> shows the more precise RMSE’s for the “basic” workflows. The RMSE of null model is significantly higher than the rest, at about 175. KNN has an RMSE of about 122. The baseline, EN, and Linear model are all around the same RMSE values in the 120 range. Then, Random Forest and Boosted Trees have a significant drop to around 100. The gap between Random Forest and Boosted Trees is quite miniscule, at less than one standard deviation apart.</p>
+<p><a href="#tbl-basic-fits" class="quarto-xref">Table 4</a> shows the more precise MAE’s for the “basic” workflows. The MAE of null model is significantly higher than the rest, at about 149. KNN has an MAE of about 93.5. The baseline, EN, and Linear model are all around the same MAE values of about 93.8. Then, Random Forest and Boosted Trees have a significant drop to around 73.8 and 73, respectively.</p>
 <div id="fig-result-complex" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-result-complex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -3716,7 +3717,7 @@ Figure 3
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-result-complex" class="quarto-xref">Figure 3</a> shows the distribution of the RMSE’s of the “complex” model workflows, along with the null and baseline models. The plot paints a very similar picture compared to the “basic” workflows, but the most notable difference is that the Baseline model performs significantly worse than the EN and OLS models, though it still fairly close to the KNN model. Between the KNN and Baseline model, there is a standard deviation of more than 1, so the difference, though small in a general sense, is significant. The rest of the models perfom about the same.</p>
+<p><a href="#fig-result-complex" class="quarto-xref">Figure 3</a> shows the distribution of the MAE’s of the “complex” model workflows, along with the null and baseline models. The plot paints a very similar picture compared to the “basic” workflows, but the most notable difference is that the Elastic Net and OLS models perform significantly worse than their basic workflows. That could mean the feature engineering I conducted in the complex linear recipes were not a very good fit for those models.</p>
 <div class="cell">
 <div id="tbl-complex-results" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -3729,7 +3730,7 @@ Table 5: Complex Model Results
 <thead>
 <tr class="header">
 <th style="text-align: left;">Model Type</th>
-<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">MAE</th>
 <th style="text-align: right;">Std Error</th>
 <th style="text-align: right;">n</th>
 </tr>
@@ -3784,14 +3785,14 @@ Table 5: Complex Model Results
 </figure>
 </div>
 </div>
-<p>With the “complex” models performing about the same as the “basic” models, we can choose either Random Forest or Boosted Trees as the best model. The difference between the is less than 1 standard deviation in both cases, so either is usable for a final model analysis. Since the standard errors for the Boosted Trees model are lower, I will be picking Boosted Trees as the best model. Additionally, since the basic Boosted Tree model workflow has a lower standard error, I will specifically be using that workflow for the final model analysis.</p>
+<p>Boosted Trees and Random Forest have the lowest MAE’s and they are within one standard deviation of each other, so we can pick either one of those models for the final analysis. Since the standard errors for the Boosted Trees model are lower, I will be picking Boosted Trees as the best model. Additionally, since the basic Boosted Tree model workflow has a lower standard error, I will specifically be using that workflow for the final model analysis.</p>
 <section id="differences-in-performance-between-model-types-and-recipes" class="level3">
 <h3 class="anchored" data-anchor-id="differences-in-performance-between-model-types-and-recipes">Differences in Performance Between Model Types and Recipes</h3>
-<p>The EN and OLS models were fit with the same set of recipes, a more “basic” one and a more “complex” one. Their performance is around the same, which should make sense since they are both linear regression and using sets of recipes. What interests me is that the Baseline model performs very similarly to them, even though it was fit with a different recipe. Granted, for the basic EN and OLS workflows, the recipes used were not actually different from the null/baseline recipe used to fit the baseline model. But for the complex EN and OLS recipes, I added interactions and a transformation of the budget column, which seemingly made them perform worse.<br>
+<p>The EN and OLS models were fit with the same set of recipes, a more “basic” one and a more “complex” one. Their performance is around the same, which should make sense since they are both linear regression and using sets of recipes. What interests me is that the Baseline model performs very similarly to them in the basic workflow, even though it was fit with a different recipe. Granted, for the basic EN and OLS workflows, the recipes used were not actually different from the null/baseline recipe used to fit the baseline model. But for the complex EN and OLS recipes, I added interactions and a transformation of the budget column, which seemingly made them perform worse in general, and worse than the baseline model.<br>
 <br><br>
-Another interesting point is the KNN model. Though I used the same set of the recipes to fit the KNN, Boosted Tree and Random Forest Workflows. KNN performed significantly worse than the other 2. That could mean that I did not perform inadequate tuning, the recipe needs changes, or the predictors and/or the data as a whole do not work well with the model. In the future, it could be meaningful to change the way I tuned the KNN model or possibly find different ways to change the recipe so that the model could perform better, though those changes are not a guarantee the KNN model would perform better.<br>
+Another interesting point is the KNN model. Though I used the same set of the recipes to fit the KNN, Boosted Tree and Random Forest Workflows. KNN performed significantly worse than the other 2. That could mean that I did not perform adequate tuning, the recipe needs changes, or the predictors and/or the data as a whole does not work well with the model. In the future, it could be meaningful to change the way I tuned the KNN model or possibly find different ways to change the recipe so that the model could perform better, though those changes are not a guarantee the KNN model would perform better.<br>
 <br><br>
-In the end, I am not surprised Boosted Trees and Random Forest did the best since their capabilities in predictive modeling are more robust. They handle multi-dimensional data very well, they handle non-linear data without needing to do too much feature engineering, and overall captures many different aspects of the data when producing predictions.</p>
+In the end, I am not surprised Boosted Trees and Random Forest did the best since their capabilities in predictive modeling are more robust and overall capture many different aspects of the data when producing predictions.</p>
 </section>
 </section>
 <section id="final-model-analysis" class="level2">
@@ -3941,6 +3942,9 @@ Figure 6
 </figure>
 </div>
 <p>To better see the outcomes of the model, <a href="#fig-final-plot-orig-zoom" class="quarto-xref">Figure 6</a> is the distribution of the previous <a href="#fig-final-plot-orig" class="quarto-xref">Figure 5</a> but restricted to between 0 and 500,000,000. As you can see, the model still does not seem to be doing very well, which the model’s R-squared value of 66.7% already foreshadowed. The low R-squared and somewhat high MAE could mean that this prediction problem is difficult to capture in modeling. There could have been inadequate feature engineering as well, which would need to be another area of focus if exploring the reasons for the poor predictions.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 </section>
 
 
