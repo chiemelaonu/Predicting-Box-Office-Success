@@ -34,21 +34,25 @@ library(tidymodels)
 library(DT)
 library(here)
 library(doMC)
+library(VGAM)
+library(scales)
+
 
 # resolve conflicts
 tidymodels_prefer()
 
 
-# load in data ----
+# read in original data ----
 movies <- read_csv("data/imdb_movies.csv")
-# read in data ----
+
+# read in cleandata ----
 movies_data <- read_csv("data/movies_clean.csv")
 
 # parallel processing ----
 num_cores <- parallel::detectCores(logical = FALSE)
 registerDoMC(cores = 6)
 
-# load in results ----
+# load in results for workflow analysis ----
 list.files(
   here("results/"),
   pattern = ".rda",
@@ -81,6 +85,21 @@ model_results <-
     bt = bt_tuned,
     en = en_tuned
   ) 
+
+# load in data for final model analysis ----
+load(here("data/movies_test.rda"))
+load(here("results/final_fit.rda"))
+
+# predictions
+test_preds <- movies_test |>
+  bind_cols(predict(final_fit, movies_test)) |>
+  select(yeo_revenue, .pred)
+
+test_preds_original <- test_preds |>
+  mutate(
+    price_actual = yeo.johnson(yeo_revenue, lambda = 0.25, derivative = 0, inverse = TRUE),   
+    price_predicted = yeo.johnson(.pred, lambda = 0.25, derivative = 0, inverse = TRUE)       
+  )
 ```
 
 ::: {.callout-tip icon=false}
@@ -214,7 +233,7 @@ For my basic tree model recipe, I kept the same steps as my basic Linear model r
 ## Model Building and Selection Results
 ::: {#fig-result layout-ncol=1}
 
-![Basic Workflow Plot ](figures/basic_autoplot.png){#fig-plot}
+![Basic Workflow Plot ](figures/basic_autoplot.png){#fig-plot-basic}
 :::
 @fig-result shows the distribution of the RMSE's of the "basic" model workflows, along with the null and baseline models. The sharp decline from the null model to the rest of the models is evidence that more complex models and recipes are needed to produce better predictions. Additionally, among the complex models, the RMSE is still decreasing, though the change is not much between a few models. Since the changes between the Baseline, KNN, OLS, and EN model are not very significant, we learn that we should try to be pickier about the models we want to tune/fit, since the computational toll is not worth it for those models. On the other hand, Random Forest and Boosted Trees have a significant decrease from the 4 aforementioned workflows, and that proves that tuning those models were helpful and worth the longer times it took to run them. 
 ```{r}
@@ -237,7 +256,7 @@ basic_model_results |>
 
 
 ::: {#fig-result-complex layout-ncol=1}
-![Complex Workflow Plot ](figures/complex_autoplot.png){#fig-plot}
+![Complex Workflow Plot ](figures/complex_autoplot.png){#fig-plot-complex}
 :::
 
 @fig-result-complex shows the distribution of the RMSE's of the "complex" model workflows, along with the null and baseline models. The plot paints a very similar picture compared to the "basic" workflows, but the most notable difference is that the Baseline model performs significantly worse than the EN and OLS models, though it still fairly close to the KNN model. Between the KNN and Baseline model, there is a standard deviation of more than 1, so the difference, though small in a general sense, is significant. The rest of the models perfom about the same.
@@ -268,12 +287,65 @@ Another interesting point is the KNN model. Though I used the same set of the re
 In the end, I am not surprised Boosted Trees and Random Forest did the best since their capabilities in predictive modeling are more robust. They handle multi-dimensional data very well, they handle non-linear data without needing to do too much feature engineering, and overall captures many different aspects of the data when producing predictions. 
 
 ## Final Model Analysis
-After training the final model (Boosted Trees) and predicting on the test set, the RMSE value we end up with is 99.2. Since we used `yeo_revenue` as the target variable and not the original `revenue`, it would be useful to transform the values back to the original scale so that meaningful deductions can be made with the RMSE.  
+After training the final model (Boosted Trees) and predicting on the test set, I calculated MAE, as well as R-squared and RMSE to provide more context on the model's predictions. Additionally, since we used `yeo_revenue` as the target variable and not the original `revenue`, I will be transforming the values back to the original scale so that meaningful deductions can be made with the MAE.
 
-::: {#fig-final-plot layout-ncol=1}
-![Final Predictions Plot (Yeo-Johnson)](figures/final_plot.png){#fig-plot}
+```{r}
+#| label: tbl-final-metrics
+#| tbl-cap: "Final Assessment Metrics (on Yeo-Johnson Scale)"
+#| echo: false
+
+# compute metrics
+rmse_result <- rmse(test_preds, truth = yeo_revenue, estimate = .pred)
+mae_result <- mae(test_preds, truth = yeo_revenue, estimate = .pred)
+rsq_result <- rsq(test_preds, truth = yeo_revenue, estimate = .pred)
+
+# create a table
+metrics_table <- tibble(
+  Metric = c("RMSE", "MAE", "R²"),
+  Value = c(rmse_result$.estimate, mae_result$.estimate, rsq_result$.estimate)
+) |> knitr::kable()
+
+# print table
+metrics_table
+```
+@tbl-final-metrics says that the RMSE is at a 99.2, while the MAE is at 73.4. When calculating RMSE and MAE, we are looking for lower values that show our predicted values are not too far off from the actual values. The model produces a better MAE value than RMSE which could be because of the RMSE squaring already large values, making them much larger and distorting the scale.
+
+```{r}
+#| label: tbl-final-metrics-orig
+#| tbl-cap: "Final Assessment Metrics (on Original Scale)"
+#| echo: false
+
+# compute metrics
+rmse_orig <- rmse(test_preds_original, truth = price_actual, estimate = price_predicted) 
+mae_orig <- mae(test_preds_original, truth = price_actual, estimate = price_predicted) 
+rsq_orig <- rsq(test_preds_original, truth = price_actual, estimate = price_predicted) 
+
+
+# create a table
+metrics_table_orig <- tibble(
+  Metric = c("RMSE", "MAE", "R²"),
+  Value = c(rmse_orig$.estimate, mae_orig$.estimate, rsq_orig$.estimate)
+) |>
+  mutate(Value = format(Value, scientific = FALSE, big.mark = ",")) |>
+  knitr::kable()
+
+metrics_table_orig 
+
+```
+On the original scale in @tbl-final-metrics-orig, the numbers are very high (though that can be expected since movie revenue can go up to the hundreds of millions). The original scale allows us to better interpret the model predictions, showing that the RMSE of 99.2 is equivalent to almost \$170 million and the MAE of 73.4 is equivalent to \$100.4 million. The Rsquared also reduces slightly because of the scaling changes, which is not a very good sign as it was already at 66.7%. The 66.7% means that the model only explains 66.7% of the variability in the results, which is not a very good number. We would prefer the number to be higher, as that means the model is capturing the variance well and adjusting accordingly.
+
+::: {#fig-final-plot-yeo layout-ncol=1}
+![Final Predictions Plot (Yeo-Johnson)](figures/final_plot_yeo.png){#fig-plot}
+:::
+@fig-final-plot-yeo shows that the predicted revenue with the actual revenue on the Yeo-Johnson scale. The Boosted Trees model was able to make some correct or almost correct predictions, but there are still many predictions that are far off the actual values. 
+
+::: {#fig-final-plot-orig layout-ncol=1}
+![Final Predictions Plot (Original)](figures/final_plot_orig.png){#fig-plot-orig}
+:::
+@fig-final-plot-orig has the predicted revenue with the actual revenue on the original scale. 
+
+::: {#fig-final-plot-orig-zoom layout-ncol=1}
+![Final Predictions Plot (Original)](figures/final_plot_orig_zoom.png){#fig-plot-zoom}
 :::
 
-::: {#fig-final-plot layout-ncol=1}
-![Final Predictions Plot (Original)](figures/final_plot.png){#fig-plot}
-:::
+To better see the outcomes of the model, @fig-final-plot-orig-zoom is the distribution of the previous @fig-final-plot-orig but restricted to between 0 and 500,000,000. As you can see, the model still does not seem to be doing very well, which the model's R-squared value of 66.7% already foreshadowed. The low R-squared and somewhat high MAE could mean that this prediction problem is difficult to capture in modeling. There could have been inadequate feature engineering as well, which would need to be another area of focus if exploring the reasons for the poor predictions.
