@@ -50,7 +50,7 @@ test_preds_original |>
 
 
 # plot ----
-final_plot <- test_preds |>
+final_plot_yeo <- test_preds |>
   ggplot(aes(x = yeo_revenue, y = .pred)) +
   geom_point(alpha = 0.5, color = "black" ) +  
   geom_abline(linetype = "dashed", linewidth = 0.5) +
@@ -64,8 +64,28 @@ final_plot <- test_preds |>
   theme_minimal()
 
 ggsave(
-  filename = here("figures/final_plot.png"),
-  plot = final_plot,
+  filename = here("figures/final_plot_yeo.png"),
+  plot = final_plot_yeo,
+  width = 5,
+  height = 3.5
+)
+
+final_plot_orig <- test_preds_original |>
+  ggplot(aes(x = price_actual, y = price_predicted)) +
+  geom_point(alpha = 0.5, color = "black" ) +  
+  geom_abline(linetype = "dashed", linewidth = 0.5) +
+  coord_obs_pred() +
+  labs(
+    x = "Actual Revenue
+    (Original Scale)",
+    y = "Predicted Revenue 
+    (Original Scale)"
+  ) +
+  theme_minimal()
+
+ggsave(
+  filename = here("figures/final_plot_orig.png"),
+  plot = final_plot_orig,
   width = 5,
   height = 3.5
 )
