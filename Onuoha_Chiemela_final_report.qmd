@@ -347,7 +347,11 @@ On the original scale in @tbl-final-metrics-orig, the numbers are very high (tho
 ::: {#fig-final-plot-orig-zoom layout-ncol=1}
 ![Final Predictions Plot (Original)](figures/final_plot_orig_zoom.png){#fig-plot-zoom}
 :::
+To better see the outcomes of the model, @fig-final-plot-orig-zoom is the distribution of the previous @fig-final-plot-orig but restricted to between 0 and 500,000,000. This plot shows that there is a bit more overfitting then underfitting present (at least for this region) which can make sense since it is a Boosted Tree model and they can be prone to overfitting.
 
-To better see the outcomes of the model, @fig-final-plot-orig-zoom is the distribution of the previous @fig-final-plot-orig but restricted to between 0 and 500,000,000. As you can see, the model still does not seem to be doing very well, which the model's R-squared value of 66.7% already foreshadowed. The low R-squared and somewhat high MAE could mean that this prediction problem is difficult to capture in modeling. There could have been inadequate feature engineering as well, which would need to be another area of focus if exploring the reasons for the poor predictions.
+::: {#fig-final-plot-yeo-zoom layout-ncol=1}
+![Final Predictions Plot (Yeo-Johnson)](figures/final_plot_yeo_zoom.png){#fig-plot-zoom-yeo}
+:::
+@fig-final-plot-yeo-zoom is the distribution of @fig-final-plot-yeo but between the range of 250 and 500, one of the clustered regions on the full dimension plot. The less-than-ideal performance of this model was foreshadowed by the R-squared value, which could mean that this prediction problem is difficult to capture in modeling. There could have been inadequate feature engineering as well, which would need to be another area of focus if exploring the reasons for the poor predictions.
 
 ## Conclusion
