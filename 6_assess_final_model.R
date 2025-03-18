@@ -68,7 +68,7 @@ metrics_table_orig <- tibble(
 metrics_table_orig
 
 
-# plot ----
+# final plot on yeo scale ----
 final_plot_yeo <- test_preds |>
   ggplot(aes(x = yeo_revenue, y = .pred)) +
   geom_point(alpha = 0.5, color = "black" ) +  
@@ -89,6 +89,7 @@ ggsave(
   height = 3.5
 )
 
+# regular plot on original scale ----
 final_plot_orig <- test_preds_original |>
   ggplot(aes(x = price_actual, y = price_predicted)) +
   geom_point(alpha = 0.5, color = "black" ) +  
@@ -111,6 +112,7 @@ ggsave(
   height = 3.5
 )
 
+# zoomed plot on original scale ----
 final_plot_orig_zoom <- test_preds_original |>
   ggplot(aes(x = price_actual, y = price_predicted)) +
   geom_point(alpha = 0.5, color = "black" ) +  
@@ -130,6 +132,30 @@ final_plot_orig_zoom <- test_preds_original |>
 ggsave(
   filename = here("figures/final_plot_orig_zoom.png"),
   plot = final_plot_orig_zoom,
+  width = 6,
+  height = 3.5
+)
+
+# zoomed plot on yeo scale ----
+final_plot_yeo_zoom <- test_preds |>
+  ggplot(aes(x = yeo_revenue, y = .pred)) +
+  geom_point(alpha = 0.5, color = "black" ) +  
+  geom_abline(linetype = "dashed", linewidth = 0.5) +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  coord_cartesian(xlim = c(0, 500000000), ylim = c(0, 500000000)) +
+  labs(
+    x = "Actual Revenue
+    (Original Scale)",
+    y = "Predicted Revenue 
+    (Original Scale)"
+  ) +
+  theme_minimal()
+
+
+ggsave(
+  filename = here("figures/final_plot_yeo_zoom.png"),
+  plot = final_plot_yeo_zoom,
   width = 6,
   height = 3.5
 )
