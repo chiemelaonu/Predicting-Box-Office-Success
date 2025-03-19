@@ -235,7 +235,7 @@ For my basic tree model recipe, I kept the same steps as my basic Linear model r
 ### Basic Workflows
 ```{r}
 #| label: tbl-rf-basic
-#| tbl-cap: "Basic Random Forest Best Hyperparamaters"
+#| tbl-cap: "Basic Random Forest Best Hyperparameters"
 #| echo: false
 
 
@@ -255,7 +255,7 @@ The Random Forest Workflow's best hyperparameters are an `mtry` of 10 and `min_n
 
 ```{r}
 #| label: tbl-knn-basic
-#| tbl-cap: "Basic KNN Best Hyperparamaters"
+#| tbl-cap: "Basic KNN Best Hyperparameters"
 #| echo: false
 
 
@@ -274,7 +274,7 @@ select_best(knn_tuned_basic, metric = "mae") |>
 
 ```{r}
 #| label: tbl-bt-basic
-#| tbl-cap: "Basic Boostd Trees Best Hyperparamaters"
+#| tbl-cap: "Basic Boosted Trees Best Hyperparameters"
 #| echo: false
 
 
@@ -288,19 +288,18 @@ select_best(bt_tuned_basic, metric = "mae") |>
 
 ```{r}
 #| label: tbl-en-basic
-#| tbl-cap: "Basic Elastic Net Best Hyperparamaters"
+#| tbl-cap: "Basic Elastic Net Best Hyperparameters"
 #| echo: false
 
 select_best(en_tuned_basic, metric = "mae") |>
   mutate(Model_Type = "Elastic Net") |>  
   select(-.config) |>
-  mutate(Value = format(Value, scientific = FALSE, big.mark = ",")) |>
   knitr::kable()
 ```
 ::: {#fig-en layout-ncol=1}
 ![Basic Elastic Net Workflow Plot ](figures/en_basic_auto.png){#fig-en-basic}
 :::
-Elastic Net's best hyperparamaters are a `mixture` of 1 and a `penalty` of 0.5, which is a Lasso model. 
+Elastic Net's best hyperparameters are a `mixture` of 1 and a `penalty` of 0.5, which is a Lasso model. 
 
 ::: {#fig-result layout-ncol=1}
 
@@ -328,6 +327,8 @@ basic_model_results |>
 ### Complex Workflows
 
 ```{r}
+#| label: tbl-rf-complex
+#| tbl-cap: "Complex Random Forest Best Hyperparameters"
 #| echo: false
 
 select_best(rf_tuned, metric = "mae") |>
@@ -338,8 +339,11 @@ select_best(rf_tuned, metric = "mae") |>
 ::: {#fig-rf-complex layout-ncol=1}
 ![Complex Random Forest Workflow Plot ](figures/rf_auto.png){#fig-rf-complex}
 :::
+The complex Random Forest workflow's best hyperparamters are an `mtry` of 10 and an `min_n` of 11.
 
 ```{r}
+#| label: tbl-knn-complex
+#| tbl-cap: "Complex KNN Best Hyperparameters"
 #| echo: false
 
 select_best(knn_tuned, metric = "mae") |>
@@ -350,9 +354,11 @@ select_best(knn_tuned, metric = "mae") |>
 ::: {#fig-knn-complex layout-ncol=1}
 ![K-Nearest Neighbor Complex Workflow Plot ](figures/knn_auto.png){#fig-knn-complex}
 :::
-
+The complex KNN workflow's best hyperparameters is a `neighbors` value of 10.
 
 ```{r}
+#| label: tbl-bt-complex
+#| tbl-cap: "Complex Boosted Tree Best Hyperparameters"
 #| echo: false
 
 select_best(bt_tuned, metric = "mae") |>
@@ -366,18 +372,19 @@ select_best(bt_tuned, metric = "mae") |>
 
 
 ```{r}
+#| label: tbl-en-complex
+#| tbl-cap: "Complex Elastic Net Best Hyperparameters"
 #| echo: false
 
 select_best(en_tuned, metric = "mae") |>
   mutate(Model_Type = "Elastic Net") |>  
   select(-.config) |>
-  mutate(Value = format(Value, scientific = FALSE, big.mark = ",")) |>
-  knitr::kable()
+   knitr::kable()
 ```
 ::: {#fig-en-complex layout-ncol=1}
 ![Elastic Net Complex Workflow Plot ](figures/en_auto.png){#fig-en-complex}
 :::
-
+The complex Elastic Net workflow's best hyperparameters are a `penalty` of 0.75 and an `mixture` of 1, which is a Lasso model again.
 
 ::: {#fig-result-complex layout-ncol=1}
 ![Complex Workflow Plot ](figures/complex_autoplot.png){#fig-plot-complex}

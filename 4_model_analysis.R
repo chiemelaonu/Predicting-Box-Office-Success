@@ -29,7 +29,11 @@ list.files(
 
 # autplots of tuned workflows
 knn_basic_auto <- knn_tuned_basic |>
-  autoplot(metric = "mae")
+  autoplot(metric = "mae") +
+  labs(title = "K-Nearest Neighbor Basic Autoplot",
+       y = "MAE",
+       caption = "Data from Kaggle.com"
+  )
 
 ggsave(
   filename = here("figures/knn_basic_auto.png"),
@@ -40,7 +44,11 @@ ggsave(
 
 
 rf_basic_auto <- rf_tuned_basic |>
-  autoplot(metric = "mae")
+  autoplot(metric = "mae") +
+  labs(title = "Random Forest Basic Autoplot",
+       y = "MAE",
+       caption = "Data from Kaggle.com"
+  )
 
 ggsave(
   filename = here("figures/rf_basic_auto.png"),
@@ -53,7 +61,11 @@ ggsave(
 en_basic_auto <- en_tuned_basic |>
   autoplot(metric = "mae") +
   scale_y_continuous(labels = comma) +  # Format y-axis with commas
-  scale_x_continuous(labels = comma) 
+  scale_x_continuous(labels = comma) +
+  labs(title = "Elastic Net Basic Autoplot",
+       y = "MAE",
+       caption = "Data from Kaggle.com"
+       )
 
 ggsave(
   filename = here("figures/en_basic_auto.png"),
@@ -64,7 +76,12 @@ ggsave(
 
 
 bt_basic_auto <- bt_tuned_basic |>
-  autoplot(metric = "mae")
+  autoplot(metric = "mae") +
+  labs(title = "Boosted Trees Basic Autoplot",
+       y = "MAE",
+       caption = "Data from Kaggle.com"
+  )
+
 ggsave(
   filename = here("figures/bt_basic_auto.png"),
   plot = bt_basic_auto,
@@ -124,7 +141,11 @@ basic_fits_table <- basic_model_results |>
 
 # autplots
 knn_auto <- knn_tuned |>
-  autoplot(metric = "mae")
+  autoplot(metric = "mae") +
+  labs(title = "K-Nearest Neighbors Complex Autoplot",
+       y = "MAE",
+       caption = "Data from Kaggle.com"
+  )
 
 ggsave(
   filename = here("figures/knn_auto.png"),
@@ -135,7 +156,11 @@ ggsave(
 
 
 rf_auto <- rf_tuned |>
-  autoplot(metric = "mae")
+  autoplot(metric = "mae") +
+  labs(title = "Random Forest Complex Autoplot",
+       y = "MAE",
+       caption = "Data from Kaggle.com"
+  )
 
 ggsave(
   filename = here("figures/rf_auto.png"),
@@ -148,7 +173,11 @@ ggsave(
 en_auto <- en_tuned |>
   autoplot(metric = "mae") +
   scale_y_continuous(labels = comma) +  # Format y-axis with commas
-  scale_x_continuous(labels = comma) 
+  scale_x_continuous(labels = comma) +
+  labs(title = "Elastic Net Complex Autoplot",
+       y = "MAE",
+       caption = "Data from Kaggle.com"
+  )
 
 ggsave(
   filename = here("figures/en_auto.png"),
@@ -159,7 +188,11 @@ ggsave(
 
 
 bt_auto <- bt_tuned |>
-  autoplot(metric = "mae")
+  autoplot(metric = "mae") +
+  labs(title = "Boosted Trees Complex Autoplot",
+       y = "MAE",
+       caption = "Data from Kaggle.com"
+  )
 
 ggsave(
   filename = here("figures/bt_auto.png"),
