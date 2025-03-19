@@ -231,6 +231,61 @@ For my complex Linear model recipe, most of the steps are the same as the null/b
 For my basic tree model recipe, I kept the same steps as my basic Linear model recipe. For my complex recipe, I created a new column called `season` that splits up the months into the 4 seasons and used that as a predictor as well.
 
 ## Model Building and Selection Results
+```{r}
+#| echo: false
+
+
+select_best(rf_tuned_basic, metric = "rmse") |>
+  mutate(Model_Type = "Random Forest") |>  
+  select(-.config) |>
+  knitr::kable()
+
+
+```
+::: {#fig-rf layout-ncol=1}
+
+![Basic Random Forest Workflow Plot ](figures/rf_basic_auto.png){#fig-rf-basic}
+:::
+
+```{r}
+#| echo: false
+
+
+select_best(knn_tuned_basic, metric = "rmse") |>
+  mutate(Model_Type = "K-Nearest Neighbor") |>  
+  select(-.config) |>
+  knitr::kable()
+
+```
+::: {#fig-knn layout-ncol=1}
+![Basic K-Nearest Neighbor Workflow Plot ](figures/knn_basic_auto.png){#fig-knn-basic}
+:::
+
+```{r}
+#| echo: false
+
+
+select_best(bt_tuned_basic, metric = "rmse") |>
+  mutate(Model_Type = "Boosted Trees") |>  
+  select(-.config) |>
+  knitr::kable()
+
+```
+
+
+```{r}
+#| echo: false
+
+select_best(en_tuned_basic, metric = "rmse") |>
+  mutate(Model_Type = "Elastic Net") |>  
+  select(-.config) |>
+  knitr::kable()
+```
+::: {#fig-en layout-ncol=1}
+![Basic Elastic Net Workflow Plot ](figures/en_basic_auto.png){#fig-en-basic}
+:::
+
+
 ::: {#fig-result layout-ncol=1}
 
 ![Basic Workflow Plot ](figures/basic_autoplot.png){#fig-plot-basic}

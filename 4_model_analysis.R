@@ -23,22 +23,34 @@ list.files(
 ) |>
   map(load, envir = .GlobalEnv)
 
-select_best(rf_tuned_basic, metric = "rmse") |>
-  mutate(Model_Type = "Random Forest") |>  
-  select(-.config) |>
-  knitr::kable()
-select_best(knn_tuned_basic, metric = "rmse") |>
-  mutate(Model_Type = "Random Forest") |>  
-  select(-.config) |>
-  knitr::kable()
-select_best(bt_tuned_basic, metric = "rmse") |>
-  mutate(Model_Type = "Random Forest") |>  
-  select(-.config) |>
-  knitr::kable()
-select_best(en_tuned_basic, metric = "rmse") |>
-  mutate(Model_Type = "Random Forest") |>  
-  select(-.config) |>
-  knitr::kable()
+library(dplyr)
+
+# Combine all the results into one table
+combined_results <- bind_rows(
+  select_best(rf_tuned_basic, metric = "rmse") %>%
+    mutate(Model_Type = "Random Forest") %>%
+    select(-.config),
+  
+  select_best(knn_tuned_basic, metric = "rmse") %>%
+    mutate(Model_Type = "K-Nearest Neighbor") %>%
+    select(-.config),
+  
+  select_best(bt_tuned_basic, metric = "rmse") %>%
+    mutate(Model_Type = "Boosted Trees") %>%
+    select(-.config),
+  
+  select_best(en_tuned_basic, metric = "rmse") %>%
+    mutate(Model_Type = "Elastic Net") %>%
+    select(-.config)
+)
+
+# Now reshape the table to have parameters as rows
+final_table <- combined_results %>%
+  gather(key = "Parameter_Type", value = "Parameter", -Model_Type)
+
+# Display the table
+final_table |> knitr::kable()
+
 
 best_params_table <- bind_rows(
   select_best(rf_tuned_basic, metric = "rmse") |>
@@ -150,18 +162,7 @@ basic_fits_table <- basic_model_results |>
   ) |>
   knitr::kable(digits = 4)
 
-basic_fits_table <- basic_model_results |>
-  collect_metrics() |>
-  filter(.metric == "mae") |>
-  select_best(metric == "mae")
-  slice_min(mean, by = wflow_id) |>
-  arrange(mean) |>
-  select(
-    `Model Type` = wflow_id,
-    Accuracy = mean,
-    `Std Error` = std_err, n = n
-  ) |>
-  knitr::kable(digits = 4)
+
 
 # complex workflow ---
 
