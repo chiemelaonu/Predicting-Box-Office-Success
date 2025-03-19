@@ -140,7 +140,7 @@ ggsave(
 # basic fits table 
 basic_fits_table <- basic_model_results |>
   collect_metrics() |>
-  filter(.metric == "rmse") |>
+  filter(.metric == "mae") |>
   slice_min(mean, by = wflow_id) |>
   arrange(mean) |>
   select(
@@ -150,6 +150,18 @@ basic_fits_table <- basic_model_results |>
   ) |>
   knitr::kable(digits = 4)
 
+basic_fits_table <- basic_model_results |>
+  collect_metrics() |>
+  filter(.metric == "mae") |>
+  select_best(metric == "mae")
+  slice_min(mean, by = wflow_id) |>
+  arrange(mean) |>
+  select(
+    `Model Type` = wflow_id,
+    Accuracy = mean,
+    `Std Error` = std_err, n = n
+  ) |>
+  knitr::kable(digits = 4)
 
 # complex workflow ---
 
