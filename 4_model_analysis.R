@@ -7,6 +7,7 @@ library(tidymodels)
 library(here)
 library(car)
 library(doMC)
+library(scales)
 
 # resolve conflicts
 tidymodels_prefer()
@@ -23,62 +24,13 @@ list.files(
 ) |>
   map(load, envir = .GlobalEnv)
 
-library(dplyr)
-
-# Combine all the results into one table
-combined_results <- bind_rows(
-  select_best(rf_tuned_basic, metric = "rmse") %>%
-    mutate(Model_Type = "Random Forest") %>%
-    select(-.config),
-  
-  select_best(knn_tuned_basic, metric = "rmse") %>%
-    mutate(Model_Type = "K-Nearest Neighbor") %>%
-    select(-.config),
-  
-  select_best(bt_tuned_basic, metric = "rmse") %>%
-    mutate(Model_Type = "Boosted Trees") %>%
-    select(-.config),
-  
-  select_best(en_tuned_basic, metric = "rmse") %>%
-    mutate(Model_Type = "Elastic Net") %>%
-    select(-.config)
-)
-
-# Now reshape the table to have parameters as rows
-final_table <- combined_results %>%
-  gather(key = "Parameter_Type", value = "Parameter", -Model_Type)
-
-# Display the table
-final_table |> knitr::kable()
-
-
-best_params_table <- bind_rows(
-  select_best(rf_tuned_basic, metric = "rmse") |>
-    mutate(Model_Type = "Random Forest") |>  # Add model name
-    select(-.config),  # Remove the .config column
-  
-  select_best(knn_tuned_basic, metric = "rmse") |>
-    mutate(Model_Type = "K-Nearest Neighbors") |>  # Add model name
-    select(-.config),
-  
-  select_best(bt_tuned_basic, metric = "rmse") |>
-    mutate(Model_Type = "Boosted Trees") |>  # Add model name
-    select(-.config),
-  
-  select_best(en_tuned_basic, metric = "rmse") |>
-    mutate(Model_Type = "Elastic Net") |>  # Add model name
-    select(-.config)
-)
-
-# Print the final table
-best_params_table |> knitr::kable(digits = 4)
-
 
 # basic workflows ----
 
 # autplots of tuned workflows
 knn_basic_auto <- knn_tuned_basic |>
   autoplot(metric = "mae")
+
 ggsave(
   filename = here("figures/knn_basic_auto.png"),
   plot = knn_basic_auto,
@@ -89,6 +41,7 @@ ggsave(
 
 rf_basic_auto <- rf_tuned_basic |>
   autoplot(metric = "mae")
+
 ggsave(
   filename = here("figures/rf_basic_auto.png"),
   plot = rf_basic_auto,
@@ -98,7 +51,10 @@ ggsave(
 
 
 en_basic_auto <- en_tuned_basic |>
-  autoplot(metric = "mae")
+  autoplot(metric = "mae") +
+  scale_y_continuous(labels = comma) +  # Format y-axis with commas
+  scale_x_continuous(labels = comma) 
+
 ggsave(
   filename = here("figures/en_basic_auto.png"),
   plot = en_basic_auto,
@@ -188,8 +144,12 @@ ggsave(
   width = 8
 )
 
+
 en_auto <- en_tuned |>
-  autoplot(metric = "mae")
+  autoplot(metric = "mae") +
+  scale_y_continuous(labels = comma) +  # Format y-axis with commas
+  scale_x_continuous(labels = comma) 
+
 ggsave(
   filename = here("figures/en_auto.png"),
   plot = en_auto,
@@ -197,8 +157,10 @@ ggsave(
   width = 8
 )
 
+
 bt_auto <- bt_tuned |>
   autoplot(metric = "mae")
+
 ggsave(
   filename = here("figures/bt_auto.png"),
   plot = bt_auto,
