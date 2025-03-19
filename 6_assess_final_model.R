@@ -75,10 +75,12 @@ final_plot_yeo <- test_preds |>
   geom_abline(linetype = "dashed", linewidth = 0.5) +
   coord_obs_pred() +
   labs(
+    title = "Final Model Plot (Yeo-Johnson scale)",
     x = "Actual Revenue
     (with YJ Transformation)",
     y = "Predicted Revenue 
-    (with YJ Transformation)"
+    (with YJ Transformation)",
+    caption = "Data from Kaggle.com"
   ) +
   theme_minimal()
 
@@ -98,10 +100,12 @@ final_plot_orig <- test_preds_original |>
   scale_y_continuous(labels = comma) +
   coord_obs_pred() +
   labs(
+    title = "Final Model Plot (Original Scale)",
     x = "Actual Revenue
     (Original Scale)",
     y = "Predicted Revenue 
-    (Original Scale)"
+    (Original Scale)",
+    caption = "Data from Kaggle.com"
   ) +
   theme_minimal()
 
@@ -121,10 +125,12 @@ final_plot_orig_zoom <- test_preds_original |>
   scale_y_continuous(labels = scales::comma) +
   coord_cartesian(xlim = c(0, 500000000), ylim = c(0, 500000000)) +
   labs(
+    title = "Final Model Plot (Original Scale, Zoomed)",
     x = "Actual Revenue
     (Original Scale)",
     y = "Predicted Revenue 
-    (Original Scale)"
+    (Original Scale)",
+    caption = "Data from Kaggle.com"
   ) +
   theme_minimal()
 
@@ -145,10 +151,12 @@ final_plot_yeo_zoom <- test_preds |>
   scale_y_continuous(labels = scales::comma) +
   coord_cartesian(xlim = c(250, 500), ylim = c(250, 500)) +
   labs(
+    title = "Final Model Plot (Yeo-Johnson Scale, Zoomed)",
     x = "Actual Revenue
     (Original Scale)",
     y = "Predicted Revenue 
-    (Original Scale)"
+    (Original Scale)",
+    caption = "Data from Kaggle.com"
   ) +
   theme_minimal()
 

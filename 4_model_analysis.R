@@ -110,8 +110,12 @@ basic_model_results |>
   autoplot(metric = "mae")
 
 basic_autoplot <- basic_model_results |>
-  autoplot(metric = "mae", select_best = TRUE)
-basic_model_results |> collect_metrics() |> distinct(.metric)
+  autoplot(metric = "mae", select_best = TRUE) +
+  labs(title = "Basic Workflow Autoplot",
+       y = "MAE",
+       caption = "Data from Kaggle.com"
+  )
+
 
 
 # saving
@@ -219,7 +223,11 @@ model_results |>
   autoplot(metric = "mae")
 
 complex_autoplot <- model_results |>
-  autoplot(metric = "mae", select_best = TRUE)
+  autoplot(metric = "mae", select_best = TRUE) +
+  labs(title = "Complex Workflow Autoplot",
+       y = "MAE",
+       caption = "Data from Kaggle.com"
+  )
 
 # saving
 ggsave(
