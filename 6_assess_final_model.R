@@ -143,7 +143,7 @@ final_plot_yeo_zoom <- test_preds |>
   geom_abline(linetype = "dashed", linewidth = 0.5) +
   scale_x_continuous(labels = scales::comma) +
   scale_y_continuous(labels = scales::comma) +
-  coord_cartesian(xlim = c(0, 500000000), ylim = c(0, 500000000)) +
+  coord_cartesian(xlim = c(250, 500), ylim = c(250, 500)) +
   labs(
     x = "Actual Revenue
     (Original Scale)",

@@ -62,7 +62,50 @@ best_params_table <- bind_rows(
 best_params_table |> knitr::kable(digits = 4)
 
 
-# basic
+# basic workflows ----
+
+# autplots of tuned workflows
+knn_basic_auto <- knn_tuned_basic |>
+  autoplot(metric = "mae")
+ggsave(
+  filename = here("figures/knn_basic_auto.png"),
+  plot = knn_basic_auto,
+  height = 5,
+  width = 8
+)
+
+
+rf_basic_auto <- rf_tuned_basic |>
+  autoplot(metric = "mae")
+ggsave(
+  filename = here("figures/rf_basic_auto.png"),
+  plot = rf_basic_auto,
+  height = 5,
+  width = 8
+)
+
+
+en_basic_auto <- en_tuned_basic |>
+  autoplot(metric = "mae")
+ggsave(
+  filename = here("figures/en_basic_auto.png"),
+  plot = en_basic_auto,
+  height = 5,
+  width = 8
+)
+
+
+bt_basic_auto <- bt_tuned_basic |>
+  autoplot(metric = "mae")
+ggsave(
+  filename = here("figures/bt_basic_auto.png"),
+  plot = bt_basic_auto,
+  height = 5,
+  width = 8
+)
+
+
+# workflow set
 basic_model_results <-
   as_workflow_set(
     lm = lm_basic_fit,
@@ -74,7 +117,10 @@ basic_model_results <-
     en = en_tuned_basic
   ) 
 
-# examine rmse
+
+
+
+# examine mae
 basic_model_results |>
   autoplot(metric = "mae")
 
@@ -91,6 +137,7 @@ ggsave(
   width = 8
 )
 
+# basic fits table 
 basic_fits_table <- basic_model_results |>
   collect_metrics() |>
   filter(.metric == "rmse") |>
@@ -104,7 +151,50 @@ basic_fits_table <- basic_model_results |>
   knitr::kable(digits = 4)
 
 
-# complex
+# complex workflow ---
+
+# autplots
+knn_auto <- knn_tuned |>
+  autoplot(metric = "mae")
+
+ggsave(
+  filename = here("figures/knn_auto.png"),
+  plot = knn_auto,
+  height = 5,
+  width = 8
+)
+
+
+rf_auto <- rf_tuned |>
+  autoplot(metric = "mae")
+
+ggsave(
+  filename = here("figures/rf_auto.png"),
+  plot = rf_auto,
+  height = 5,
+  width = 8
+)
+
+en_auto <- en_tuned |>
+  autoplot(metric = "mae")
+ggsave(
+  filename = here("figures/en_auto.png"),
+  plot = en_auto,
+  height = 5,
+  width = 8
+)
+
+bt_auto <- bt_tuned |>
+  autoplot(metric = "mae")
+ggsave(
+  filename = here("figures/bt_auto.png"),
+  plot = bt_auto,
+  height = 5,
+  width = 8
+)
+
+
+# workflow set
 model_results <-
   as_workflow_set(
     lm = lm_fit,
@@ -116,7 +206,7 @@ model_results <-
     en = en_tuned
   ) 
 
-# examine rmse
+# examine mae
 model_results |>
   autoplot(metric = "mae")
 
@@ -133,6 +223,7 @@ ggsave(
 model_results |>
   collect_metrics() 
 
+# complex fits table 
 fits_table <- model_results |>
   collect_metrics() |>
   filter(.metric == "mae") |>
