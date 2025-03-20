@@ -160,8 +160,8 @@ movies <- movies |>
 
 # adding transformed target variable and changing date_x column from character to date ----
 movies_clean <- movies |>
+  mutate(date = mdy(date_x), .keep = "unused") |>
   mutate(
-    date = mdy(date_x),
     num_genres = str_count(genre, ",") + 1, # adding a column that counts the number of genres for each movie
     overall_sentiment = factor(overall_sentiment),
     status = factor(status)
