@@ -3569,7 +3569,7 @@ A baseline model is a simple predictive model used as a benchmark. Its use is to
 <br><br>
 In Elastic Net, the <code>penalty</code> controls how much the model shrinks the coefficients, with higher values forcing them closer to zero. The <code>mixture</code> decides the balance between Lasso, which can set some coefficients to zero, and Ridge, which shrinks them without making any exactly zero. A mixture of 1 is pure Lasso, 0 is pure Ridge, and values in between blend both.<br>
 <br><br>
-The parameters I will be tuning are <code>mixture</code> and <code>penalty</code>.</p>
+The hyperparameters I will be tuning are <code>mixture</code> and <code>penalty</code>.</p>
 </section>
 <section id="random-forest" class="level4">
 <h4 class="anchored" data-anchor-id="random-forest">Random Forest</h4>
@@ -3577,7 +3577,7 @@ The parameters I will be tuning are <code>mixture</code> and <code>penalty</code
 <br><br>
 In Random Forest, <code>mtry</code> is the number of features randomly chosen at each split, affecting how diverse the trees are. <code>min_n</code> is the minimum number of data points needed in a node before it can split, controlling how deep the trees grow.<br>
 <br><br>
-The parameters I will be tuning are <code>min_n</code> with a range of 2-40, and <code>mtry</code> with a range of 1-10.</p>
+The hyperparameters I will be tuning are <code>min_n</code> with a range of 2-40, and <code>mtry</code> with a range of 1-10.</p>
 </section>
 <section id="boosted-trees" class="level4">
 <h4 class="anchored" data-anchor-id="boosted-trees">Boosted Trees</h4>
@@ -3585,15 +3585,28 @@ The parameters I will be tuning are <code>min_n</code> with a range of 2-40, and
 <br><br>
 In Boosted Trees, we have <code>mtry</code> and <code>min_n</code> as hyperparamaters as well. <code>learn_rate</code> controls how much each tree contributes to the final prediction, with lower values leading to slower but more stable learning. <code>tree_depth</code> sets how deep each tree can grow, balancing complexity and overfitting.<br>
 <br><br>
-The parameters I will be tuning are <code>min_n</code> with a range of 2-40, <code>mtry</code> with a range of 1-10, <code>learn_rate</code> with a range of -5 to -0.2, and a <code>tree_depth</code> range of 6 to 10.</p>
+The hyperparameters I will be tuning are <code>min_n</code> with a range of 2-40, <code>mtry</code> with a range of 1-10, <code>learn_rate</code> with a range of -5 to -0.2, and a <code>tree_depth</code> range of 6 to 10.</p>
 </section>
 <section id="k-nearest-neighbors" class="level4">
 <h4 class="anchored" data-anchor-id="k-nearest-neighbors">K-Nearest Neighbors</h4>
 <p>K-Nearest Neighbors (KNN) is a non-parametric model that classifies or predicts values based on the majority vote of nearby data points or their average. It works well for nonlinear relationships.<br>
 <br><br>
-The parameter I will be tuning is <code>neighbors</code>.<br>
+The hyperparameter I will be tuning is <code>neighbors</code>.<br>
 <br><br>
 In K-Nearest Neighbors (KNN), the <code>neighbors</code> parameter sets how many nearby points the model looks at when making a prediction. A small values makes the model sensitive to noise, while a large value smooths predictions but may miss local patterns. Choosing the right value balances accuracy and generalization.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are no hyperparamaters to tune for the Null/Baseline or OLS models, as the model is fit to the resamples as normal.</p>
+</div>
+</div>
 </section>
 </section>
 <section id="recipes" class="level3">

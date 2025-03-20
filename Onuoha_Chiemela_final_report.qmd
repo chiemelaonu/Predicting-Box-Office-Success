@@ -200,33 +200,39 @@ A baseline model is a simple predictive model used as a benchmark. Its use is to
 #### OLS
 An Ordinary Least Squared (OLS) model is used for when relationships are linear, features are independent, and interpretability is needed. An OLS model captures linear relationships, effect sizes, and predictor significance well, and is a almost always one of the first models to be used in a regression problem. It provides another fairly simple benchmark for our model.
 
+
 #### Elastic Net
 Elastic Net is a regularized regression method that combines Ridge and Lasoo penalties. It stabilizes coefficient estimates like Ridge while also eliminating irrelevant variables like Lasso. Elastic Net is particularly useful when predictors are highly correlated, when there are more features than observations, or when handling noisy or sparse data.  
 <br>  
 In Elastic Net, the `penalty` controls how much the model shrinks the coefficients, with higher values forcing them closer to zero. The `mixture` decides the balance between Lasso, which can set some coefficients to zero, and Ridge, which shrinks them without making any exactly zero. A mixture of 1 is pure Lasso, 0 is pure Ridge, and values in between blend both.  
 <br>  
-The parameters I will be tuning are `mixture` and `penalty`.
+The hyperparameters I will be tuning are `mixture` and `penalty`.
 
 #### Random Forest
 Random Forest is an ensemble learning method that builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting. It is ideal for capturing nonlinear relationships and handling high-dimensional data.  
 <br>  
 In Random Forest, `mtry` is the number of features randomly chosen at each split, affecting how diverse the trees are. `min_n` is the minimum number of data points needed in a node before it can split, controlling how deep the trees grow.  
 <br>  
-The parameters I will be tuning are `min_n` with a range of 2-40, and `mtry` with a range of 1-10.
+The hyperparameters I will be tuning are `min_n` with a range of 2-40, and `mtry` with a range of 1-10.
 
 #### Boosted Trees
 Boosted trees is a method that builds decision trees sequentially, where each tree corrects the errors of the previous one, leading to high predictive accuracy and strong performance on complex datasets.  
 <br>  
 In Boosted Trees, we have `mtry` and `min_n` as hyperparamaters as well. `learn_rate` controls how much each tree contributes to the final prediction, with lower values leading to slower but more stable learning. `tree_depth` sets how deep each tree can grow, balancing complexity and overfitting.  
 <br>  
-The parameters I will be tuning are `min_n` with a range of 2-40, `mtry` with a range of 1-10, `learn_rate` with a range of -5 to -0.2, and a `tree_depth` range of 6 to 10.
+The hyperparameters I will be tuning are `min_n` with a range of 2-40, `mtry` with a range of 1-10, `learn_rate` with a range of -5 to -0.2, and a `tree_depth` range of 6 to 10.
 
 #### K-Nearest Neighbors
 K-Nearest Neighbors (KNN) is a non-parametric model that classifies or predicts values based on the majority vote of nearby data points or their average. It works well for nonlinear relationships.  
 <br>  
-The parameter I will be tuning is `neighbors`.  
+The hyperparameter I will be tuning is `neighbors`.  
 <br>  
 In K-Nearest Neighbors (KNN), the `neighbors` parameter sets how many nearby points the model looks at when making a prediction. A small values makes the model sensitive to noise, while a large value smooths predictions but may miss local patterns. Choosing the right value balances accuracy and generalization.
+
+::: {.callout-caution}
+There are no hyperparamaters to tune for the Null/Baseline or OLS models, as the model is fit to the resamples as normal.
+:::
+
 
 ### Recipes
 There are 2 recipes defined for each model (or set of models in the case of the Elastic Net models), excluding the Null/Baseline models that use only one recipe. There is each a "basic" recipe and a "complex" recipe used for the models. 
