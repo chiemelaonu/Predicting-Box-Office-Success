@@ -3495,7 +3495,9 @@ Figure 1
 </figcaption>
 </figure>
 </div>
-<p>On the left, we have the original distribution of the target variable, revenue, visualized with a density plot and box plot. The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The density and box plot on the right shows those values post-transformation.</p>
+<p>On the left, we have the original distribution of the target variable, revenue, visualized with a density plot and box plot. The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a><br>
+<br><br>
+The Yeo-Johnson transformation reshapes data to make it more normal by adjusting values differently based on whether they are positive or negative. For positive numbers, it applies a power transformation or a log function, while for negative numbers, it flips them, transforms them, and flips them back. The density and box plot on the right shows those values post-transformation.</p>
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup> A lambda value of 0.25 was used</p></div></div><section id="data-wrangling" class="level3">
 <h3 class="anchored" data-anchor-id="data-wrangling">Data Wrangling</h3>
 <p>The movies dataset initially had 12 columns and I was only able to extract 3 predictors for my models, but I have been able to conduct more manipulation of the data to allow for more usable predictors in my models.</p>
@@ -3531,7 +3533,7 @@ $ num_genres        &lt;dbl&gt; 2, 3, 5, 5, 1, 3, 3, 5, 2, 5, 2, 1, 3, 3, 2, 2, 
 </div>
 </figure>
 </div>
-<p>In the table above, you can see that I added a column called <code>num_genres</code> that has the counts of the genres for each movie. I added columns <code>negative</code>, <code>positive</code>, and <code>overall_sentiment</code> that uses the <code>tidytext</code> package to parse the <code>overview</code> column and note which words are positive or negative. The <code>positive</code> and <code>negative</code> columns hold the counts of those kinds of words present in each observation, and the <code>overall_sentiment</code> column gives the overall sentiment: Negative, Positive, or Neutral, depending on how many of each kind was counted. Some of the observations had NA for these columns, but I imputed those values with the mean (for the <code>negative</code> and <code>positive</code> columns) and the mode (for the <code>overall_sentiment</code> column). Lastly, I added a column called <code>num_crew</code> that counts the number of crew members listed for each movie. These new columns will serve as better features for my model, in the hopes of creating more accurate and meaningful predictions.</p>
+<p>In the table above, you can see that I added a column called <code>num_genres</code> that has the counts of the genres for each movie. I added columns <code>negative</code>, <code>positive</code>, and <code>overall_sentiment</code> that uses the <code>tidytext</code> package to parse the <code>overview</code> column and note which words are positive or negative. The <code>positive</code> and <code>negative</code> columns hold the counts of those kinds of words present in each observation, and the <code>overall_sentiment</code> column gives the overall sentiment: Negative, Positive, or Neutral, depending on how many of each kind was counted. Lastly, I added a column called <code>num_crew</code> that counts the number of crew members listed for each movie. These new columns will serve as better features for my model, in the hopes of creating more accurate and meaningful predictions.</p>
 </section>
 </section>
 <section id="methods" class="level2">
@@ -3546,7 +3548,7 @@ $ num_genres        &lt;dbl&gt; 2, 3, 5, 5, 1, 3, 3, 5, 2, 5, 2, 1, 3, 3, 2, 2, 
 </section>
 <section id="metrics" class="level3">
 <h3 class="anchored" data-anchor-id="metrics">Metrics</h3>
-<p>The metric I used for comparing and selecting a final model is MAE. MAE measures the average magnitude of the errors between the predicted and actual values, without considering their direction. I picked MAE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.</p>
+<p>The metric I used for comparing and selecting a final model is Mean Absolute Error (MAE). MAE measures the average magnitude of the errors between the predicted and actual values, without considering their direction. I picked MAE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.</p>
 </section>
 <section id="model-descriptions" class="level3">
 <h3 class="anchored" data-anchor-id="model-descriptions">Model Descriptions</h3>
@@ -3565,24 +3567,33 @@ A baseline model is a simple predictive model used as a benchmark. Its use is to
 <h4 class="anchored" data-anchor-id="elastic-net">Elastic Net</h4>
 <p>Elastic Net is a regularized regression method that combines Ridge and Lasoo penalties. It stabilizes coefficient estimates like Ridge while also eliminating irrelevant variables like Lasso. Elastic Net is particularly useful when predictors are highly correlated, when there are more features than observations, or when handling noisy or sparse data.<br>
 <br><br>
-The parameters I will be tuning are mixture and penalty.</p>
+In Elastic Net, the <code>penalty</code> controls how much the model shrinks the coefficients, with higher values forcing them closer to zero. The <code>mixture</code> decides the balance between Lasso, which can set some coefficients to zero, and Ridge, which shrinks them without making any exactly zero. A mixture of 1 is pure Lasso, 0 is pure Ridge, and values in between blend both.<br>
+<br><br>
+The parameters I will be tuning are <code>mixture</code> and <code>penalty</code>.</p>
 </section>
 <section id="random-forest" class="level4">
 <h4 class="anchored" data-anchor-id="random-forest">Random Forest</h4>
 <p>Random Forest is an ensemble learning method that builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting. It is ideal for capturing nonlinear relationships and handling high-dimensional data.<br>
-<br> The parameters I will be tuning are min_n with a range of 2-40, and mtry with a range of 1-10.</p>
+<br><br>
+In Random Forest, <code>mtry</code> is the number of features randomly chosen at each split, affecting how diverse the trees are. <code>min_n</code> is the minimum number of data points needed in a node before it can split, controlling how deep the trees grow.<br>
+<br><br>
+The parameters I will be tuning are <code>min_n</code> with a range of 2-40, and <code>mtry</code> with a range of 1-10.</p>
 </section>
 <section id="boosted-trees" class="level4">
 <h4 class="anchored" data-anchor-id="boosted-trees">Boosted Trees</h4>
 <p>Boosted trees is a method that builds decision trees sequentially, where each tree corrects the errors of the previous one, leading to high predictive accuracy and strong performance on complex datasets.<br>
 <br><br>
-The parameters I will be tuning are min_n with a range of 2-40, mtry with a range of 1-10, and learn_rate with a range of -5 to -0.2 .</p>
+In Boosted Trees, we have <code>mtry</code> and <code>min_n</code> as hyperparamaters as well. <code>learn_rate</code> controls how much each tree contributes to the final prediction, with lower values leading to slower but more stable learning. <code>tree_depth</code> sets how deep each tree can grow, balancing complexity and overfitting.<br>
+<br><br>
+The parameters I will be tuning are <code>min_n</code> with a range of 2-40, <code>mtry</code> with a range of 1-10, <code>learn_rate</code> with a range of -5 to -0.2, and a <code>tree_depth</code> range of 6 to 10.</p>
 </section>
 <section id="k-nearest-neighbors" class="level4">
 <h4 class="anchored" data-anchor-id="k-nearest-neighbors">K-Nearest Neighbors</h4>
-<p>K-Nearest Neighbors is a non-parametric model that classifies or predicts values based on the majority vote of nearby data points or their average. It works well for nonlinear relationships.<br>
+<p>K-Nearest Neighbors (KNN) is a non-parametric model that classifies or predicts values based on the majority vote of nearby data points or their average. It works well for nonlinear relationships.<br>
 <br><br>
-The parameters I will be tuning are neighbors.</p>
+The parameter I will be tuning is <code>neighbors</code>.<br>
+<br><br>
+In K-Nearest Neighbors (KNN), the <code>neighbors</code> parameter sets how many nearby points the model looks at when making a prediction. A small values makes the model sensitive to noise, while a large value smooths predictions but may miss local patterns. Choosing the right value balances accuracy and generalization.</p>
 </section>
 </section>
 <section id="recipes" class="level3">

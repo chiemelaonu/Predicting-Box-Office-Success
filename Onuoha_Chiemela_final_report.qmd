@@ -158,7 +158,10 @@ summary_table
 ![revenue Transformed with Yeo-Johnson](figures/target_eda_2.png){#fig-revenue-yj}
 
 :::
-On the left, we have the original distribution of the target variable, revenue, visualized with a density plot and box plot. The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.^[A lambda value of 0.25 was used] The density and box plot on the right shows those values post-transformation. 
+On the left, we have the original distribution of the target variable, revenue, visualized with a density plot and box plot. 
+The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.^[A lambda value of 0.25 was used]  
+<br>  
+The Yeo-Johnson transformation reshapes data to make it more normal by adjusting values differently based on whether they are positive or negative. For positive numbers, it applies a power transformation or a log function, while for negative numbers, it flips them, transforms them, and flips them back. The density and box plot on the right shows those values post-transformation. 
 
 ### Data Wrangling
 The movies dataset initially had 12 columns and I was only able to extract 3 predictors for my models, but I have been able to conduct more manipulation of the data to allow for more usable predictors in my models. 
@@ -171,7 +174,7 @@ movies_data |>
   glimpse()
 ```
 
-In the table above, you can see that I added a column called `num_genres` that has the counts of the genres for each movie. I added columns `negative`, `positive`, and `overall_sentiment` that uses the `tidytext` package to parse the `overview` column and note which words are positive or negative. The `positive` and `negative` columns hold the counts of those kinds of words present in each observation, and the `overall_sentiment` column gives the overall sentiment: Negative, Positive, or Neutral, depending on how many of each kind was counted. Some of the observations had NA for these columns, but I imputed those values with the mean (for the `negative` and `positive` columns) and the mode (for the `overall_sentiment` column). Lastly, I added a column called `num_crew` that counts the number of crew members listed for each movie. These new columns will serve as better features for my model, in the hopes of creating more accurate and meaningful predictions.
+In the table above, you can see that I added a column called `num_genres` that has the counts of the genres for each movie. I added columns `negative`, `positive`, and `overall_sentiment` that uses the `tidytext` package to parse the `overview` column and note which words are positive or negative. The `positive` and `negative` columns hold the counts of those kinds of words present in each observation, and the `overall_sentiment` column gives the overall sentiment: Negative, Positive, or Neutral, depending on how many of each kind was counted. Lastly, I added a column called `num_crew` that counts the number of crew members listed for each movie. These new columns will serve as better features for my model, in the hopes of creating more accurate and meaningful predictions.
 
 ## Methods
 
@@ -182,8 +185,7 @@ I decided on a split proportion of 80/20 because it gives an optimal amount of d
 I will be using V-fold cross-validation for resampling, with 5 folds (V) and 3 repeats. This method is useful because it ensures that each data point is used for both training and testing, providing a more reliable estimate of model performance.
 
 ### Metrics
-The metric I used for comparing and selecting a final model is MAE. MAE measures the average magnitude of the errors between the predicted and actual values, without considering their direction. I picked MAE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.
-
+The metric I used for comparing and selecting a final model is Mean Absolute Error (MAE). MAE measures the average magnitude of the errors between the predicted and actual values, without considering their direction. I picked MAE as my metric because it is commonly used in regression modeling and is a relatively simple metric to interpret and explain.
 
 
 ### Model Descriptions
@@ -201,22 +203,30 @@ An Ordinary Least Squared (OLS) model is used for when relationships are linear,
 #### Elastic Net
 Elastic Net is a regularized regression method that combines Ridge and Lasoo penalties. It stabilizes coefficient estimates like Ridge while also eliminating irrelevant variables like Lasso. Elastic Net is particularly useful when predictors are highly correlated, when there are more features than observations, or when handling noisy or sparse data.  
 <br>  
-The parameters I will be tuning are mixture and penalty.
+In Elastic Net, the `penalty` controls how much the model shrinks the coefficients, with higher values forcing them closer to zero. The `mixture` decides the balance between Lasso, which can set some coefficients to zero, and Ridge, which shrinks them without making any exactly zero. A mixture of 1 is pure Lasso, 0 is pure Ridge, and values in between blend both.  
+<br>  
+The parameters I will be tuning are `mixture` and `penalty`.
 
 #### Random Forest
 Random Forest is an ensemble learning method that builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting. It is ideal for capturing nonlinear relationships and handling high-dimensional data.  
-<br> 
-The parameters I will be tuning are min_n with a range of 2-40, and mtry with a range of 1-10.
+<br>  
+In Random Forest, `mtry` is the number of features randomly chosen at each split, affecting how diverse the trees are. `min_n` is the minimum number of data points needed in a node before it can split, controlling how deep the trees grow.  
+<br>  
+The parameters I will be tuning are `min_n` with a range of 2-40, and `mtry` with a range of 1-10.
 
 #### Boosted Trees
 Boosted trees is a method that builds decision trees sequentially, where each tree corrects the errors of the previous one, leading to high predictive accuracy and strong performance on complex datasets.  
 <br>  
-The parameters I will be tuning are min_n with a range of 2-40, mtry with a range of 1-10, and learn_rate with a range of -5 to -0.2 .
+In Boosted Trees, we have `mtry` and `min_n` as hyperparamaters as well. `learn_rate` controls how much each tree contributes to the final prediction, with lower values leading to slower but more stable learning. `tree_depth` sets how deep each tree can grow, balancing complexity and overfitting.  
+<br>  
+The parameters I will be tuning are `min_n` with a range of 2-40, `mtry` with a range of 1-10, `learn_rate` with a range of -5 to -0.2, and a `tree_depth` range of 6 to 10.
 
 #### K-Nearest Neighbors
-K-Nearest Neighbors is a non-parametric model that classifies or predicts values based on the majority vote of nearby data points or their average. It works well for nonlinear relationships.  
+K-Nearest Neighbors (KNN) is a non-parametric model that classifies or predicts values based on the majority vote of nearby data points or their average. It works well for nonlinear relationships.  
 <br>  
-The parameters I will be tuning are neighbors.
+The parameter I will be tuning is `neighbors`.  
+<br>  
+In K-Nearest Neighbors (KNN), the `neighbors` parameter sets how many nearby points the model looks at when making a prediction. A small values makes the model sensitive to noise, while a large value smooths predictions but may miss local patterns. Choosing the right value balances accuracy and generalization.
 
 ### Recipes
 There are 2 recipes defined for each model (or set of models in the case of the Elastic Net models), excluding the Null/Baseline models that use only one recipe. There is each a "basic" recipe and a "complex" recipe used for the models. 
