@@ -300,6 +300,9 @@ select_best(bt_tuned_basic, metric = "mae") |>
   knitr::kable()
 
 ```
+::: {#fig-bt layout-ncol=1}
+![Basic Boosted Trees Workflow Plot](figures/bt_basic_auto.png){#fig-bt-basic}
+:::
 
 
 ```{r}
@@ -382,7 +385,9 @@ select_best(bt_tuned, metric = "mae") |>
   select(-.config) |>
   knitr::kable()
 ```
-
+::: {#fig-en layout-ncol=1}
+![Complex Boosted Trees Workflow Plot ](figures/bt_auto.png){#fig-bt}
+:::
 
 
 
