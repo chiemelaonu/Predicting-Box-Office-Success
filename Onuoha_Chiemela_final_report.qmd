@@ -308,7 +308,7 @@ Elastic Net's best hyperparameters are a `mixture` of 1 and a `penalty` of 0.5, 
 @fig-result shows the distribution of the RMSE's of the "basic" model workflows, along with the null and baseline models. The sharp decline from the null model to the rest of the models is evidence that more complex models and recipes are needed to produce better predictions. Additionally, among the complex models, the RMSE is still decreasing, though the change is not much between a few models. Since the changes between the Baseline, KNN, OLS, and EN model are not very significant, we learn that we should try to be pickier about the models we want to tune/fit, since the computational toll is not worth it for those models. On the other hand, Random Forest and Boosted Trees have a significant decrease from the 4 aforementioned workflows, and that proves that tuning those models were helpful and worth the longer times it took to run them. 
 ```{r}
 #| label: tbl-basic-fits
-#| tbl-cap: "Basic Fits Table"
+#| tbl-cap: "Basic Model Results"
 #| echo: false
 basic_model_results |>
   collect_metrics() |>
