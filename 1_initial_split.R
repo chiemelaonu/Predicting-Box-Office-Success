@@ -11,7 +11,7 @@ library(DT)
 tidymodels_prefer()
 
 # read in data ----
-movies_data <- read_csv("data/movies_clean.csv")
+movies_data <- read_csv("data/movies_clean.csv", col_types = "ccdccccfcddcddfiDdd")
 
 
 # set seed ----
