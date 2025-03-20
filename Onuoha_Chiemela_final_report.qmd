@@ -322,7 +322,7 @@ basic_model_results |>
   ) |>
   knitr::kable(digits = 4)
 ```
-@tbl-basic-fits shows the more precise MAE's for the "basic" workflows. The MAE of null model is significantly higher than the rest, at about 149. KNN has an MAE of about 93.5. The baseline, EN, and Linear model are all around the same MAE values of about 93.8. Then, Random Forest and Boosted Trees have a significant drop to around 73.8 and 73, respectively.
+@tbl-basic-fits shows the more precise MAE's for the "basic" workflows. The MAE of null model is significantly higher than the rest, at about 149. KNN has an MAE of about 93.5. The baseline, EN, and Linear model are all around the same MAE values of about 93.8. Then, Random Forest and Boosted Trees have a significant drop to around 73.9 and 73, respectively.
 
 ### Complex Workflows
 
