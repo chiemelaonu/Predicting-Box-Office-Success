@@ -338,7 +338,7 @@ basic_model_results |>
   ) |>
   knitr::kable(digits = 4)
 ```
-@tbl-basic-fits shows the more precise MAE's for the "basic" workflows. The MAE of null model is significantly higher than the rest, at about 149. KNN has an MAE of about 93.5. The baseline, EN, and Linear model are all around the same MAE values of about 93.8. Then, Random Forest and Boosted Trees have a significant drop to around 73.9 and 73, respectively.
+@tbl-basic-fits shows the more precise MAE's for the "basic" workflows. The MAE of null model is significantly higher than the rest, at about 149. KNN has an MAE of about 93.5. The baseline, EN, and Linear model are all around the same MAE values of about 93.7. Then, Random Forest and Boosted Trees have a significant drop to around 73.9 and 73.1, respectively.
 
 ### Complex Workflows
 
@@ -455,7 +455,7 @@ metrics_table <- tibble(
 # print table
 metrics_table
 ```
-@tbl-final-metrics says that the RMSE is at a 99.2, while the MAE is at 73.4. When calculating RMSE and MAE, we are looking for lower values that show our predicted values are not too far off from the actual values. The model produces a better MAE value than RMSE which could be because of the RMSE squaring already large values, making them much larger and distorting the scale.
+@tbl-final-metrics says that the RMSE is at a 98.8, while the MAE is at 73.4. When calculating RMSE and MAE, we are looking for lower values that show our predicted values are not too far off from the actual values. The model produces a better MAE value than RMSE which could be because of the RMSE squaring already large values, making them much larger and distorting the scale.
 
 ```{r}
 #| label: tbl-final-metrics-orig
@@ -479,7 +479,7 @@ metrics_table_orig <- tibble(
 metrics_table_orig 
 
 ```
-On the original scale in @tbl-final-metrics-orig, the numbers are very high (though that can be expected since movie revenue can go up to the hundreds of millions). The original scale allows us to better interpret the model predictions, showing that the RMSE of 99.2 is equivalent to almost \$170 million and the MAE of 73.4 is equivalent to \$100.4 million. The Rsquared also reduces slightly because of the scaling changes, which is not a very good sign as it was already at 66.7%. The 66.7% means that the model only explains 66.7% of the variability in the results, which is not a very good number. We would prefer the number to be higher, as that means the model is capturing the variance well and adjusting accordingly.
+On the original scale in @tbl-final-metrics-orig, the numbers are very high (though that can be expected since movie revenue can go up to the hundreds of millions). The original scale allows us to better interpret the model predictions, showing that the RMSE of 99.2 is equivalent to almost \$170 million and the MAE of 73.1 is equivalent to \$100.2 million. The Rsquared also reduces slightly because of the scaling changes, which is not a very good sign as it was already at 66.7%. The 66.7% means that the model only explains 66.7% of the variability in the results, which is not a very good number. We would prefer the number to be higher, as that means the model is capturing the variance well and adjusting accordingly.
 
 ::: {#fig-final-plot-yeo layout-ncol=1}
 ![Final Predictions Plot (Yeo-Johnson)](figures/final_plot_yeo.png){#fig-plot}
