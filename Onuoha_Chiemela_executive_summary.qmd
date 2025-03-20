@@ -1,0 +1,229 @@
+---
+title: "Executive Summary"
+subtitle: |
+  | Final Project 
+  | Data Science 2 with R (STAT 301-2)
+author: "Chiemela Onuoha"
+pagetitle: "ER Chiemela Onuoha"
+date: "today"
+
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-location: left
+    embed-resources: true
+    link-external-newwindow: true
+
+execute:
+  warning: false
+
+from: markdown+emoji
+reference-location: margin
+citation-location: margin
+---
+
+
+```{r}
+#| echo: false
+#| results: hide
+#| label: load-packages-data
+
+library(tidyverse)
+library(tidymodels)
+library(DT)
+library(here)
+library(doMC)
+library(VGAM)
+library(scales)
+
+
+# resolve conflicts
+tidymodels_prefer()
+
+
+# read in original data ----
+movies <- read_csv("data/imdb_movies.csv")
+
+# read in cleandata ----
+movies_data <- read_csv("data/movies_clean.csv")
+
+# parallel processing ----
+num_cores <- parallel::detectCores(logical = FALSE)
+registerDoMC(cores = 6)
+
+# load in results for workflow analysis ----
+list.files(
+  here("results/"),
+  pattern = ".rda",
+  full.names = TRUE
+) |>
+  map(load, envir = .GlobalEnv)
+
+select_best(rf_tuned, metric = "rmse")
+
+# basic workflow set
+basic_model_results <-
+  as_workflow_set(
+    lm = lm_basic_fit,
+    null = null_results,
+    baseline = baseline_results,
+    knn = knn_tuned_basic,
+    rf = rf_tuned_basic,
+    bt = bt_tuned_basic,
+    en = en_tuned_basic
+  ) 
+
+# complex workflow set
+model_results <-
+  as_workflow_set(
+    lm = lm_fit,
+    null = null_results,
+    baseline = baseline_results,
+    knn = knn_tuned,
+    rf = rf_tuned,
+    bt = bt_tuned,
+    en = en_tuned
+  ) 
+
+# load in data for final model analysis ----
+load(here("data/movies_test.rda"))
+load(here("results/final_fit.rda"))
+
+# predictions
+test_preds <- movies_test |>
+  bind_cols(predict(final_fit, movies_test)) |>
+  select(yeo_revenue, .pred)
+
+test_preds_original <- test_preds |>
+  mutate(
+    price_actual = yeo.johnson(yeo_revenue, lambda = 0.25, derivative = 0, inverse = TRUE),   
+    price_predicted = yeo.johnson(.pred, lambda = 0.25, derivative = 0, inverse = TRUE)       
+  )
+
+```
+
+::: {.callout-tip icon=false}
+
+## Github Repo Link
+
+[Chiemela's Github (chiemelaonu)](https://github.com/stat301-2-2025-winter/final-project-2-chiemelaonu.git)
+
+:::
+
+## Data source
+
+[Kaggle.com](https://www.kaggle.com/datasets/ashpalsingh1525/imdb-movies-dataset/data)
+Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025^[The Kaggle data was compiled from IMDB.com]
+
+## Analysis Plan
+The objective of this project was to look into movie revenue and whether the revenue of a movie could be predicted, somewhat accurately, by the other features of the movie. 
+
+## Model Workflows
+```{r}
+#| label: tbl-basic-fits
+#| tbl-cap: "Basic Workflow Results"
+#| echo: false
+basic_model_results |>
+  collect_metrics() |>
+  filter(.metric == "mae") |>
+  slice_min(mean, by = wflow_id) |>
+  arrange(mean) |>
+  select(
+    `Model Type` = wflow_id,
+    MAE = mean,
+    `Std Error` = std_err, n = n
+  ) |>
+  knitr::kable(digits = 4)
+```
+In our model tuning process, we found that the "basic" workflows and "complex" workflows performed about the same for all the models, except from KNN. @tbl-basic-fits above, the null model performs the worst with an MAE of 149.4 and the Boosted Tree model doing the best at an MAE of 73.2
+
+```{r}
+#| label: tbl-complex-results
+#| tbl-cap: "Complex Model Results"
+#| echo: false
+model_results |>
+  collect_metrics() |>
+  filter(.metric == "mae") |>
+  slice_min(mean, by = wflow_id) |>
+  arrange(mean) |>
+  select(
+    `Model Type` = wflow_id,
+    MAE = mean,
+    `Std Error` = std_err, n = n
+  ) |>
+  knitr::kable(digits = 4)
+```
+In @tbl-complex-results, the worst model is still the Null model and the Best model is also the Boosted Trees model, with the Boosted Trees MAE being slightly higher than the "basic" workflow MAE. The most notable changes between the "basic" workflows and "complex" workflows are how the Elastic Net and OLS (lm) model performed. The MAE was about 93.5 in the "basic" workflow, but the complex workflow resulted in MAE values of around 85.7, a hefty drop from the previous workflow. That is a sign that the extra feature engineering done in the complex linear model recipe may not be helpful for the Elastic Net and OLS (lm) models.  
+<br>  
+Looking at these 2 tables, we picked the "basic" Boosted Trees as our final model to predict on.
+
+## Final Model Analysis
+```{r}
+#| label: tbl-final-metrics
+#| tbl-cap: "Final Assessment Metrics (on Yeo-Johnson Scale)"
+#| echo: false
+
+# compute metrics
+rmse_result <- rmse(test_preds, truth = yeo_revenue, estimate = .pred)
+mae_result <- mae(test_preds, truth = yeo_revenue, estimate = .pred)
+rsq_result <- rsq(test_preds, truth = yeo_revenue, estimate = .pred)
+
+# create a table
+metrics_table <- tibble(
+  Metric = c("RMSE", "MAE", "R²"),
+  Value = c(rmse_result$.estimate, mae_result$.estimate, rsq_result$.estimate)
+) |> knitr::kable()
+
+# print table
+metrics_table
+```
+
+@tbl-final-metrics provides the final metric values on the Yeo-Johnson scale, with the final MAE value of 73.3. Supplemental metrics were calculated, RMSE and R-squared, and their values are 99.2 and 0.671, respectively.  
+<br>  
+Being on the Yeo-Johnson scale, it is difficult to really interpret the MAE and RMSE, so below is the table of the metrics on the original scale ($).
+
+```{r}
+#| label: tbl-final-metrics-orig
+#| tbl-cap: "Final Assessment Metrics (on Original Scale)"
+#| echo: false
+
+# compute metrics
+rmse_orig <- rmse(test_preds_original, truth = price_actual, estimate = price_predicted) 
+mae_orig <- mae(test_preds_original, truth = price_actual, estimate = price_predicted) 
+rsq_orig <- rsq(test_preds_original, truth = price_actual, estimate = price_predicted) 
+
+
+# create a table
+metrics_table_orig <- tibble(
+  Metric = c("RMSE", "MAE", "R²"),
+  Value = c(rmse_orig$.estimate, mae_orig$.estimate, rsq_orig$.estimate)
+) |>
+  mutate(Value = format(Value, scientific = FALSE, big.mark = ",")) |>
+  knitr::kable()
+
+metrics_table_orig 
+
+```
+
+The RMSE of 99.2 in dollars is almost \$170 million and the MAE of 73.4 is equivalent to \$100.4 million. The R-squared also reduces slightly because of the scaling changes, which is not a very good sign as it was already at 0.667. From @tbl-final-metrics, the R-squared of 0.671 means about 67.1% of the variance in the data can be explained by the model, which is not necessarily up to par with the standards of a "good" predictive model. This leaves a lot of the reasoning of the changes up in the air, since there could be a plethora of reasons for the variance that is not captured by the model. The definition of a good model can vary depending on problem type, so overall, 67.1% is not the best and it is not the worst. 
+
+Furthermore, @fig-final-plot-yeo is a plot of the predicted revenue by the actual revenue on the Yeo-Johnson scale. There are 2 main clusters of points from 100 to 500 and 625 to 750. The proportion of predictions above the actual values and below the actual values are fairly equal, at least in those clusters.
+
+::: {#fig-final-plot-yeo layout-ncol=1}
+![Final Predictions Plot (Yeo-Johnson)](figures/final_plot_yeo.png){#fig-plot}
+:::
+There are 2 main clusters of points from 100 to 500 and 625 to 750. The proportion of predictions above the actual values and below the actual values are fairly equal, at least in those clusters.
+
+::: {#fig-final-plot-orig layout-ncol=1}
+![Final Predictions Plot (Original)](figures/final_plot_orig.png){#fig-plot-orig}
+:::
+On the original scale, @fig-final-plot-orig shows the original data being very skewed right.
+
+::: {#fig-final-plot-orig-zoom layout-ncol=1}
+![Final Predictions Plot (Original)](figures/final_plot_orig_zoom.png){#fig-plot-zoom}
+:::
+Zoomed in, we see the distribution of the previous @fig-final-plot-orig but restricted to between 0 and 500,000,000. This plot shows that there is a bit more overfitting then underfitting present, which can be from the Boosted Tree model, since tree models are more prone to overfitting.
+
+## Conclusion
+In this process, we found that my modeling does not serve too well for my prediction problem, which could be from my own doing in feature engineering or it could be that the dataset and type of problem overall is not the best for predictive modeling.

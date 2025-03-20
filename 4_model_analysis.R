@@ -82,6 +82,13 @@ bt_basic_auto <- bt_tuned_basic |>
        caption = "Data from Kaggle.com"
   )
 
+autoplot(bt_tuned_basic, metric = "rmse") +
+  facet_grid(rows = vars(tree_depth), cols = vars(learning_rate))  # Adjust based on your model
+
+autoplot(bt_tuned_basic, metric = "mae") +
+  facet_wrap(~min_n) 
+autoplot(bt_tuned_basic, metric = "mae", facet = NULL)
+
 ggsave(
   filename = here("figures/bt_basic_auto.png"),
   plot = bt_basic_auto,
