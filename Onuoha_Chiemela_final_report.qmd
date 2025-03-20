@@ -158,8 +158,8 @@ summary_table
 ![revenue Transformed with Yeo-Johnson](figures/target_eda_2.png){#fig-revenue-yj}
 
 :::
-On the left, we have the original distribution of the target variable, revenue, visualized with a density plot and box plot. 
-The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.^[A lambda value of 0.25 was used]  
+On the left, we have the original distribution of the target variable, `revenue`, visualized with a density plot and box plot. 
+The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.^[A lambda value of 0.25 was used]   
 <br>  
 The Yeo-Johnson transformation reshapes data to make it more normal by adjusting values differently based on whether they are positive or negative. For positive numbers, it applies a power transformation or a log function, while for negative numbers, it flips them, transforms them, and flips them back. The density and box plot on the right shows those values post-transformation. 
 
@@ -179,7 +179,7 @@ In the table above, you can see that I added a column called `num_genres` that h
 ## Methods
 
 ### Data Splitting
-I decided on a split proportion of 80/20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, yeo_revenue (the Yeo-Johnson transformed revenue).
+I decided on a split proportion of 80/20 because it gives an optimal amount of data in the testing and training sets. I also used the default number of strata and stratified by our target variable, `yeo_revenue` (the Yeo-Johnson transformed revenue).
 
 #### Resampling
 I will be using V-fold cross-validation for resampling, with 5 folds (V) and 3 repeats. This method is useful because it ensures that each data point is used for both training and testing, providing a more reliable estimate of model performance.
@@ -189,7 +189,7 @@ The metric I used for comparing and selecting a final model is Mean Absolute Err
 
 
 ### Model Descriptions
-This is a regression problem because the target variable, revenue, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a Null/Baseline model, an OLS model, Elastic Net models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.
+This is a regression problem because the target variable, revenue, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a Null/Baseline model, an OLS model, EN models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.
 
 #### Null/Baseline
 A null model is a simple model that based solely on the mean (for regression). It serves as a basic reference to compare the performance of more complex models.  
@@ -202,9 +202,9 @@ An Ordinary Least Squared (OLS) model is used for when relationships are linear,
 
 
 #### Elastic Net
-Elastic Net is a regularized regression method that combines Ridge and Lasoo penalties. It stabilizes coefficient estimates like Ridge while also eliminating irrelevant variables like Lasso. Elastic Net is particularly useful when predictors are highly correlated, when there are more features than observations, or when handling noisy or sparse data.  
+Elastic Net (EN) is a regularized regression method that combines Ridge and Lasoo penalties. It stabilizes coefficient estimates like Ridge while also eliminating irrelevant variables like Lasso. EN is particularly useful when predictors are highly correlated, when there are more features than observations, or when handling noisy or sparse data.  
 <br>  
-In Elastic Net, the `penalty` controls how much the model shrinks the coefficients, with higher values forcing them closer to zero. The `mixture` decides the balance between Lasso, which can set some coefficients to zero, and Ridge, which shrinks them without making any exactly zero. A mixture of 1 is pure Lasso, 0 is pure Ridge, and values in between blend both.  
+In EN, the `penalty` controls how much the model shrinks the coefficients, with higher values forcing them closer to zero. The `mixture` decides the balance between Lasso, which can set some coefficients to zero, and Ridge, which shrinks them without making any exactly zero. A mixture of 1 is pure Lasso, 0 is pure Ridge, and values in between blend both.  
 <br>  
 The hyperparameters I will be tuning are `mixture` and `penalty`.
 
@@ -235,7 +235,7 @@ There are no hyperparamaters to tune for the Null/Baseline or OLS models, as the
 
 
 ### Recipes
-There are 2 recipes defined for each model (or set of models in the case of the Elastic Net models), excluding the Null/Baseline models that use only one recipe. There is each a "basic" recipe and a "complex" recipe used for the models. 
+There are 2 recipes defined for each model (or set of models in the case of the EN models), excluding the Null/Baseline models that use only one recipe. There is each a "basic" recipe and a "complex" recipe used for the models. 
 
 #### Null/Baseline Model Recipe
 The first recipe was for the null and baseline models. My first step was to impute the mean of all missing numerical values. I also imputed the mode of the `overall_sentiment` column because of NAs. Next, I used `step_date()` to extract the year and month out of the date column to use as predictors. Lastly, I used `step_dummy()` to one-hot encode the `overall_sentiment` column so that all 3 types of sentiments are captured and used as predictors.  
@@ -315,7 +315,7 @@ select_best(en_tuned_basic, metric = "mae") |>
 ::: {#fig-en layout-ncol=1}
 ![Basic Elastic Net Workflow Plot ](figures/en_basic_auto.png){#fig-en-basic}
 :::
-Elastic Net's best hyperparameters are a `mixture` of 1 and a `penalty` of 0.5, which is a Lasso model. 
+EN's best hyperparameters are a `mixture` of 1 and a `penalty` of 0.5, which is a Lasso model. 
 
 ::: {#fig-result layout-ncol=1}
 
@@ -400,13 +400,13 @@ select_best(en_tuned, metric = "mae") |>
 ::: {#fig-en-complex layout-ncol=1}
 ![Elastic Net Complex Workflow Plot ](figures/en_auto.png){#fig-en-complex}
 :::
-The complex Elastic Net workflow's best hyperparameters are a `penalty` of 0.75 and an `mixture` of 1, which is a Lasso model again.
+The complex EN workflow's best hyperparameters are a `penalty` of 0.75 and an `mixture` of 1, which is a Lasso model again.
 
 ::: {#fig-result-complex layout-ncol=1}
 ![Complex Workflow Plot ](figures/complex_autoplot.png){#fig-plot-complex}
 :::
 
-@fig-result-complex shows the distribution of the MAE's of the "complex" model workflows, along with the null and baseline models. The plot paints a very similar picture compared to the "basic" workflows, but the most notable difference is that the Elastic Net and OLS models perform significantly worse than their basic workflows. That could mean the feature engineering I conducted in the complex linear recipes were not a very good fit for those models.
+@fig-result-complex shows the distribution of the MAE's of the "complex" model workflows, along with the null and baseline models. The plot paints a very similar picture compared to the "basic" workflows, but the most notable difference is that the EN and OLS models perform significantly worse than their basic workflows. That could mean the feature engineering I conducted in the complex linear recipes were not a very good fit for those models.
 
 ```{r}
 #| label: tbl-complex-results

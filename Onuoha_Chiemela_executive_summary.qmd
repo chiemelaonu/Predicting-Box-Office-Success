@@ -116,7 +116,7 @@ test_preds_original <- test_preds |>
 [Kaggle.com](https://www.kaggle.com/datasets/ashpalsingh1525/imdb-movies-dataset/data)
 Data was sourced from Kaggle.com, a site hosting thousands of datasets for the public to use. Accessed February 3rd, 2025^[The Kaggle data was compiled from IMDB.com]
 
-## Analysis Plan
+## Recap of Prediction Problem
 The objective of this project was to look into movie revenue and whether the revenue of a movie could be predicted, somewhat accurately, by the other features of the movie. 
 
 ## Model Workflows
@@ -226,4 +226,4 @@ On the original scale, @fig-final-plot-orig shows the original data being very s
 Zoomed in, we see the distribution of the previous @fig-final-plot-orig but restricted to between 0 and 500,000,000. This plot shows that there is a bit more overfitting then underfitting present, which can be from the Boosted Tree model, since tree models are more prone to overfitting.
 
 ## Conclusion
-In this process, we found that my modeling does not serve too well for my prediction problem, which could be from my own doing in feature engineering or it could be that the dataset and type of problem overall is not the best for predictive modeling.
+In this process, we found that my modeling does not serve too well for my prediction problem, which could be from my own doing in feature engineering or it could be that the dataset and type of problem overall is not the best for predictive modeling. For the future, it would be helpful to have a more comprehensive dataset and/or to explore more complex and insightful methods in the feature engineering phase. The different selection of models and tuning parameters could also aid in a better outcome if the prediction problem as a whole can be captured through this scope of modeling.
