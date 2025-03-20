@@ -229,7 +229,7 @@ The hyperparameter I will be tuning is `neighbors`.
 <br>  
 In K-Nearest Neighbors (KNN), the `neighbors` parameter sets how many nearby points the model looks at when making a prediction. A small values makes the model sensitive to noise, while a large value smooths predictions but may miss local patterns. Choosing the right value balances accuracy and generalization.
 
-::: {.callout-caution}
+::: {.callout-important}
 There are no hyperparamaters to tune for the Null/Baseline or OLS models, as the model is fit to the resamples as normal.
 :::
 
