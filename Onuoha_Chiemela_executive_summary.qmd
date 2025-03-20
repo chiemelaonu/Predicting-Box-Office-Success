@@ -4,7 +4,7 @@ subtitle: |
   | Final Project 
   | Data Science 2 with R (STAT 301-2)
 author: "Chiemela Onuoha"
-pagetitle: "ER Chiemela Onuoha"
+pagetitle: "ES Chiemela Onuoha"
 date: "today"
 
 format:
