@@ -1,5 +1,5 @@
 ---
-title: "Executive Summary"
+title: "Predicting Box Office Success Executive Summary"
 subtitle: |
   | Final Project 
   | Data Science 2 with R (STAT 301-2)
@@ -136,7 +136,7 @@ basic_model_results |>
   ) |>
   knitr::kable(digits = 4)
 ```
-In our model tuning process, we found that the "basic" workflows and "complex" workflows performed about the same for all the models, except from KNN. @tbl-basic-fits above, the null model performs the worst with an MAE of 149.4 and the Boosted Tree model doing the best at an MAE of 73.2
+In our model tuning process, we found that the "basic" workflows and "complex" workflows performed about the same for all the models, except from KNN. In @tbl-basic-fits above, the null model performs the worst with an MAE of 149.4 and the Boosted Tree model doing the best at an MAE of 73.1
 
 ```{r}
 #| label: tbl-complex-results
@@ -154,7 +154,7 @@ model_results |>
   ) |>
   knitr::kable(digits = 4)
 ```
-In @tbl-complex-results, the worst model is still the Null model and the Best model is also the Boosted Trees model, with the Boosted Trees MAE being slightly higher than the "basic" workflow MAE. The most notable changes between the "basic" workflows and "complex" workflows are how the Elastic Net and OLS (lm) model performed. The MAE was about 93.5 in the "basic" workflow, but the complex workflow resulted in MAE values of around 85.7, a hefty drop from the previous workflow. That is a sign that the extra feature engineering done in the complex linear model recipe may not be helpful for the Elastic Net and OLS (lm) models.  
+In @tbl-complex-results, the worst model is still the Null model and the best model is also the Boosted Trees model, with the Boosted Trees MAE being slightly higher than the "basic" workflow MAE. The most notable changes between the "basic" workflows and "complex" workflows are how the Elastic Net and OLS (lm) model performed. The MAE was about 93.7 in the "basic" workflow, but the complex workflow resulted in MAE values of around 85.7, a hefty drop from the previous workflow. That is a sign that the extra feature engineering done in the complex linear model recipe may not be helpful for the Elastic Net and OLS (lm) models.  
 <br>  
 Looking at these 2 tables, we picked the "basic" Boosted Trees as our final model to predict on.
 
@@ -179,7 +179,7 @@ metrics_table <- tibble(
 metrics_table
 ```
 
-@tbl-final-metrics provides the final metric values on the Yeo-Johnson scale, with the final MAE value of 73.3. Supplemental metrics were calculated, RMSE and R-squared, and their values are 99.2 and 0.671, respectively.  
+@tbl-final-metrics provides the final metric values on the Yeo-Johnson scale, with the final MAE value of 73.1. Supplemental metrics were calculated, RMSE and R-squared, and their values are 98.8 and 0.671, respectively.  
 <br>  
 Being on the Yeo-Johnson scale, it is difficult to really interpret the MAE and RMSE, so below is the table of the metrics on the original scale ($).
 
@@ -206,9 +206,9 @@ metrics_table_orig
 
 ```
 
-The RMSE of 99.2 in dollars is almost \$170 million and the MAE of 73.4 is equivalent to \$100.4 million. The R-squared also reduces slightly because of the scaling changes, which is not a very good sign as it was already at 0.667. From @tbl-final-metrics, the R-squared of 0.671 means about 67.1% of the variance in the data can be explained by the model, which is not necessarily up to par with the standards of a "good" predictive model. This leaves a lot of the reasoning of the changes up in the air, since there could be a plethora of reasons for the variance that is not captured by the model. The definition of a good model can vary depending on problem type, so overall, 67.1% is not the best and it is not the worst. 
+The RMSE of 98.8 in dollars is almost \$170 million and the MAE of 73.1 is equivalent to \$100.4 million. The R-squared also reduces slightly because of the scaling changes, which is not a very good sign as it was already at 0.673. From @tbl-final-metrics, the R-squared of 0.667 means about 66.7% of the variance in the data can be explained by the model, which is not necessarily up to par with the standards of a "good" predictive model. This leaves a lot of the reasoning of the changes up in the air, since there could be a plethora of reasons for the variance that is not captured by the model. The definition of a good model can vary depending on problem type, so overall, 66.7% is not the best and it is not the worst. 
 
-Furthermore, @fig-final-plot-yeo is a plot of the predicted revenue by the actual revenue on the Yeo-Johnson scale. There are 2 main clusters of points from 100 to 500 and 625 to 750. The proportion of predictions above the actual values and below the actual values are fairly equal, at least in those clusters.
+Furthermore, @fig-final-plot-yeo is a plot of the predicted revenue by the actual revenue on the Yeo-Johnson scale. 
 
 ::: {#fig-final-plot-yeo layout-ncol=1}
 ![Final Predictions Plot (Yeo-Johnson)](figures/final_plot_yeo.png){#fig-plot}

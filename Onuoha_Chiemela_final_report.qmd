@@ -1,5 +1,5 @@
 ---
-title: "Final Report"
+title: "Predicting Box Office Success: A Machine Learning Approach"
 subtitle: |
   | Final Project 
   | Data Science 2 with R (STAT 301-2)
@@ -111,7 +111,7 @@ test_preds_original <- test_preds |>
 :::
 
 ## Introduction
-The objective of this report is to present findings of predictive modeling done on a movies dataset. I would like to see how well a movies' revenue can be predicted using other features of the movie/data.
+The objective of this report is to present findings of predictive modeling done on a movies dataset. I would like to see how well a movie's revenue can be predicted using other features of the movie/data.
 <br>  
 These predictions are useful because having an accurate prediction model for movie revenue could be highly valuable for investors and filmmakers because it would help estimate a film’s financial success before release. That would allow for better budget allocation, and even optimize marketing strategies.
 
@@ -159,13 +159,13 @@ summary_table
 
 :::
 On the left, we have the original distribution of the target variable, `revenue`, visualized with a density plot and box plot. 
-The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.^[A lambda value of 0.25 was used]   
+The original values were heavily skewed right, so it was apparent a transformation of revenue was needed. After experimenting with log, Yeo-Johnson, square root, and Box-Cox transformations, I settled on a Yeo-Johnson transformation to make the values more evenly distributed.  
 <br>  
-The Yeo-Johnson transformation reshapes data to make it more normal by adjusting values differently based on whether they are positive or negative. For positive numbers, it applies a power transformation or a log function, while for negative numbers, it flips them, transforms them, and flips them back. The density and box plot on the right shows those values post-transformation. 
+The Yeo-Johnson transformation reshapes data to make it more normal by adjusting values differently based on whether they are positive or negative. For positive numbers, it applies a power transformation or a log function, while for negative numbers, it flips them, transforms them, and flips them back. The density and box plot on the right shows those values post-transformation.^[A lambda value of 0.25 was used.] 
 
 ### Data Wrangling
 
-The movies dataset initially had 12 columns and I was only able to extract 3 predictors for my models, but I have been able to conduct more manipulation of the data to allow for more usable predictors in my models. Below is a glimpse of the manipulated dataset.^[For the sake of understanding, only the first 2 columns are really relevant; refer to `movies_clean_codebook.csv` for clearer information on what each variable is]
+The movies dataset initially had 12 columns and I was only able to extract 3 predictors for my models, but I have been able to conduct more manipulation of the data to allow for more usable predictors in my models. Below is a glimpse of the manipulated dataset.^[For the sake of understanding, only the first 2 columns are really relevant; refer to `movies_clean_codebook.csv` for clearer information on what each variable is.]
 ```{r}
 #| label: tbl-modified-data
 #| tbl-cap: "Movies Data with Added Columns"
@@ -190,7 +190,7 @@ The primary metric I used for comparing and selecting a final model is Mean Abso
 
 
 ### Model Descriptions
-This is a regression problem because the target variable, revenue, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a Null/Baseline model, an OLS model, EN models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.
+This is a regression problem because the target variable, `revenue`, is continuous rather than categorical. Since it is a regression problem, I knew I would like to fit/tune a Null/Baseline model, an OLS model, EN models, a Random Forest Model, a Boosted Trees model, and a K-Nearest Neighbors model.
 
 #### Null/Baseline
 A null model is a simple model that based solely on the mean (for regression). It serves as a basic reference to compare the performance of more complex models.  
@@ -210,7 +210,7 @@ In EN, the `penalty` controls how much the model shrinks the coefficients, with 
 The hyperparameters I will be tuning are `mixture` and `penalty`.
 
 #### Random Forest
-Random Forest is an ensemble learning method that builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting. It is ideal for capturing nonlinear relationships and handling high-dimensional data.  
+Random Forest builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting. It is ideal for capturing nonlinear relationships and handling high-dimensional data.  
 <br>  
 In Random Forest, `mtry` is the number of features randomly chosen at each split, affecting how diverse the trees are. `min_n` is the minimum number of data points needed in a node before it can split, controlling how deep the trees grow.  
 <br>  
@@ -248,6 +248,9 @@ For my complex Linear model recipe, most of the steps are the same as the null/b
 For my basic tree model recipe, I kept the same steps as my basic Linear model recipe. For my complex recipe, I created a new column called `season` that splits up the months into the 4 seasons and used that as a predictor as well.
 
 ## Model Building and Selection Results
+::: {.callout-caution}
+In @tbl-basic-fits and @tbl-complex-results below, the OLS model is shown by "lm".
+:::
 
 ### Basic Workflows
 ```{r}
@@ -514,4 +517,4 @@ To better see the outcomes of the model, @fig-final-plot-orig-zoom is the distri
 @fig-final-plot-yeo-zoom is the distribution of @fig-final-plot-yeo but between the range of 250 and 500, one of the clustered regions on the full dimension plot. The less-than-ideal performance of this model was foreshadowed by the R-squared value, which could mean that this prediction problem is difficult to capture in modeling. There could have been inadequate feature engineering as well, which would need to be another area of focus if exploring the reasons for the poor predictions.
 
 ## Conclusion
-In this modeling process, I feel my data wrangling, feature engineering, and tuning, do not adequately capture my prediction problem. I find that surprising, because in theory I thought it would make sense that other aspects of a movie can give future insight into how the movie would perform upon release, and I figure that it does, but my method is not really showing that. The results of these models are not objectively bad, as they could have performed much worse, but I think there is definitely room to explore this type of problem with different datasets in the hopes of reaching better results. I believe I can say that the features of a movie can and does predict the movie's revenue, but maybe not as strongly as I had thought in the beginning. Though not as strong, it is still a great place to start and in the future, I could use more detailed aspects of a movie and its background. Questions like: "Who produced the movie?", "Is it a part of a franchise?", or "Is it a shorter film or long film" are good things to ask. I would also like to look at more specific datasets that possibly have a restricted range on revenue so that it is easier to capture and interpret.
+In this modeling process, I feel my data wrangling, feature engineering, and tuning, do not adequately capture my prediction problem.^[How well a movie’s revenue can be predicted using other features of the movie/data.] I find that surprising, because in theory I thought it would make sense that other aspects of a movie can give future insight into how the movie would perform upon release, and I figure that it does, but my method is not really showing that. The results of these models are not objectively bad, as they could have performed much worse, but I think there is definitely room to explore this type of problem with different datasets in the hopes of reaching better results. I believe I can say that the features of a movie can and does predict the movie's revenue, but maybe not as strongly as I had thought in the beginning. Though not as strong, it is still a great place to start and in the future, I could use more detailed aspects of a movie and its background. Questions like: "Who produced the movie?", "Is it a part of a franchise?", or "Is it a shorter film or long film" are good things to ask. I would also like to look at more specific datasets that possibly have a restricted range on revenue so that it is easier to capture and interpret.
