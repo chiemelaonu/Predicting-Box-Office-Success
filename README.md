@@ -5,9 +5,10 @@ This study aims to predict movie revenue using machine learning models based on 
 ## Subfolders
 - [`data`](data): holds the initial read-in data for this repo, as well as the initial split, training, and testing sets
 - [`figures`](figures): holds the saved plots included in the final HTML
-- [`r_scripts`](r_scripts): holds the R scripts for the repo
-- [`results`](results): holds the fitted training models
 - [`memos`](memos): holds the progress memos 1 and 2
+- [`r_scripts`](r_scripts): holds the R scripts for the repo
+- [`recipes`](recipes): holds the pre-processing engineering used in the models
+- [`results`](results): holds the fitted training models
 
 ## Reports
 - `Onuoha_Chiemela_final_report.qmd`: file for creating the final report, holding the plots, tables, and detailed analysis of the predictive modeling process
